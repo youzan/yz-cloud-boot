@@ -25,5 +25,8 @@
         "psr-4": {
             "YouzanCloudBootTests\\": "tests"
         }
+    },
+    "scripts": {
+        "devServer": "bin/php_dev_server.sh"
     }
 }
