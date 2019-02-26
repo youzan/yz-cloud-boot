@@ -15,7 +15,7 @@
     },
     "autoload": {
         "psr-r": {
-            "YouzanCloudBoot\\": "YouzanCloudBoot"
+            "YouzanCloudBoot\\": "src"
         }
     }
 }
