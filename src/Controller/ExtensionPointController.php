@@ -24,6 +24,9 @@ class ExtensionPointController extends BaseController
 
         $bean = $beanRegistry->getBean($extPoint);
 
+        //FIXME 需要加入参数转换
+        $bean->$method();
+
         return $response;
     }
 
