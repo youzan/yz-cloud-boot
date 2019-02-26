@@ -8,7 +8,9 @@
 
 namespace YouzanCloudBoot\Bep;
 
-interface AbstractBusinessExtensionPoint
+use YouzanCloudBoot\Controller\BaseController;
+
+abstract class BaseBusinessExtensionPointImpl extends BaseController
 {
 
 }
