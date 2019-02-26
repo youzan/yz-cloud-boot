@@ -16,7 +16,7 @@ if (file_exists($assumedAppDir. '/composer.json')) {
 if (defined('YZCLOUD_BOOT_APP_DIR')) {
     require_once(YZCLOUD_BOOT_APP_DIR . '/vendor/autoload.php');
 } else {
-    require_once(__DIR__ . '../vendor/autoload.php');
+    require_once(__DIR__ . '/../vendor/autoload.php');
 }
 
 
