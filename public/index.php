@@ -1,14 +1,24 @@
 <?php
 
-require_once('../vendor/autoload.php');
+$assumedAppDir = realpath(__DIR__ . '/../../../..');
 
-const YOUZAN_CLOUD_APP_DIR = __DIR__ . '/../../../..';
-
-if (file_exists(YOUZAN_CLOUD_APP_DIR . '/composer.json')) {
-    define('IN_YOUZAN_CLOUD_APP', true);
+if (file_exists($assumedAppDir. '/composer.json')) {
+    if (!file_exists($assumedAppDir . '/config/env.php')) {
+        define('IN_YOUZAN_CLOUD_APP', true);
+        require_once($assumedAppDir . '/config/env.php');
+    } else {
+        define('IN_YOUZAN_CLOUD_APP', false);
+    }
 } else {
     define('IN_YOUZAN_CLOUD_APP', false);
 }
+
+if (defined('YZCLOUD_BOOT_APP_DIR')) {
+    require_once(YZCLOUD_BOOT_APP_DIR . '/vendor/autoload.php');
+} else {
+    require_once(__DIR__ . '../vendor/autoload.php');
+}
+
 
 $container = YouzanCloudBoot\Boot\Bootstrap::setupContainer();
 
