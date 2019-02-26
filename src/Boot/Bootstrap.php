@@ -15,8 +15,8 @@ class Bootstrap
         $container = new Container();
 
         $container['logger'] = function ($container) {
-            $logger = new \Monolog\Logger('my_logger');
-            $handler = new \Monolog\Handler\StreamHandler('/tmp/test.log');
+            $logger = new \Monolog\Logger('yz-cloud-boot-app');
+            $handler = new \Monolog\Handler\SyslogHandler('yz-cloud-boot-app');
             $logger->pushHandler($handler);
             return $logger;
         };

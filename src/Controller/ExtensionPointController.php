@@ -19,7 +19,7 @@ class ExtensionPointController extends BaseController
         $method = $args['method'];
 
         /** @var \YouzanCloudBoot\Bep\BeanRegistry $beanRegistry */
-        $beanRegistry = $this->container->get('beanRegistry');
+        $beanRegistry = $this->getContainer()->get('beanRegistry');
 
         $beanInstance = $beanRegistry->getBean($extPoint);
 
