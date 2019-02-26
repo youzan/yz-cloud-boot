@@ -19,6 +19,11 @@ $app = new \Slim\App($container);
 
 \YouzanCloudBoot\Boot\Bootstrap::setupBEPs($app);
 
+if (defined('YZCLOUD_BOOT_APP_DIR')) {
+    require_once(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
+    require_once(YZCLOUD_BOOT_APP_DIR . '/config/routes.php');
+}
+
 try {
     $app->run();
 } catch (Exception $e) {
