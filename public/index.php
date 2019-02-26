@@ -2,15 +2,8 @@
 
 $assumedAppDir = realpath(__DIR__ . '/../../../..');
 
-if (file_exists($assumedAppDir. '/composer.json')) {
-    if (!file_exists($assumedAppDir . '/config/env.php')) {
-        define('IN_YOUZAN_CLOUD_APP', true);
-        require_once($assumedAppDir . '/config/env.php');
-    } else {
-        define('IN_YOUZAN_CLOUD_APP', false);
-    }
-} else {
-    define('IN_YOUZAN_CLOUD_APP', false);
+if (file_exists($assumedAppDir. '/composer.json') and file_exists($assumedAppDir . '/config/env.php')) {
+    require_once($assumedAppDir . '/config/env.php');
 }
 
 if (defined('YZCLOUD_BOOT_APP_DIR')) {
