@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Helper;
+namespace YouzanCloudBoot\Exception;
 
 use Exception;
 
