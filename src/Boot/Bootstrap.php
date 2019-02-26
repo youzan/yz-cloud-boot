@@ -27,7 +27,7 @@ class Bootstrap
         return $container;
     }
 
-    public static function setupBEPs(App $app)
+    public static function setupApp(App $app)
     {
         $app->post("/_bep/{point}/{method}", ExtensionPointController::class . ':handle');
     }

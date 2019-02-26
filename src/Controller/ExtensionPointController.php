@@ -4,7 +4,6 @@ namespace YouzanCloudBoot\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use YouzanCloudBoot\Bep\BeanRegistry;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
 
 class ExtensionPointController extends BaseController
@@ -22,12 +21,24 @@ class ExtensionPointController extends BaseController
         /** @var \YouzanCloudBoot\Bep\BeanRegistry $beanRegistry */
         $beanRegistry = $this->container->get('beanRegistry');
 
-        $bean = $beanRegistry->getBean($extPoint);
+        $beanInstance = $beanRegistry->getBean($extPoint);
 
-        //FIXME 需要加入参数转换
-        $bean->$method();
+        $result = $this->callMethod($beanInstance, $method, $request->getParsedBody());
 
-        return $response;
+        return $response->withJson($result);
+    }
+
+    private function callMethod($beanInstance, $method, $body)
+    {
+        /**
+         * TODO
+         * 利用反射:
+         * 1. 实例化请求参数
+         * 2. 传递参数给目标类
+         * 3. 获得结果并返回
+         */
+
+        return $beanInstance->$method();
     }
 
 }
