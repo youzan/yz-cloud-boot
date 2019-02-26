@@ -12,7 +12,7 @@ class ExtensionPointController extends BaseController
 
     public function handle(Request $request, Response $response, array $args)
     {
-        if (!array_key_exists(['point', 'method'], $args)) {
+        if (!array_key_exists('point', $args) or !array_key_exists('method', $args)) {
             throw new ExtensionPointHandleException('Error request');
         }
 
