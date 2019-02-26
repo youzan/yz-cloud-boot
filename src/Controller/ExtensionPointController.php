@@ -4,8 +4,8 @@ namespace YouzanCloudBoot\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use YouzanCloudBoot\Bep\BeanRegistry;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
-use YouzanCloudBoot\Helper\BeanRegistry;
 
 class ExtensionPointController extends BaseController
 {
@@ -19,7 +19,7 @@ class ExtensionPointController extends BaseController
         $extPoint = $args['point'];
         $method = $args['method'];
 
-        /** @var BeanRegistry $beanRegistry */
+        /** @var \YouzanCloudBoot\Bep\BeanRegistry $beanRegistry */
         $beanRegistry = $this->container->get('beanRegistry');
 
         $bean = $beanRegistry->getBean($extPoint);

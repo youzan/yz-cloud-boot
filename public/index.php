@@ -34,6 +34,11 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
 }
 
 try {
+    if (!$app instanceof \Slim\App or $container instanceof \YouzanCloudBoot\Bep\BeanRegistry) {
+        //在 Userland 有可能被修改了实例，抛异常
+        throw new Exception();
+    }
+
     $app->run();
 } catch (Exception $e) {
     // do something

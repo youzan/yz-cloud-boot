@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Helper;
+namespace YouzanCloudBoot\Bep;
 
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
