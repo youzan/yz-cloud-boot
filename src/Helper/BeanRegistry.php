@@ -30,7 +30,7 @@ class BeanRegistry
             throw new BeanRegistryFailureException('Target class not exists');
         }
 
-        $this->beanPool[$beanName] = ['class' => $class, $tag => $tag];
+        $this->beanPool[$beanName] = ['class' => $class, 'tag' => $tag];
     }
 
     public function getBean($beanName)
