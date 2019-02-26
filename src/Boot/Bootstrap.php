@@ -29,7 +29,7 @@ class Bootstrap
 
     public static function setupBEPs(App $app)
     {
-        $app->any("/_bep/{point}/{method}", [ExtensionPointController::class, 'handle']);
+        $app->post("/_bep/{point}/{method}", ExtensionPointController::class . ':handle');
     }
 
 }
