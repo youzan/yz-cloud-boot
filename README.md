@@ -1,4 +1,4 @@
-# YYZCloudBoot
+# YZCloudBoot
 
 Bootstrap for YZCloud PHP Application
 
