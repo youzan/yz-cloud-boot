@@ -6,7 +6,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
 
-class ExtensionPointController extends BaseController
+class BusinessExtensionPointController extends BaseController
 {
 
     public function handle(Request $request, Response $response, array $args)

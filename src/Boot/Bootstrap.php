@@ -5,7 +5,7 @@ namespace YouzanCloudBoot\Boot;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Bep\BeanRegistry;
-use YouzanCloudBoot\Controller\ExtensionPointController;
+use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 
 class Bootstrap
 {
@@ -29,7 +29,17 @@ class Bootstrap
 
     public static function setupApp(App $app)
     {
-        $app->post("/_bep/{service}/{method}", ExtensionPointController::class . ':handle');
+        //业务扩展点
+        $app->post(
+            "/business-extension-point/{service}/{method}",
+            BusinessExtensionPointController::class . ':handle'
+        );
+
+        //消息扩展点
+        $app->post(
+            "/message-extension-point/com.youzan.cloud.extension.api.message.MessageHandler/handle",
+            BusinessExtensionPointController::class . ':handle'
+        );
     }
 
 }
