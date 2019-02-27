@@ -28,13 +28,13 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
     // 这里使用匿名函数保证上下文干净，避免污染当前文件的变量
 
     $requireRoutes = function () use ($app) {
-        require_once(YZCLOUD_BOOT_APP_DIR . '/config/routes.php');
+        require(YZCLOUD_BOOT_APP_DIR . '/config/routes.php');
     };
     $requireRoutes();
 
     $reg = $container->get("beanRegistry");
     $requireBEPs = function () use ($reg) {
-        require_once(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
+        require(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
     };
     $requireBEPs();
 }

@@ -3,7 +3,6 @@
 namespace YouzanCloudBoot\Bep;
 
 use Psr\Container\ContainerInterface;
-use ReflectionClass;
 use YouzanCloudBoot\Exception\BeanRegistryFailureException;
 
 class BeanRegistry
@@ -18,32 +17,22 @@ class BeanRegistry
         $this->container = $container;
     }
 
-    public function registerBean($beanName, $class, $tag = null)
+    public function registerBean($beanName, $class, $beanTag = null)
     {
-        if (isset($this->beanPool[$beanName])) {
+        if ($this->checkBeanDefinitionExists($beanName, $beanTag)) {
             throw new BeanRegistryFailureException('The specific bean name has been registered');
         }
 
-        if (class_exists($class, true)) {
-            $ref = new ReflectionClass($class);
-        } else {
-            throw new BeanRegistryFailureException('Target class not exists');
-        }
+        /**
+         * 这里不对这个类是否存在做检查，提高性能
+         */
 
-        $this->beanPool[$beanName] = ['class' => $class, 'tag' => $tag];
+        $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)] = ['class' => $class, 'tag' => $beanTag];
     }
 
-    public function getBean($beanName)
+    public function getBean($beanName, $beanTag = null)
     {
-        if (!isset($beanName)) {
-            throw new BeanRegistryFailureException('Bean name cannot be empty');
-        }
-
-        if (!isset($this->beanPool[$beanName])) {
-            throw new BeanRegistryFailureException('Bean not exists');
-        }
-
-        $beanDef = $this->beanPool[$beanName];
+        $beanDef = $this->getBeanDefinition($beanName, $beanTag);
 
         $class = $beanDef['class'];
         $tag = $beanDef['tag'];
@@ -51,6 +40,36 @@ class BeanRegistry
         $inst = new $class($this->container);
 
         return $inst;
+    }
+
+    private function getBeanDefinition($beanName, $beanTag)
+    {
+        if (!$this->checkBeanDefinitionExists($beanName, $beanTag)) {
+            throw new BeanRegistryFailureException('Bean not exists');
+        }
+
+        return $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)];
+    }
+
+    private function checkBeanDefinitionExists($beanName, $beanTag)
+    {
+        return isset($this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)]);
+    }
+
+    private function getBeanDefinitionKey($beanName, $beanTag)
+    {
+        if (!isset($beanName) or empty($beanName)) {
+            throw new BeanRegistryFailureException('Bean name cannot be empty');
+        }
+        return $beanName . $this->getBeanTagSuffix($beanTag);
+    }
+
+    private function getBeanTagSuffix($beanTag)
+    {
+        if (isset($beanTag)) {
+            return '_' . $beanTag;
+        }
+        return '';
     }
 
 }

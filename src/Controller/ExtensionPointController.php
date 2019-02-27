@@ -15,20 +15,23 @@ class ExtensionPointController extends BaseController
             throw new ExtensionPointHandleException('Error request');
         }
 
-        $extPoint = $args['point'];
-        $method = $args['method'];
+        $serviceName = $args['service'];
+        $methodName = $args['method'];
 
         /** @var \YouzanCloudBoot\Bep\BeanRegistry $beanRegistry */
         $beanRegistry = $this->getContainer()->get('beanRegistry');
 
-        $beanInstance = $beanRegistry->getBean($extPoint);
+        $beanName = $request->getHeader('Bean-Name');
+        $beanTag = $request->getHeader('Bean-Tag');
 
-        $result = $this->callMethod($beanInstance, $method, $request->getParsedBody());
+        $beanInstance = $beanRegistry->getBean($beanName, $beanTag);
+
+        $result = $this->callMethod($beanInstance, $serviceName, $methodName, $request->getParsedBody());
 
         return $response->withJson($result);
     }
 
-    private function callMethod($beanInstance, $method, $body)
+    private function callMethod($beanInstance, $serviceName, $methodName, $body)
     {
         /**
          * TODO
@@ -38,7 +41,7 @@ class ExtensionPointController extends BaseController
          * 3. 获得结果并返回
          */
 
-        return $beanInstance->$method();
+        return $beanInstance->$methodName();
     }
 
 }
