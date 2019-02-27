@@ -1,8 +1,8 @@
 <?php
 
-namespace YouzanCloudBootTests\Helper;
+namespace YouzanCloudBootTests\ExtensionPoint;
 
-use YouzanCloudBoot\Bep\BeanRegistry;
+use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBootTests\Base\BaseTestCase;
 use YouzanCloudBootTests\Stub\FakeBean;
 
@@ -10,7 +10,7 @@ class BeanRegistryTest extends BaseTestCase
 {
 
     public function testRegisterNormal() {
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $registry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
         
         $registry->registerBean('fakeBean', FakeBean::class);
@@ -20,7 +20,7 @@ class BeanRegistryTest extends BaseTestCase
     }
     
     public function testRegisterDuplicated() {
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $registry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $this->expectExceptionMessage('registered');
@@ -29,7 +29,7 @@ class BeanRegistryTest extends BaseTestCase
     }
 
     public function testRegisterDuplicatedWithTag() {
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $registry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $this->expectExceptionMessage('registered');
@@ -38,7 +38,7 @@ class BeanRegistryTest extends BaseTestCase
     }
 
     public function testGet() {
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $registry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $registry->registerBean('fakeBean', FakeBean::class);
@@ -53,7 +53,7 @@ class BeanRegistryTest extends BaseTestCase
     }
 
     public function testNotExists() {
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $registry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $this->expectExceptionMessage('not exists');
@@ -61,7 +61,7 @@ class BeanRegistryTest extends BaseTestCase
     }
 
     public function testNotExistsWithTag() {
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $registry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $this->expectExceptionMessage('not exists');

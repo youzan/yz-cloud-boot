@@ -6,7 +6,7 @@
  * Time: 15:33
  */
 
-namespace YouzanCloudBoot\Bep;
+namespace YouzanCloudBoot\ExtensionPoint;
 
 use YouzanCloudBoot\Controller\BaseController;
 

@@ -4,7 +4,7 @@ namespace YouzanCloudBoot\Boot;
 
 use Slim\App;
 use Slim\Container;
-use YouzanCloudBoot\Bep\BeanRegistry;
+use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 
 class Bootstrap

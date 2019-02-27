@@ -18,7 +18,7 @@ class BusinessExtensionPointController extends BaseController
         $serviceName = $args['service'];
         $methodName = $args['method'];
 
-        /** @var \YouzanCloudBoot\Bep\BeanRegistry $beanRegistry */
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $beanRegistry */
         $beanRegistry = $this->getContainer()->get('beanRegistry');
 
         $beanName = $request->getHeader('Bean-Name');

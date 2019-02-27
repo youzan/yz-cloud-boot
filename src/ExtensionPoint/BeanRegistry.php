@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Bep;
+namespace YouzanCloudBoot\ExtensionPoint;
 
 use Psr\Container\ContainerInterface;
 use YouzanCloudBoot\Exception\BeanRegistryFailureException;
