@@ -43,6 +43,7 @@ class BusinessExtensionPointController extends BaseController
          * 3. 获得结果并返回
          */
 
+        //获取接口全类名
         $separateServiceNames = explode(".", $serviceName);
         $num = count($separateServiceNames);
         $serviceInterfaceName = "";
@@ -58,6 +59,21 @@ class BusinessExtensionPointController extends BaseController
 
         if (empty($serviceInterfaceName)) {
             throw new ExtensionPointHandleException('Error request [interface name error]');
+        }
+
+        $ref = new ReflectionClass($beanInstance);
+        $interfaces = $ref->getInterfaces();
+
+        //判断该实现类是否实现了对应的接口
+        $interfaceMatch = false;
+        foreach($interfaces as $interface){
+            if ($interface->getName() == $serviceInterfaceName) {
+                $interfaceMatch = true;
+            }
+        }
+
+        if ($interfaceMatch == false) {
+            throw new ExtensionPointHandleException('extension point implement incorrect interface');
         }
 
         $method = new ReflectionMethod($serviceInterfaceName, $methodName);
