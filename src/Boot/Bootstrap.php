@@ -6,6 +6,7 @@ use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
+use YouzanCloudBoot\Controller\MessageExtensionPointController;
 
 class Bootstrap
 {
@@ -38,7 +39,7 @@ class Bootstrap
         //消息扩展点
         $app->post(
             "/message-extension-point/com.youzan.cloud.extension.api.message.MessageHandler/handle",
-            BusinessExtensionPointController::class . ':handle'
+            MessageExtensionPointController::class . ':handle'
         );
     }
 

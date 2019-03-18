@@ -36,10 +36,36 @@ class BusinessExtensionPointController extends BaseController
         /**
          * TODO
          * 利用反射:
+         * serviceName : com.youzan.cloud.extension.api.BizTestService
+         * 需要转成 Com\Youzan\Cloud\Extension\Api\BizTestService
          * 1. 实例化请求参数
          * 2. 传递参数给目标类
          * 3. 获得结果并返回
          */
+
+        $separateServiceNames = explode(".", $serviceName);
+        $num = count($separateServiceNames);
+        $serviceInterfaceName = "";
+        for($i = 0; $i < $num; $i++) {
+            $separateServiceNameUcf = ucfirst($separateServiceNames[$i]);
+            if (i == 0) {
+                $serviceInterfaceName = $separateServiceNameUcf;
+            } else {
+                $serviceInterfaceName .=  "\\";
+                $serviceInterfaceName .= $separateServiceNameUcf;
+            }
+        }
+
+        if (empty($serviceInterfaceName)) {
+            throw new ExtensionPointHandleException('Error request [interface name error]');
+        }
+
+        $method = new ReflectionMethod($serviceInterfaceName, $methodName);
+
+        if ($method != null) {
+            $parameters = $method->getParameters();
+            $parameters[0]->getName();
+        }
 
         return $beanInstance->$methodName();
     }
