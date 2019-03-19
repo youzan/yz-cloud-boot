@@ -6,9 +6,12 @@ use ReflectionClass;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
+use YouzanCloudBoot\Helper\Traits\ClassValidator;
 
 class BusinessExtensionPointController extends BaseController
 {
+
+    use ClassValidator;
 
     public function handle(Request $request, Response $response, array $args)
     {
@@ -46,16 +49,14 @@ class BusinessExtensionPointController extends BaseController
         //获取接口全类名
         $serviceInterfaceName = $this->parseServiceInterfaceName($serviceName);
 
-        if (!class_exists($serviceInterfaceName, true)) {
-            throw new ExtensionPointHandleException('Service interface not found');
-        }
+        $this->assertClassExists($serviceInterfaceName, true);
 
         $ref = new ReflectionClass($beanInstance);
         $interfaces = $ref->getInterfaces();
 
         //判断该实现类是否实现了对应的接口
         $interfaceMatch = false;
-        foreach($interfaces as $interface){
+        foreach ($interfaces as $interface) {
             if ($interface->getName() == $serviceInterfaceName) {
                 $interfaceMatch = true;
             }

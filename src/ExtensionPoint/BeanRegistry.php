@@ -3,6 +3,7 @@
 namespace YouzanCloudBoot\ExtensionPoint;
 
 use Psr\Container\ContainerInterface;
+use YouzanCloudBoot\Controller\BaseController;
 use YouzanCloudBoot\Exception\BeanRegistryFailureException;
 
 class BeanRegistry
@@ -17,7 +18,7 @@ class BeanRegistry
         $this->container = $container;
     }
 
-    public function registerBean($beanName, $class, $beanTag = null)
+    public function registerBean($beanName, $class, $beanTag = null): void
     {
         if ($this->checkBeanDefinitionExists($beanName, $beanTag)) {
             throw new BeanRegistryFailureException('The specific bean name has been registered');
@@ -30,7 +31,7 @@ class BeanRegistry
         $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)] = ['class' => $class, 'tag' => $beanTag];
     }
 
-    public function getBean($beanName, $beanTag = null)
+    public function getBean($beanName, $beanTag = null): BaseController
     {
         $beanDef = $this->getBeanDefinition($beanName, $beanTag);
 
@@ -42,7 +43,7 @@ class BeanRegistry
         return $inst;
     }
 
-    private function getBeanDefinition($beanName, $beanTag)
+    private function getBeanDefinition($beanName, $beanTag): array
     {
         if (!$this->checkBeanDefinitionExists($beanName, $beanTag)) {
             throw new BeanRegistryFailureException('Bean not exists');
@@ -51,12 +52,12 @@ class BeanRegistry
         return $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)];
     }
 
-    private function checkBeanDefinitionExists($beanName, $beanTag)
+    private function checkBeanDefinitionExists($beanName, $beanTag): bool
     {
         return isset($this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)]);
     }
 
-    private function getBeanDefinitionKey($beanName, $beanTag)
+    private function getBeanDefinitionKey($beanName, $beanTag): string
     {
         if (!isset($beanName) or empty($beanName)) {
             throw new BeanRegistryFailureException('Bean name cannot be empty');
@@ -64,7 +65,7 @@ class BeanRegistry
         return $beanName . $this->getBeanTagSuffix($beanTag);
     }
 
-    private function getBeanTagSuffix($beanTag)
+    private function getBeanTagSuffix($beanTag): string
     {
         if (isset($beanTag)) {
             return '_' . $beanTag;

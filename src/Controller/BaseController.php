@@ -21,7 +21,7 @@ abstract class BaseController
      * 日志
      * @return Logger
      */
-    protected function getLog()
+    protected function getLog(): Logger
     {
         return $this->_container->get('logger');
     }
@@ -30,7 +30,7 @@ abstract class BaseController
      * DI 容器
      * @return ContainerInterface
      */
-    protected function getContainer()
+    protected function getContainer(): ContainerInterface
     {
         return $this->_container;
     }

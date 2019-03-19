@@ -2,16 +2,17 @@
 
 namespace YouzanCloudBoot\Boot;
 
+use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
-use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
+use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 
 class Bootstrap
 {
 
-    public static function setupContainer()
+    public static function setupContainer(): ContainerInterface
     {
         $container = new Container();
 
@@ -28,7 +29,7 @@ class Bootstrap
         return $container;
     }
 
-    public static function setupApp(App $app)
+    public static function setupApp(App $app): void
     {
         //业务扩展点
         $app->post(
