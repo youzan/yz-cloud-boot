@@ -2,6 +2,7 @@
 
 namespace YouzanCloudBoot\Controller;
 
+use ReflectionClass;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
@@ -34,7 +35,6 @@ class BusinessExtensionPointController extends BaseController
     private function callMethod($beanInstance, $serviceName, $methodName, $body)
     {
         /**
-         * TODO
          * 利用反射:
          * serviceName : com.youzan.cloud.extension.api.BizTestService
          * 需要转成 Com\Youzan\Cloud\Extension\Api\BizTestService
@@ -44,21 +44,10 @@ class BusinessExtensionPointController extends BaseController
          */
 
         //获取接口全类名
-        $separateServiceNames = explode(".", $serviceName);
-        $num = count($separateServiceNames);
-        $serviceInterfaceName = "";
-        for($i = 0; $i < $num; $i++) {
-            $separateServiceNameUcf = ucfirst($separateServiceNames[$i]);
-            if (i == 0) {
-                $serviceInterfaceName = $separateServiceNameUcf;
-            } else {
-                $serviceInterfaceName .=  "\\";
-                $serviceInterfaceName .= $separateServiceNameUcf;
-            }
-        }
+        $serviceInterfaceName = $this->parseServiceInterfaceName($serviceName);
 
-        if (empty($serviceInterfaceName)) {
-            throw new ExtensionPointHandleException('Error request [interface name error]');
+        if (!class_exists($serviceInterfaceName, true)) {
+            throw new ExtensionPointHandleException('Service interface not found');
         }
 
         $ref = new ReflectionClass($beanInstance);
@@ -73,17 +62,41 @@ class BusinessExtensionPointController extends BaseController
         }
 
         if ($interfaceMatch == false) {
-            throw new ExtensionPointHandleException('extension point implement incorrect interface');
+            throw new ExtensionPointHandleException(
+                'Interface [' . $serviceInterfaceName . '] not implemented in class [' . $ref->getName() . ']'
+            );
         }
 
-        $method = new ReflectionMethod($serviceInterfaceName, $methodName);
-
-        if ($method != null) {
-            $parameters = $method->getParameters();
-            $parameters[0]->getName();
+        if (!$ref->hasMethod($methodName)) {
+            throw new ExtensionPointHandleException('Called wrong method [' . $methodName . ']');
         }
+
+        $method = $ref->getMethod($methodName);
 
         return $beanInstance->$methodName();
     }
+
+    /**
+     * 将 Java 风格的类名转换为 PHP UpperCamelCase 风格
+     *
+     * @param $serviceName
+     * @return string
+     * @throws ExtensionPointHandleException
+     */
+    private function parseServiceInterfaceName($serviceName)
+    {
+        $serviceNameParts = explode(".", $serviceName);
+        $serviceNamePartsInUpperCamelCase = array_map(function ($item) {
+            return ucfirst($item);
+        }, $serviceNameParts);
+        $serviceInterfaceName = implode('\\', $serviceNamePartsInUpperCamelCase);
+
+        if (empty($serviceInterfaceName)) {
+            throw new ExtensionPointHandleException('Error request [interface name error]');
+        }
+
+        return $serviceInterfaceName;
+    }
+
 
 }
