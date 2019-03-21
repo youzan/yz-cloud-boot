@@ -6,6 +6,7 @@ use ReflectionClass;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
+use YouzanCloudBoot\Helper\ObjectScrewDriver;
 use YouzanCloudBoot\Helper\Traits\ClassValidator;
 
 class BusinessExtensionPointController extends BaseController
@@ -74,7 +75,11 @@ class BusinessExtensionPointController extends BaseController
 
         $method = $ref->getMethod($methodName);
 
-        return $beanInstance->$methodName();
+        /** @var ObjectScrewDriver $objectScrewDriver */
+        $objectScrewDriver = $this->getContainer()->get('objectScrewDriver');
+
+        $parameter = $objectScrewDriver->convertObjectToMethodExclusiveParam($method, $body);
+        return $method->invoke($beanInstance, $parameter);
     }
 
     /**
