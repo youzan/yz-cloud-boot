@@ -20,14 +20,19 @@ class BizTestData
     private $content;
 
     /**
-     * @var string[]
+     * @var BizTestSecondaryData
      */
-    private $listOfString;
+    private $secondaryData;
 
     /**
-     * @var \stdClass[]
+     * @var BizTestSecondaryData[]
      */
-    private $listOfData;
+    private $secondaryDataList;
+
+    /**
+     * @var BizTestSecondaryData[][][]
+     */
+    private $multiLevelList;
 
     /**
      * @return int
@@ -61,36 +66,51 @@ class BizTestData
         $this->content = $content;
     }
 
-
     /**
-     * @return string[]
+     * @return BizTestSecondaryData
      */
-    public function getListOfString(): array
+    public function getSecondaryData(): BizTestSecondaryData
     {
-        return $this->listOfString;
+        return $this->secondaryData;
     }
 
     /**
-     * @param string[] $listOfString
+     * @param BizTestSecondaryData $secondaryData
      */
-    public function setListOfString(array $listOfString): void
+    public function setSecondaryData(BizTestSecondaryData $secondaryData): void
     {
-        $this->listOfString = $listOfString;
+        $this->secondaryData = $secondaryData;
     }
 
     /**
-     * @return \stdClass[]
+     * @return BizTestSecondaryData[]
      */
-    public function getListOfData(): array
+    public function getSecondaryDataList(): array
     {
-        return $this->listOfData;
+        return $this->secondaryDataList;
     }
 
     /**
-     * @param \stdClass[] $listOfData
+     * @param BizTestSecondaryData[] $secondaryDataList
      */
-    public function setListOfData(array $listOfData): void
+    public function setSecondaryDataList(array $secondaryDataList): void
     {
-        $this->listOfData = $listOfData;
+        $this->secondaryDataList = $secondaryDataList;
+    }
+
+    /**
+     * @return BizTestSecondaryData[][][]
+     */
+    public function getMultiLevelList(): array
+    {
+        return $this->multiLevelList;
+    }
+
+    /**
+     * @param BizTestSecondaryData[][][] $multiLevelList
+     */
+    public function setMultiLevelList(array $multiLevelList): void
+    {
+        $this->multiLevelList = $multiLevelList;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace YouzanCloudBoot\Helper;
 
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -16,16 +17,29 @@ class ObjectScrewDriver
     use ClassValidator;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $_container;
+
+    public function __construct(ContainerInterface $container)
+    {
+        $this->_container = $container;
+    }
+
+    /**
      * 转换 incoming 为目标方法的唯一参数
      *
-     * @param $incoming
+     * 这个方法的整体思路是，反射取出目标方法的唯一参数
+     * 根据输入对唯一参数的每个属性，逐个调用 setter 方法进行逐一赋值，如果某个 setter 方法的参数是一个对象，则递归调用此方法进行设置
+     *
      * @param ReflectionMethod $method
+     * @param mixed $input
      * @return mixed|null
+     * @throws CommonException
      * @throws ExtensionPointHandleException
      * @throws ReflectionException
-     * @throws CommonException
      */
-    public function convertObjectToMethodExclusiveParam($incoming, ReflectionMethod $method)
+    public function convertObjectToMethodExclusiveParam(ReflectionMethod $method, $input)
     {
         if (count($method->getParameters()) > 1) {
             // 严格限定参数只有0个或者1个
@@ -46,7 +60,7 @@ class ObjectScrewDriver
             case 'bool':
             case 'float':
             case 'array':
-                return $incoming;
+                return $input;
             case 'callable':
             case 'iterable':
             case 'object':
@@ -54,25 +68,116 @@ class ObjectScrewDriver
         }
 
         $this->assertClassExists($type->getName(), true);
-
         $refParameterClass = new ReflectionClass($type->getName());
+
+        return $this->convertArrayToObjectInstance($input, $refParameterClass);
+    }
+
+    /**
+     * 把 PHP 关联数组转换成目标类的实例
+     *
+     * @param mixed $input
+     * @param ReflectionClass $refParameterClass
+     * @return mixed
+     * @throws CommonException
+     * @throws ExtensionPointHandleException
+     * @throws ReflectionException
+     */
+    private function convertArrayToObjectInstance($input, ReflectionClass $refParameterClass)
+    {
         $instance = $refParameterClass->newInstanceWithoutConstructor();
 
-        foreach ($incoming as $k => $v) {
-            $methodName = 'set' . ucfirst($k);
+        // 匿名类直接转换
+        if ($refParameterClass->getName() == 'stdClass') {
+            return json_decode(json_encode($input));
+        }
+
+        foreach ($input as $propertyName => $propertyValue) {
+            $methodName = 'set' . ucfirst($propertyName);
             if (!$refParameterClass->hasMethod($methodName)) {
                 // 没有setter方法则跳过此属性
                 continue;
             }
             $setter = $refParameterClass->getMethod($methodName);
-            if (is_object($v)) {
-                $setter->invoke($instance, $this->convertObjectToMethodExclusiveParam($v, $setter));
+            if (is_array($propertyValue)) {
+
+                $matches = [];
+                preg_match('/@param ([A-Za-z0-9_\\\\]+)((?:\[\])+)/', $setter->getDocComment(), $matches);
+
+                if (is_scalar($propertyValue) || empty($matches)) {
+                    $setter->invoke($instance, $this->convertObjectToMethodExclusiveParam($setter, $propertyValue));
+                } else {
+                    $listLevelsCount = substr_count(end($matches), '[]');
+                    $memberType = $this->fillUpNamespaceWithType($matches[1], $refParameterClass->getNamespaceName());
+
+                    $setter->invoke($instance, $this->diveIntoMatrix($propertyValue, $memberType, $listLevelsCount));
+                }
             } else {
-                $setter->invoke($instance, $v);
+                $setter->invoke($instance, $propertyValue);
             }
         }
 
         return $instance;
+    }
+
+    private function fillUpNamespaceWithType($typeName, $refClassNamespace)
+    {
+        if ($this->isPrimitiveType($typeName) || $typeName == 'stdClass') {
+            return $typeName;
+        } else {
+            /**
+             * 这个判断可能有点过于粗暴, 但是暂时也没有想到更好的办法
+             */
+            if (strpos($typeName, '\\') !== false) {
+                return $typeName;
+            } else {
+                return $refClassNamespace . '\\' . $typeName;
+            }
+        }
+    }
+
+    /**
+     *
+     * @see http://php.net/manual/en/function.gettype.php reference
+     * @param string $type
+     * @return bool
+     */
+    private function isPrimitiveType(string $type): bool
+    {
+        switch ($type) {
+            case 'string':
+            case 'integer':
+            case 'double':
+            case 'boolean':
+            case 'NULL':
+            case 'int':
+            case 'number':
+            case 'bool':
+            case 'float':
+                return true;
+        }
+        return false;
+    }
+
+    private function diveIntoMatrix($propertyValue, $memberType, $levels)
+    {
+        if ($this->isPrimitiveType($memberType)) {
+            return $propertyValue;
+        }
+        if ($levels > 1) {
+            $r = [];
+            foreach ($propertyValue as $item) {
+                $r[] = $this->diveIntoMatrix($item, $memberType, $levels - 1);
+            }
+            return $r;
+        }
+
+        $ref = new ReflectionClass($memberType);
+        $instanceValues = array_map(function ($item) use ($ref) {
+            return $this->convertArrayToObjectInstance($item, $ref);
+        }, $propertyValue);
+
+        return $instanceValues;
     }
 
 }
