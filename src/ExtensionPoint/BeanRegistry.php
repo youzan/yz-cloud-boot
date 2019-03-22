@@ -3,7 +3,7 @@
 namespace YouzanCloudBoot\ExtensionPoint;
 
 use Psr\Container\ContainerInterface;
-use YouzanCloudBoot\Controller\BaseController;
+use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\BeanRegistryFailureException;
 
 class BeanRegistry
@@ -31,7 +31,7 @@ class BeanRegistry
         $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)] = ['class' => $class, 'tag' => $beanTag];
     }
 
-    public function getBean($beanName, $beanTag = null): BaseController
+    public function getBean($beanName, $beanTag = null): BaseComponent
     {
         $beanDef = $this->getBeanDefinition($beanName, $beanTag);
 

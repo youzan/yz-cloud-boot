@@ -5,11 +5,12 @@ namespace YouzanCloudBoot\Controller;
 use ReflectionClass;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
-use YouzanCloudBoot\Helper\ObjectScrewDriver;
-use YouzanCloudBoot\Helper\Traits\ClassValidator;
+use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
+use YouzanCloudBoot\Traits\ClassValidator;
 
-class BusinessExtensionPointController extends BaseController
+class BusinessExtensionPointController extends BaseComponent
 {
 
     use ClassValidator;

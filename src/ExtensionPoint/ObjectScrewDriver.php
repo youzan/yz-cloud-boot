@@ -1,30 +1,20 @@
 <?php
 
-namespace YouzanCloudBoot\Helper;
+namespace YouzanCloudBoot\ExtensionPoint;
 
-use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionParameter;
+use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
-use YouzanCloudBoot\Helper\Traits\ClassValidator;
+use YouzanCloudBoot\Traits\ClassValidator;
 
-class ObjectScrewDriver
+class ObjectScrewDriver extends BaseComponent
 {
 
     use ClassValidator;
-
-    /**
-     * @var ContainerInterface
-     */
-    protected $_container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->_container = $container;
-    }
 
     /**
      * 转换 incoming 为目标方法的唯一参数

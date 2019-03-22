@@ -2,9 +2,9 @@
 
 namespace YouzanCloudBoot\ExtensionPoint;
 
-use YouzanCloudBoot\Controller\BaseController;
+use YouzanCloudBoot\Component\BaseComponent;
 
-abstract class BaseBusinessExtensionPointImpl extends BaseController
+abstract class BaseBusinessExtensionPointImpl extends BaseComponent
 {
 
 }

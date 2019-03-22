@@ -1,8 +1,8 @@
 <?php
 
-namespace YouzanCloudBootTests\Helper;
+namespace YouzanCloudBootTests\ExtensionPoint;
 
-use YouzanCloudBoot\Helper\ObjectScrewDriver;
+use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
 use YouzanCloudBootTests\Base\BaseTestCase;
 use YouzanCloudBootTests\Stub\ExtensionPoint\BizTestService;
 use YouzanCloudBootTests\Stub\ExtensionPoint\Param\BizTestData;
@@ -173,13 +173,16 @@ class ObjectScrewDriverTest extends BaseTestCase
 
     /**
      * @param $input
+     * @throws \ReflectionException
+     * @throws \YouzanCloudBoot\Exception\CommonException
+     * @throws \YouzanCloudBoot\Exception\ExtensionPointHandleException
      * @dataProvider mockRequestData
      */
     public function testObjectScrewDriver($input)
     {
         $data = json_decode($input, true);
 
-        /** @var ObjectScrewDriver $driver */
+        /** @var \YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver $driver */
         $driver = $this->getApp()->getContainer()->get('objectScrewDriver');
 
         /** @var BizTestRequest $r */

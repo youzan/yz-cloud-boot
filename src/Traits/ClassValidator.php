@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Helper\Traits;
+namespace YouzanCloudBoot\Traits;
 
 use YouzanCloudBoot\Exception\CommonException;
 

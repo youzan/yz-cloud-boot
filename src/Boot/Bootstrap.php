@@ -8,7 +8,8 @@ use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
-use YouzanCloudBoot\Helper\ObjectScrewDriver;
+use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
+use YouzanCloudBoot\Helper\EnvHelper;
 
 class Bootstrap
 {
@@ -17,17 +18,20 @@ class Bootstrap
     {
         $container = new Container();
 
-        $container['logger'] = function ($container) {
+        $container['logger'] = function (ContainerInterface $container) {
             $logger = new \Monolog\Logger('yz-cloud-boot-app');
             $handler = new \Monolog\Handler\SyslogHandler('yz-cloud-boot-app');
             $logger->pushHandler($handler);
             return $logger;
         };
-        $container['beanRegistry'] = function ($container) {
+        $container['beanRegistry'] = function (ContainerInterface $container) {
             return new BeanRegistry($container);
         };
-        $container['objectScrewDriver'] = function ($container) {
+        $container['objectScrewDriver'] = function (ContainerInterface $container) {
             return new ObjectScrewDriver($container);
+        };
+        $container['envHelper'] = function(ContainerInterface $container) {
+            return new EnvHelper($container);
         };
 
         return $container;
