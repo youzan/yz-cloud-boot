@@ -67,7 +67,7 @@ class BeanRegistry
 
     private function getBeanTagSuffix($beanTag): string
     {
-        if (isset($beanTag)) {
+        if (!empty($beanTag)) {
             return '_' . $beanTag;
         }
         return '';

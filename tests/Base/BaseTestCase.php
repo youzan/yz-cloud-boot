@@ -16,6 +16,8 @@ abstract class BaseTestCase extends TestCase
         $container = Bootstrap::setupContainer();
 
         $app = new App($container);
+
+        Bootstrap::setupApp($app);
         return $app;
     }
 }

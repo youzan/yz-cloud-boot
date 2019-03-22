@@ -23,4 +23,19 @@ trait ClassValidator
         return true;
     }
 
+    /**
+     * 断言接口是否存在
+     *
+     * @param string $interfaceName
+     * @param bool $autoload
+     * @return bool
+     * @throws CommonException
+     */
+    private function assertInterfaceExists(string $interfaceName, bool $autoload): bool
+    {
+        if (!interface_exists($interfaceName, $autoload)) {
+            throw new CommonException('Interface [' . $interfaceName . '] not exists');
+        }
+        return true;
+    }
 }

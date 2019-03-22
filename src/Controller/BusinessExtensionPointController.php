@@ -17,7 +17,7 @@ class BusinessExtensionPointController extends BaseComponent
 
     public function handle(Request $request, Response $response, array $args)
     {
-        if (!array_key_exists('point', $args) or !array_key_exists('method', $args)) {
+        if (!array_key_exists('service', $args) or !array_key_exists('method', $args)) {
             throw new ExtensionPointHandleException('Error request');
         }
 
@@ -27,8 +27,8 @@ class BusinessExtensionPointController extends BaseComponent
         /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $beanRegistry */
         $beanRegistry = $this->getContainer()->get('beanRegistry');
 
-        $beanName = $request->getHeader('Bean-Name');
-        $beanTag = $request->getHeader('Bean-Tag');
+        $beanName = $request->getHeaderLine('Bean-Name');
+        $beanTag = $request->getHeaderLine('Bean-Tag');
 
         $beanInstance = $beanRegistry->getBean($beanName, $beanTag);
 
@@ -51,7 +51,7 @@ class BusinessExtensionPointController extends BaseComponent
         //获取接口全类名
         $serviceInterfaceName = $this->parseServiceInterfaceName($serviceName);
 
-        $this->assertClassExists($serviceInterfaceName, true);
+        $this->assertInterfaceExists($serviceInterfaceName, true);
 
         $ref = new ReflectionClass($beanInstance);
         $interfaces = $ref->getInterfaces();

@@ -77,6 +77,10 @@ class ObjectScrewDriver extends BaseComponent
     {
         $instance = $refParameterClass->newInstanceWithoutConstructor();
 
+        if (is_null($input)) {
+            return $input;
+        }
+
         // 匿名类直接转换
         if ($refParameterClass->getName() == 'stdClass') {
             return json_decode(json_encode($input));

@@ -4,7 +4,7 @@ namespace YouzanCloudBootTests\ExtensionPoint;
 
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBootTests\Base\BaseTestCase;
-use YouzanCloudBootTests\Stub\FakeBean;
+use YouzanCloudBootTests\Stub\FakeServiceImpl;
 
 class BeanRegistryTest extends BaseTestCase
 {
@@ -13,9 +13,9 @@ class BeanRegistryTest extends BaseTestCase
         /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
         
-        $registry->registerBean('fakeBean', FakeBean::class);
-        $registry->registerBean('fakeBean', FakeBean::class, '1.0');
-        $registry->registerBean('fakeBean', FakeBean::class, '2.0');
+        $registry->registerBean('fakeBean', FakeServiceImpl::class);
+        $registry->registerBean('fakeBean', FakeServiceImpl::class, '1.0');
+        $registry->registerBean('fakeBean', FakeServiceImpl::class, '2.0');
         $this->assertTrue(true);
     }
     
@@ -24,8 +24,8 @@ class BeanRegistryTest extends BaseTestCase
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $this->expectExceptionMessage('registered');
-        $registry->registerBean('fakeBean', FakeBean::class);
-        $registry->registerBean('fakeBean', FakeBean::class);
+        $registry->registerBean('fakeBean', FakeServiceImpl::class);
+        $registry->registerBean('fakeBean', FakeServiceImpl::class);
     }
 
     public function testRegisterDuplicatedWithTag() {
@@ -33,21 +33,21 @@ class BeanRegistryTest extends BaseTestCase
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
         $this->expectExceptionMessage('registered');
-        $registry->registerBean('fakeBean', FakeBean::class, '1.0');
-        $registry->registerBean('fakeBean', FakeBean::class, '1.0');
+        $registry->registerBean('fakeBean', FakeServiceImpl::class, '1.0');
+        $registry->registerBean('fakeBean', FakeServiceImpl::class, '1.0');
     }
 
     public function testGet() {
         /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $registry */
         $registry = $this->getApp()->getContainer()->get('beanRegistry');
 
-        $registry->registerBean('fakeBean', FakeBean::class);
+        $registry->registerBean('fakeBean', FakeServiceImpl::class);
         $instance = $registry->getBean('fakeBean');
-        $this->assertInstanceOf(FakeBean::class, $instance);
+        $this->assertInstanceOf(FakeServiceImpl::class, $instance);
 
-        $registry->registerBean('fakeBean', FakeBean::class, '1.0');
+        $registry->registerBean('fakeBean', FakeServiceImpl::class, '1.0');
         $instance2 = $registry->getBean('fakeBean', '1.0');
-        $this->assertInstanceOf(FakeBean::class, $instance2);
+        $this->assertInstanceOf(FakeServiceImpl::class, $instance2);
 
         $this->assertNotSame($instance, $instance2);
     }
