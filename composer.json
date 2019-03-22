@@ -10,6 +10,8 @@
     ],
     "require": {
         "php": ">=7.1.0",
+        "ext-PDO": "*",
+        "ext-json": "*",
         "slim/slim": "^3.0",
         "monolog/monolog": "^1.24"
     },
