@@ -17,13 +17,13 @@ class ObjectScrewDriver extends BaseComponent
     use ClassValidator;
 
     /**
-     * 转换 incoming 为目标方法的唯一参数
+     * 转换 input 为目标方法的唯一参数
      *
      * 这个方法的整体思路是，反射取出目标方法的唯一参数
      * 根据输入对唯一参数的每个属性，逐个调用 setter 方法进行逐一赋值，如果某个 setter 方法的参数是一个对象，则递归调用此方法进行设置
      *
      * @param ReflectionMethod $method
-     * @param mixed $input
+     * @param array $input JSON 数据，用关联数组存储
      * @return mixed|null
      * @throws CommonException
      * @throws ExtensionPointHandleException
@@ -94,7 +94,6 @@ class ObjectScrewDriver extends BaseComponent
             }
             $setter = $refParameterClass->getMethod($methodName);
             if (is_array($propertyValue)) {
-
                 $matches = [];
                 preg_match('/@param ([A-Za-z0-9_\\\\]+)((?:\[\])+)/', $setter->getDocComment(), $matches);
 

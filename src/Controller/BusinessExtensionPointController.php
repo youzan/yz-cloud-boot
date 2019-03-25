@@ -80,7 +80,9 @@ class BusinessExtensionPointController extends BaseComponent
         $objectScrewDriver = $this->getContainer()->get('objectScrewDriver');
 
         $parameter = $objectScrewDriver->convertObjectToMethodExclusiveParam($method, $body);
-        return $method->invoke($beanInstance, $parameter);
+
+        $invokeResult = $method->invoke($beanInstance, $parameter);
+        return $invokeResult;
     }
 
     /**

@@ -4,14 +4,15 @@ namespace YouzanCloudBoot\Component;
 
 use Monolog\Logger;
 use Psr\Container\ContainerInterface;
-use YouzanCloudBoot\Helper\EnvHelper;
+use YouzanCloudBoot\Util\EnvUtil;
 
 abstract class BaseComponent
 {
 
+    /**
+     * @var ContainerInterface
+     */
     protected $_container;
-
-    protected $_logger;
 
     public function __construct(ContainerInterface $container)
     {
@@ -38,11 +39,11 @@ abstract class BaseComponent
 
     /**
      * 环境变量访问助手
-     * @return EnvHelper
+     * @return EnvUtil
      */
-    protected function getEnvHelper(): EnvHelper
+    protected function getEnvUtil(): EnvUtil
     {
-        return $this->_container->get('envHelper');
+        return $this->_container->get('envUtil');
     }
 
 

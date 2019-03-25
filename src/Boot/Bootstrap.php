@@ -9,7 +9,7 @@ use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
-use YouzanCloudBoot\Helper\EnvHelper;
+use YouzanCloudBoot\Util\EnvUtil;
 
 class Bootstrap
 {
@@ -30,8 +30,8 @@ class Bootstrap
         $container['objectScrewDriver'] = function (ContainerInterface $container) {
             return new ObjectScrewDriver($container);
         };
-        $container['envHelper'] = function(ContainerInterface $container) {
-            return new EnvHelper($container);
+        $container['envUtil'] = function(ContainerInterface $container) {
+            return new EnvUtil($container);
         };
 
         return $container;

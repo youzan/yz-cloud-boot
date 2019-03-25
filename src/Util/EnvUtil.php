@@ -1,10 +1,10 @@
 <?php
 
-namespace YouzanCloudBoot\Helper;
+namespace YouzanCloudBoot\Util;
 
 use YouzanCloudBoot\Component\BaseComponent;
 
-class EnvHelper extends BaseComponent
+class EnvUtil extends BaseComponent
 {
 
     /**

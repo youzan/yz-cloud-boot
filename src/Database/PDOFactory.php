@@ -35,7 +35,7 @@ class PDOFactory extends BaseComponent
      */
     public function buildBuiltinMySQLInstance($charset = 'utf8mb4'): ?PDO
     {
-        $env = $this->getEnvHelper();
+        $env = $this->getEnvUtil();
 
         $host = $env->get('mysql.host');
         if (empty($host)) {
