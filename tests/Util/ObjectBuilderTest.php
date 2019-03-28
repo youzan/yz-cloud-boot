@@ -1,15 +1,14 @@
 <?php
 
-namespace YouzanCloudBootTests\ExtensionPoint;
+namespace YouzanCloudBootTests\Util;
 
-use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
 use YouzanCloudBootTests\Base\BaseTestCase;
 use YouzanCloudBootTests\Stub\ExtensionPoint\BizTestService;
 use YouzanCloudBootTests\Stub\ExtensionPoint\Param\BizTestData;
 use YouzanCloudBootTests\Stub\ExtensionPoint\Param\BizTestRequest;
 use YouzanCloudBootTests\Stub\ExtensionPoint\Param\BizTestSecondaryData;
 
-class ObjectScrewDriverTest extends BaseTestCase
+class ObjectBuilderTest extends BaseTestCase
 {
 
     public function mockRequestData()
@@ -178,15 +177,15 @@ class ObjectScrewDriverTest extends BaseTestCase
      * @throws \YouzanCloudBoot\Exception\ExtensionPointHandleException
      * @dataProvider mockRequestData
      */
-    public function testObjectScrewDriver($input)
+    public function testObjectBuilder($input)
     {
         $data = json_decode($input, true);
 
-        /** @var \YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver $driver */
-        $driver = $this->getApp()->getContainer()->get('objectScrewDriver');
+        /** @var \YouzanCloudBoot\Util\ObjectBuilder $driver */
+        $driver = $this->getApp()->getContainer()->get('objectBuilder');
 
         /** @var BizTestRequest $r */
-        $r = $driver->convertObjectToMethodExclusiveParam(new \ReflectionMethod(BizTestService::class, 'invoke'), $data);
+        $r = $driver->convertArrayToMethodExclusiveParam(new \ReflectionMethod(BizTestService::class, 'invoke'), $data);
 
         $this->assertInstanceOf(BizTestRequest::class, $r);
         $this->assertEquals(1234, $r->getRequestId());

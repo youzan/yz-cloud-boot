@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBootTests\Helper;
+namespace YouzanCloudBootTests\Util;
 
 use YouzanCloudBoot\Util\EnvUtil;
 use YouzanCloudBootTests\Base\BaseTestCase;

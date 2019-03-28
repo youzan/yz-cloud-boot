@@ -8,8 +8,8 @@ use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
-use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
 use YouzanCloudBoot\Util\EnvUtil;
+use YouzanCloudBoot\Util\ObjectBuilder;
 
 class Bootstrap
 {
@@ -27,8 +27,8 @@ class Bootstrap
         $container['beanRegistry'] = function (ContainerInterface $container) {
             return new BeanRegistry($container);
         };
-        $container['objectScrewDriver'] = function (ContainerInterface $container) {
-            return new ObjectScrewDriver($container);
+        $container['objectBuilder'] = function (ContainerInterface $container) {
+            return new ObjectBuilder($container);
         };
         $container['envUtil'] = function(ContainerInterface $container) {
             return new EnvUtil($container);

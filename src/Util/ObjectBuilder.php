@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\ExtensionPoint;
+namespace YouzanCloudBoot\Util;
 
 use ReflectionClass;
 use ReflectionException;
@@ -11,7 +11,7 @@ use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
 use YouzanCloudBoot\Traits\ClassValidator;
 
-class ObjectScrewDriver extends BaseComponent
+class ObjectBuilder extends BaseComponent
 {
 
     use ClassValidator;
@@ -29,7 +29,7 @@ class ObjectScrewDriver extends BaseComponent
      * @throws ExtensionPointHandleException
      * @throws ReflectionException
      */
-    public function convertObjectToMethodExclusiveParam(ReflectionMethod $method, $input)
+    public function convertArrayToMethodExclusiveParam(ReflectionMethod $method, $input)
     {
         if (count($method->getParameters()) > 1) {
             // 严格限定参数只有0个或者1个
@@ -98,7 +98,7 @@ class ObjectScrewDriver extends BaseComponent
                 preg_match('/@param ([A-Za-z0-9_\\\\]+)((?:\[\])+)/', $setter->getDocComment(), $matches);
 
                 if (is_scalar($propertyValue) || empty($matches)) {
-                    $setter->invoke($instance, $this->convertObjectToMethodExclusiveParam($setter, $propertyValue));
+                    $setter->invoke($instance, $this->convertArrayToMethodExclusiveParam($setter, $propertyValue));
                 } else {
                     $listLevelsCount = substr_count(end($matches), '[]');
                     $memberType = $this->fillUpNamespaceWithType($matches[1], $refParameterClass->getNamespaceName());

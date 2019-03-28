@@ -7,8 +7,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
-use YouzanCloudBoot\ExtensionPoint\ObjectScrewDriver;
 use YouzanCloudBoot\Traits\ClassValidator;
+use YouzanCloudBoot\Util\ObjectBuilder;
 
 class BusinessExtensionPointController extends BaseComponent
 {
@@ -76,10 +76,10 @@ class BusinessExtensionPointController extends BaseComponent
 
         $method = $ref->getMethod($methodName);
 
-        /** @var ObjectScrewDriver $objectScrewDriver */
-        $objectScrewDriver = $this->getContainer()->get('objectScrewDriver');
+        /** @var ObjectBuilder $objectBuilder */
+        $objectBuilder = $this->getContainer()->get('objectBuilder');
 
-        $parameter = $objectScrewDriver->convertObjectToMethodExclusiveParam($method, $body);
+        $parameter = $objectBuilder->convertArrayToMethodExclusiveParam($method, $body);
 
         $invokeResult = $method->invoke($beanInstance, $parameter);
         return $invokeResult;
