@@ -15,6 +15,19 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
     require_once(__DIR__ . '/../vendor/autoload.php');
 }
 
+// 这是对 PHP 内建服务器的一个不会修复的 bug 的 Workaround
+// Bug内容为: PHP 内建服务器在碰到带"."的请求时，会认为是静态文件
+// 链接: https://bugs.php.net/bug.php?id=61286
+if (isset($_SERVER['SERVER_SOFTWARE']) and preg_match('/^PHP.+Development Server$/', $_SERVER['SERVER_SOFTWARE'])) {
+    // 如果确实存在文件，返回文件
+    if (file_exists($_SERVER['SCRIPT_NAME'])) {
+        return false;
+    }
+    // 否则则将错误的 PHP_SELF 和 SCRIPT_NAME 重写为 index.php
+    $_SERVER['PHP_SELF'] = '/index.php';
+    $_SERVER['SCRIPT_NAME'] = '/index.php';
+}
+
 // 初始化容器
 /** @var \Psr\Container\ContainerInterface $container */
 $container = YouzanCloudBoot\Boot\Bootstrap::setupContainer();
