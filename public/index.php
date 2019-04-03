@@ -32,9 +32,8 @@ if (isset($_SERVER['SERVER_SOFTWARE']) and preg_match('/^PHP.+Development Server
 /** @var \Psr\Container\ContainerInterface $container */
 $container = YouzanCloudBoot\Boot\Bootstrap::setupContainer();
 
-$app = new \Slim\App($container);
-
 // 初始化应用
+$app = new \Slim\App($container);
 \YouzanCloudBoot\Boot\Bootstrap::setupApp($app);
 
 if (defined('YZCLOUD_BOOT_APP_DIR')) {
@@ -54,7 +53,7 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
 
 try {
     if ((!$reg instanceof \YouzanCloudBoot\ExtensionPoint\BeanRegistry) or (!$app instanceof \Slim\App)) {
-        //在 Userland 有可能被修改了实例，抛异常
+        //在 app 端有可能被修改实例，抛异常
         throw new Exception();
     }
 
