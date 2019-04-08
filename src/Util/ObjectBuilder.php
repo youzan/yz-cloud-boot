@@ -73,7 +73,7 @@ class ObjectBuilder extends BaseComponent
      * @throws ExtensionPointHandleException
      * @throws ReflectionException
      */
-    private function convertArrayToObjectInstance($input, ReflectionClass $refParameterClass)
+    public function convertArrayToObjectInstance($input, ReflectionClass $refParameterClass)
     {
         $instance = $refParameterClass->newInstanceWithoutConstructor();
 

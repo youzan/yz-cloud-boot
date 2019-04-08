@@ -8,6 +8,7 @@ use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
+use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
 use YouzanCloudBoot\Util\EnvUtil;
 use YouzanCloudBoot\Util\ObjectBuilder;
 
@@ -32,6 +33,9 @@ class Bootstrap
         };
         $container['envUtil'] = function(ContainerInterface $container) {
             return new EnvUtil($container);
+        };
+        $container['topicRegistry'] = function (ContainerInterface $container) {
+            return new TopicRegistry($container);
         };
 
         return $container;
