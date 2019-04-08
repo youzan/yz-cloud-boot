@@ -58,7 +58,7 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
 }
 
 try {
-    if ((!$reg instanceof \YouzanCloudBoot\ExtensionPoint\BeanRegistry) or (!$app instanceof \Slim\App)) {
+    if ((!$bepReg instanceof \YouzanCloudBoot\ExtensionPoint\BeanRegistry) or (!$mepReg instanceof \YouzanCloudBoot\ExtensionPoint\TopicRegistry) or (!$app instanceof \Slim\App)) {
         //在 app 端有可能被修改实例，抛异常
         throw new Exception();
     }

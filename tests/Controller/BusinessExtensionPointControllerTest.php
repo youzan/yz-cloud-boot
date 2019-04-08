@@ -57,10 +57,10 @@ class BusinessExtensionPointControllerTest extends BaseTestCase
     {
         $app = $this->getApp();
 
-        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $reg */
-        $reg = $app->getContainer()->get('beanRegistry');
-        $reg->registerBean('testBean', FakeServiceImpl::class);
-        $reg->registerBean('testBean', FakeServiceImpl::class, '1024');
+        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $bepReg */
+        $bepReg = $app->getContainer()->get('beanRegistry');
+        $bepReg->registerBean('testBean', FakeServiceImpl::class);
+        $bepReg->registerBean('testBean', FakeServiceImpl::class, '1024');
 
         $result = $app($request, $response);
 
