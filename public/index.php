@@ -44,11 +44,17 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
     };
     $requireRoutes();
 
-    $reg = $container->get("beanRegistry");
-    $requireBEPs = function () use ($reg) {
+    $beanReg = $container->get("beanRegistry");
+    $requireBEPs = function () use ($beanReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
     };
     $requireBEPs();
+
+    $topicReg = $container->get("topicRegistry");
+    $requireMEPs = function () use ($topicReg) {
+        require(YZCLOUD_BOOT_APP_DIR . '/config/meps.php');
+    };
+    $requireMEPs();
 }
 
 try {
