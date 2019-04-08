@@ -7,6 +7,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
+use YouzanCloudBoot\Traits\ClassValidator;
 
 class MessageExtensionPointController extends BaseComponent
 {
@@ -50,7 +51,7 @@ class MessageExtensionPointController extends BaseComponent
          * 3. 获得结果并返回
          */
 
-        $msgInterfaceName = '\Com\Youzan\Cloud\Extension\Api\Message\MessageHandler';
+        $msgInterfaceName = 'Com\Youzan\Cloud\Extension\Api\Message\MessageHandler';
         $msgMethodName = 'handle';
 
         $this->assertInterfaceExists($msgInterfaceName, true);
