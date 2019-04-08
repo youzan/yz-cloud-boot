@@ -2,9 +2,12 @@
 
 namespace YouzanCloudBoot\Controller;
 
+use ReflectionClass;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
+use YouzanCloudBoot\Exception\TopicRegistryFailureException;
+use YouzanCloudBoot\Util\ObjectBuilder;
 
 class MessageExtensionPointController extends BaseComponent
 {
@@ -54,13 +57,13 @@ class MessageExtensionPointController extends BaseComponent
         }
 
         if ($interfaceMatch == false) {
-            throw new ExtensionPointHandleException(
+            throw new TopicRegistryFailureException(
                 'Interface [' . $msgInterfaceName . '] not implemented in class [' . $ref->getName() . ']'
             );
         }
 
         if (!$ref->hasMethod($msgMethodName)) {
-            throw new ExtensionPointHandleException('Called wrong method [handle]');
+            throw new TopicRegistryFailureException('Called wrong method [handle]');
         }
 
         $method = $ref->getMethod($msgMethodName);
