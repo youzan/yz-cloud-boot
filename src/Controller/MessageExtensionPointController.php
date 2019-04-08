@@ -19,7 +19,8 @@ class MessageExtensionPointController extends BaseComponent
         $objectBuilder = $this->getContainer()->get('objectBuilder');
 
         $ref = new ReflectionClass('\Com\Youzan\Cloud\Extension\Param\NotifyMessage');
-        $parameter = $objectBuilder->convertArrayToObjectInstance($request->getParsedBody(), $ref);
+//        $parameter = $objectBuilder->convertArrayToObjectInstance($request->getParsedBody(), $ref);
+        $parameter = json_decode(json_encode($request->getParsedBody()));
         $topic = $parameter->getTopic();
 
         $topicRegistry = $this->getContainer()->get('topicRegistry');

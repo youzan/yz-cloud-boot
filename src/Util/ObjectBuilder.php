@@ -75,8 +75,6 @@ class ObjectBuilder extends BaseComponent
      */
     public function convertArrayToObjectInstance($input, ReflectionClass $refParameterClass)
     {
-        $instance = $refParameterClass->newInstanceWithoutConstructor();
-
         if (is_null($input)) {
             return $input;
         }
@@ -85,6 +83,8 @@ class ObjectBuilder extends BaseComponent
         if ($refParameterClass->getName() == 'stdClass') {
             return json_decode(json_encode($input));
         }
+
+        $instance = $refParameterClass->newInstanceWithoutConstructor();
 
         foreach ($input as $propertyName => $propertyValue) {
             $methodName = 'set' . ucfirst($propertyName);
