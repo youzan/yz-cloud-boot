@@ -10,6 +10,7 @@ use YouzanCloudBoot\Exception\TopicRegistryFailureException;
 
 class MessageExtensionPointController extends BaseComponent
 {
+    use ClassValidator;
 
     public function handle(Request $request, Response $response, array $args)
     {
@@ -17,9 +18,17 @@ class MessageExtensionPointController extends BaseComponent
         $ref = new ReflectionClass('\Com\Youzan\Cloud\Extension\Param\NotifyMessage');
         $parameter = $ref->newInstanceWithoutConstructor();
 
-        $json = json_decode($request->getParsedBody());
-        $parameter->setTopic($json->topic);
-        $parameter->setData($json->data);
+        $body = $request->getParsedBody();
+
+        $topic = $body['topic'];
+        if (empty($topic)) {
+            throw new TopicRegistryFailureException(
+                'Topic is empty'
+            );
+        }
+
+        $parameter->setTopic($topic);
+        $parameter->setData(json_encode($body['data']));
 
         $topic = $parameter->getTopic();
 
