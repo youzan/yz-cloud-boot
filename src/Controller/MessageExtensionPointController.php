@@ -7,7 +7,6 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
-use YouzanCloudBoot\Util\ObjectBuilder;
 
 class MessageExtensionPointController extends BaseComponent
 {
@@ -15,12 +14,13 @@ class MessageExtensionPointController extends BaseComponent
     public function handle(Request $request, Response $response, array $args)
     {
 
-        /** @var ObjectBuilder $objectBuilder */
-        $objectBuilder = $this->getContainer()->get('objectBuilder');
-
         $ref = new ReflectionClass('\Com\Youzan\Cloud\Extension\Param\NotifyMessage');
-//        $parameter = $objectBuilder->convertArrayToObjectInstance($request->getParsedBody(), $ref);
-        $parameter = json_decode(json_encode($request->getParsedBody()));
+        $parameter = $ref->newInstanceWithoutConstructor();
+
+        $json = json_decode($request->getParsedBody());
+        $parameter->setTopic($json->topic);
+        $parameter->setData($json->data);
+
         $topic = $parameter->getTopic();
 
         $topicRegistry = $this->getContainer()->get('topicRegistry');
