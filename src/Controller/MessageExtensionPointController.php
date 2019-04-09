@@ -17,21 +17,17 @@ class MessageExtensionPointController extends BaseComponent
     {
 
         $ref = new ReflectionClass('\Com\Youzan\Cloud\Extension\Param\NotifyMessage');
-        $parameter = $ref->newInstanceWithoutConstructor();
-
         $body = $request->getParsedBody();
 
-        $topic = $body['topic'];
+        $objectBuilder = $this->getContainer()->get('objectBuilder');
+        $parameter = $objectBuilder->convertArrayToObjectInstance($body, $ref);
+
+        $topic = $parameter->getTopic();
         if (empty($topic)) {
             throw new TopicRegistryFailureException(
                 'Topic is empty'
             );
         }
-
-        $parameter->setTopic($topic);
-        $parameter->setData(json_encode($body['data']));
-
-        $topic = $parameter->getTopic();
 
         $topicRegistry = $this->getContainer()->get('topicRegistry');
         $topicInstance = $topicRegistry->getBean($topic);
