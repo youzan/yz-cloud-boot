@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
+use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
@@ -53,6 +54,12 @@ class Bootstrap
         $app->post(
             "/message-extension-point/com.youzan.cloud.extension.api.message.MessageHandler/handle",
             MessageExtensionPointController::class . ':handle'
+        );
+
+        //心跳
+        $app->post(
+            "/_HB_",
+            HeartbeatController::class . ':handle'
         );
     }
 
