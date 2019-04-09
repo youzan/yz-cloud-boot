@@ -7,6 +7,7 @@ use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
+use YouzanCloudBoot\Database\PDOFactory;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
 use YouzanCloudBoot\Util\EnvUtil;
@@ -31,11 +32,14 @@ class Bootstrap
         $container['objectBuilder'] = function (ContainerInterface $container) {
             return new ObjectBuilder($container);
         };
-        $container['envUtil'] = function(ContainerInterface $container) {
+        $container['envUtil'] = function (ContainerInterface $container) {
             return new EnvUtil($container);
         };
         $container['topicRegistry'] = function (ContainerInterface $container) {
             return new TopicRegistry($container);
+        };
+        $container['pdoFactory'] = function (ContainerInterface $container) {
+            return new PDOFactory($container);
         };
 
         return $container;

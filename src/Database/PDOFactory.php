@@ -19,7 +19,7 @@ class PDOFactory extends BaseComponent
     public function buildMySQLInstance($host, $port, $username, $password, $options): PDO
     {
         return new PDO(
-            'mysql:host=' . $host . 'port=' . $port,
+            'mysql:host=' . $host . ';port=' . $port,
             $username,
             $password,
             $options
