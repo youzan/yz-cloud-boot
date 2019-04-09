@@ -2,21 +2,13 @@
 
 namespace YouzanCloudBoot\ExtensionPoint;
 
-use Psr\Container\ContainerInterface;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\BeanRegistryFailureException;
 
-class BeanRegistry
+class BeanRegistry extends BaseComponent
 {
 
     private $beanPool = [];
-
-    private $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
 
     public function registerBean($beanName, $class, $beanTag = null): void
     {
@@ -38,7 +30,7 @@ class BeanRegistry
         $class = $beanDef['class'];
         $tag = $beanDef['tag'];
 
-        $inst = new $class($this->container);
+        $inst = new $class($this->getContainer());
 
         return $inst;
     }
