@@ -36,7 +36,7 @@ class RedisFactoryTest extends BaseTestCase
             sprintf('dir %s', $dir)
         ];
 
-        echo "\n**********\nStart a temporary redis-server with data dir at [${dir}]\nIf the phpunit do not exit normally, you can remove it manually.\n**********\n";
+        echo "\n**********\nStart a temporary redis-server with data dir at [${dir}]\nIf phpunit do not exit normally, you can remove it manually.\n**********\n";
         $cli = sprintf("echo '%s' | redis-server -  >/dev/null 2>/dev/null & echo $!", implode("\n", $configs));
         exec($cli, $output);
         self::$pid = trim($output[0]);

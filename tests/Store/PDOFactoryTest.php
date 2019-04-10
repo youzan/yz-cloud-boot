@@ -20,7 +20,7 @@ class PDOFactoryTest extends BaseTestCase
 
     private static function initDb($dir)
     {
-        echo "\n**********\nInitialize a temporary mysql with data dir at [${dir}]\nIf the phpunit do not exit normally, you can remove it manually.\n**********\n";
+        echo "\n**********\nInitialize a temporary mysql with data dir at [${dir}]\nIf phpunit do not exit normally, you can remove it manually.\n**********\n";
         return shell_exec('mysqld --default-authentication-plugin=mysql_native_password --initialize-insecure --datadir=' . $dir . ' >/dev/null 2>/dev/null');
     }
 
