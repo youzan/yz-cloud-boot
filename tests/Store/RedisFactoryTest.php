@@ -15,6 +15,7 @@ class RedisFactoryTest extends BaseTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+        parent::runInUnixLike();
 
         $installed = self::commandExist('redis-server');
 
