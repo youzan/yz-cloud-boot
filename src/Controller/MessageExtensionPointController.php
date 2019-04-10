@@ -7,6 +7,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
+use YouzanCloudBoot\ExtensionPoint\Api\Message\MessageHandler;
+use YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata\NotifyMessage;
 use YouzanCloudBoot\Traits\ExtensionPointUtil;
 
 class MessageExtensionPointController extends BaseComponent
@@ -17,11 +19,10 @@ class MessageExtensionPointController extends BaseComponent
     public function handle(Request $request, Response $response, array $args)
     {
 
-        $ref = new ReflectionClass('\Com\Youzan\Cloud\Extension\Param\NotifyMessage');
         $body = $request->getParsedBody();
 
         $objectBuilder = $this->getContainer()->get('objectBuilder');
-        $parameter = $objectBuilder->convertArrayToObjectInstance($body, $ref);
+        $parameter = $objectBuilder->convertArrayToObjectInstance($body, NotifyMessage::class);
 
         $topic = $parameter->getTopic();
         if (empty($topic)) {
@@ -48,14 +49,11 @@ class MessageExtensionPointController extends BaseComponent
          * 3. 获得结果并返回
          */
 
-        $msgInterfaceName = 'Com\Youzan\Cloud\Extension\Api\Message\MessageHandler';
         $msgMethodName = 'handle';
-
-        $this->assertInterfaceExists($msgInterfaceName, true);
 
         $ref = new ReflectionClass($topicInstance);
 
-        $this->assertInterfaceImplemented($ref, $msgInterfaceName);
+        $this->assertInterfaceImplemented($ref, MessageHandler::class);
 
         $method = $ref->getMethod($msgMethodName);
 
