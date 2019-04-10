@@ -13,7 +13,7 @@ namespace YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata;
  * @package YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata
  * 消息扩展点传输对象
  */
-class NotifyMessage
+class NotifyMessage implements JsonSerializable
 {
     /**
      * 消息Topic
@@ -57,5 +57,10 @@ class NotifyMessage
     public function setData(string $data): void
     {
         $this->data = $data;
+    }
+
+    public function jsonSerialize()
+    {
+        return get_object_vars($this);
     }
 }
