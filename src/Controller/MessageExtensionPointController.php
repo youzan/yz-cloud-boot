@@ -7,11 +7,12 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
-use YouzanCloudBoot\Traits\ClassValidator;
+use YouzanCloudBoot\Traits\ExtensionPointUtil;
 
 class MessageExtensionPointController extends BaseComponent
 {
-    use ClassValidator;
+
+    use ExtensionPointUtil;
 
     public function handle(Request $request, Response $response, array $args)
     {
@@ -53,25 +54,8 @@ class MessageExtensionPointController extends BaseComponent
         $this->assertInterfaceExists($msgInterfaceName, true);
 
         $ref = new ReflectionClass($topicInstance);
-        $interfaces = $ref->getInterfaces();
 
-        //判断该实现类是否实现了对应的接口
-        $interfaceMatch = false;
-        foreach ($interfaces as $interface) {
-            if ($interface->getName() == $msgInterfaceName) {
-                $interfaceMatch = true;
-            }
-        }
-
-        if ($interfaceMatch == false) {
-            throw new TopicRegistryFailureException(
-                'Interface [' . $msgInterfaceName . '] not implemented in class [' . $ref->getName() . ']'
-            );
-        }
-
-        if (!$ref->hasMethod($msgMethodName)) {
-            throw new TopicRegistryFailureException('Called wrong method [handle]');
-        }
+        $this->assertInterfaceImplemented($ref, $msgInterfaceName);
 
         $method = $ref->getMethod($msgMethodName);
 

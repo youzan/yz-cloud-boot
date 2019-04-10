@@ -7,13 +7,13 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
-use YouzanCloudBoot\Traits\ClassValidator;
+use YouzanCloudBoot\Traits\ExtensionPointUtil;
 use YouzanCloudBoot\Util\ObjectBuilder;
 
 class BusinessExtensionPointController extends BaseComponent
 {
 
-    use ClassValidator;
+    use ExtensionPointUtil;
 
     public function handle(Request $request, Response $response, array $args)
     {
@@ -54,21 +54,8 @@ class BusinessExtensionPointController extends BaseComponent
         $this->assertInterfaceExists($serviceInterfaceName, true);
 
         $ref = new ReflectionClass($beanInstance);
-        $interfaces = $ref->getInterfaces();
 
-        //判断该实现类是否实现了对应的接口
-        $interfaceMatch = false;
-        foreach ($interfaces as $interface) {
-            if ($interface->getName() == $serviceInterfaceName) {
-                $interfaceMatch = true;
-            }
-        }
-
-        if ($interfaceMatch == false) {
-            throw new ExtensionPointHandleException(
-                'Interface [' . $serviceInterfaceName . '] not implemented in class [' . $ref->getName() . ']'
-            );
-        }
+        $this->assertInterfaceImplemented($ref, $serviceInterfaceName);
 
         if (!$ref->hasMethod($methodName)) {
             throw new ExtensionPointHandleException('Called wrong method [' . $methodName . ']');
@@ -83,28 +70,6 @@ class BusinessExtensionPointController extends BaseComponent
 
         $invokeResult = $method->invoke($beanInstance, $parameter);
         return $invokeResult;
-    }
-
-    /**
-     * 将 Java 风格的类名转换为 PHP UpperCamelCase 风格
-     *
-     * @param $serviceName
-     * @return string
-     * @throws ExtensionPointHandleException
-     */
-    private function parseServiceInterfaceName($serviceName)
-    {
-        $serviceNameParts = explode(".", $serviceName);
-        $serviceNamePartsInUpperCamelCase = array_map(function ($item) {
-            return ucfirst($item);
-        }, $serviceNameParts);
-        $serviceInterfaceName = implode('\\', $serviceNamePartsInUpperCamelCase);
-
-        if (empty($serviceInterfaceName)) {
-            throw new ExtensionPointHandleException('Error request [interface name error]');
-        }
-
-        return $serviceInterfaceName;
     }
 
 

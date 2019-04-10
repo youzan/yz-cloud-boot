@@ -9,12 +9,12 @@ use ReflectionParameter;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\ExtensionPointHandleException;
-use YouzanCloudBoot\Traits\ClassValidator;
+use YouzanCloudBoot\Traits\ExtensionPointUtil;
 
 class ObjectBuilder extends BaseComponent
 {
 
-    use ClassValidator;
+    use ExtensionPointUtil;
 
     /**
      * 转换 input 为目标方法的唯一参数
