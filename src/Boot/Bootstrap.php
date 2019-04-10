@@ -8,9 +8,10 @@ use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
-use YouzanCloudBoot\Database\PDOFactory;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
+use YouzanCloudBoot\Store\PDOFactory;
+use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBoot\Util\EnvUtil;
 use YouzanCloudBoot\Util\ObjectBuilder;
 
@@ -41,6 +42,9 @@ class Bootstrap
         };
         $container['pdoFactory'] = function (ContainerInterface $container) {
             return new PDOFactory($container);
+        };
+        $container['redisFactory'] = function (ContainerInterface $container) {
+            return new RedisFactory($container);
         };
 
         return $container;

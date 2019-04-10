@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Database;
+namespace YouzanCloudBoot\Store;
 
 use PDO;
 use YouzanCloudBoot\Component\BaseComponent;

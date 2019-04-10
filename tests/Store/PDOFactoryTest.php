@@ -1,8 +1,8 @@
 <?php
 
-namespace YouzanCloudBootTests\Database;
+namespace YouzanCloudBootTests\Store;
 
-use YouzanCloudBoot\Database\PDOFactory;
+use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
 class PDOFactoryTest extends BaseTestCase
@@ -12,36 +12,15 @@ class PDOFactoryTest extends BaseTestCase
     private static $dataDir;
     private static $pid;
 
-    private static function commandExist($cmd)
-    {
-        $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
-        return !empty($return);
-    }
-
     private static function getMySQLVersion()
     {
         $version = trim(shell_exec('mysql_config --version'));
         return $version;
     }
 
-    private static function delTree($dir)
-    {
-        $files = glob($dir . '*', GLOB_MARK);
-        foreach ($files as $file) {
-            if (substr($file, -1) == '/') {
-                self::delTree($file);
-            } else {
-                unlink($file);
-            }
-        }
-
-        if (is_dir($dir)) {
-            rmdir($dir);
-        }
-    }
-
     private static function initDb($dir)
     {
+        echo "\n**********\nInitialize a temporary mysql with data dir at [${dir}]\nIf the phpunit do not exit normally, you can remove it manually.\n**********\n";
         return shell_exec('mysqld --default-authentication-plugin=mysql_native_password --initialize-insecure --datadir=' . $dir . ' >/dev/null 2>/dev/null');
     }
 
@@ -93,16 +72,19 @@ class PDOFactoryTest extends BaseTestCase
             $pid = trim(file_get_contents(self::$dataDir . 'local.pid'));
         }
         if ($pid) {
+            echo "\n**********\nKilling mysqld, pid: ${pid}\n**********\n";
             posix_kill($pid, SIGTERM);
         }
 
-        if (file_exists(self::$dataDir)) {
-            @self::delTree(self::$dataDir);
+        $dir = self::$dataDir;
+        if (file_exists($dir)) {
+            echo "\n**********\nClean up temporary data dir [${dir}] \n**********\n";
+            @self::delTree($dir);
         }
     }
 
 
-    public function testBuild()
+    public function test()
     {
         /** @var PDOFactory $pdoFactory */
         $pdoFactory = $this->getApp()->getContainer()->get('pdoFactory');
