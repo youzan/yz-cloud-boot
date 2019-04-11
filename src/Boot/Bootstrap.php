@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
+use YouzanCloudBoot\Controller\Health\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
@@ -68,6 +69,12 @@ class Bootstrap
         $app->post(
             "/_HB_",
             HeartbeatController::class . ':handle'
+        );
+
+        //健康检查
+        $app->post(
+            "/health",
+            HealthController::class . ':handle'
         );
     }
 
