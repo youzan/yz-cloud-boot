@@ -43,6 +43,9 @@ abstract class BaseTestCase extends TestCase
         return !empty($return);
     }
 
+    /**
+     * 仅允许某个测试在 Unix 下运行，非常不严谨，但够用
+     */
     protected static function runInUnixLike()
     {
         $system = php_uname('s');
