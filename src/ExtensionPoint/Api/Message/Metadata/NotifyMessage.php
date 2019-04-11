@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by IntelliJ IDEA.
- * User: allen
- * Date: 2019-02-28
- * Time: 15:41
- */
 
 namespace YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata;
 
@@ -13,8 +7,9 @@ namespace YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata;
  * @package YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata
  * 消息扩展点传输对象
  */
-class NotifyMessage implements JsonSerializable
+class NotifyMessage
 {
+
     /**
      * 消息Topic
      * @var string
@@ -59,8 +54,4 @@ class NotifyMessage implements JsonSerializable
         $this->data = $data;
     }
 
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
 }

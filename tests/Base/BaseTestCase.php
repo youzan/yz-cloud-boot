@@ -27,16 +27,6 @@ abstract class BaseTestCase extends TestCase
         }
     }
 
-    public function getApp()
-    {
-        $container = Bootstrap::setupContainer();
-
-        $app = new App($container);
-
-        Bootstrap::setupApp($app);
-        return $app;
-    }
-
     protected static function commandExist($cmd)
     {
         $return = shell_exec(sprintf("which %s", escapeshellarg($cmd)));
@@ -53,5 +43,15 @@ abstract class BaseTestCase extends TestCase
         if (!in_array($system, ['Darwin', 'Linux', 'FreeBSD'])) {
             self::markTestSkipped(get_called_class() . ' is not support on current system: ' . $system);
         }
+    }
+
+    public function getApp()
+    {
+        $container = Bootstrap::setupContainer();
+
+        $app = new App($container);
+
+        Bootstrap::setupApp($app);
+        return $app;
     }
 }
