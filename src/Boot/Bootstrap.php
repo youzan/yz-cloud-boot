@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
-use YouzanCloudBoot\Controller\ErrorHandler;
+use YouzanCloudBoot\Controller\Error\ErrorHandler;
 use YouzanCloudBoot\Controller\Health\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;

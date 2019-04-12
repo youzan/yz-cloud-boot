@@ -1,10 +1,7 @@
 <?php
 
 
-namespace YouzanCloudBoot\Controller;
-
-
-use YouzanCloudBoot\Controller\Error\ErrorResponse;
+namespace YouzanCloudBoot\Controller\Error;
 
 class ErrorHandler
 {
