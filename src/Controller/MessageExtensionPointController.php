@@ -8,7 +8,6 @@ use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
 use YouzanCloudBoot\ExtensionPoint\Api\Message\MessageHandler;
-use YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata\NotifyMessage;
 use YouzanCloudBoot\Traits\ExtensionPointUtil;
 
 class MessageExtensionPointController extends BaseComponent
@@ -22,7 +21,7 @@ class MessageExtensionPointController extends BaseComponent
         $body = $request->getParsedBody();
 
         $objectBuilder = $this->getContainer()->get('objectBuilder');
-        $parameter = $objectBuilder->convertArrayToObjectInstance($body, NotifyMessage::class);
+        $parameter = $objectBuilder->convertArrayToObjectInstance($body, new ReflectionClass('YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata\NotifyMessage'));
 
         $topic = $parameter->getTopic();
         if (empty($topic)) {
