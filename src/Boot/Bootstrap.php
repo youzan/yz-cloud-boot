@@ -6,6 +6,7 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
+use YouzanCloudBoot\Controller\ErrorHandler;
 use YouzanCloudBoot\Controller\Health\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
@@ -22,6 +23,10 @@ class Bootstrap
     public static function setupContainer(): ContainerInterface
     {
         $container = new Container();
+
+        $container['errorHandler'] = function (ContainerInterface $container) {
+            return new ErrorHandler();
+        };
 
         $container['logger'] = function (ContainerInterface $container) {
             $logger = new \Monolog\Logger('yz-cloud-boot-app');
