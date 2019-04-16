@@ -77,7 +77,7 @@ class Bootstrap
         );
 
         //健康检查
-        $app->post(
+        $app->get(
             "/health",
             HealthController::class . ':handle'
         );
