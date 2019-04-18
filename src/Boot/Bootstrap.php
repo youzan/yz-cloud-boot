@@ -2,6 +2,7 @@
 
 namespace YouzanCloudBoot\Boot;
 
+use Monolog\Processor\ProcessIdProcessor;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
@@ -29,9 +30,19 @@ class Bootstrap
         };
 
         $container['logger'] = function (ContainerInterface $container) {
+            $dateFormat = "Y-m-d H:i:s";
+            $output = "<158>%datetime% %extra.hostname%/%extra.ip% %level_name% [%extra.process_id%]: topic=log.skynet-log.buyaodongplease {'tag':%message%}\n";
+            $formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
+
+            $pidProcessor = new ProcessIdProcessor();
             $logger = new \Monolog\Logger('yz-cloud-boot-app');
-            $handler = new \Monolog\Handler\SyslogHandler('yz-cloud-boot-app');
-            $logger->pushHandler($handler);
+            $streamHandler = new \Monolog\Handler\StreamHandler('/Users/allen/php/yz-cloud-boot-demo-app/my_app.log', \Monolog\Logger::INFO);
+            $streamHandler->setFormatter($formatter);
+            $streamHandler->pushProcessor($pidProcessor);
+            $socketHandler = new \Monolog\Handler\SocketHandler('tcp://flume-qa.s.qima-inc.com:5140', \Monolog\Logger::INFO);
+            $socketHandler->setFormatter($formatter);
+            $logger->pushHandler($streamHandler);
+            $logger->pushHandler($socketHandler);
             return $logger;
         };
         $container['beanRegistry'] = function (ContainerInterface $container) {
