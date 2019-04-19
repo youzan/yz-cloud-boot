@@ -13,6 +13,7 @@ use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
+use YouzanCloudBoot\Log\HostnameProcessor;
 use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBoot\Util\EnvUtil;
@@ -35,12 +36,16 @@ class Bootstrap
             $formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
 
             $pidProcessor = new ProcessIdProcessor();
+            $hostProcessor = new HostnameProcessor();
             $logger = new \Monolog\Logger('yz-cloud-boot-app');
             $streamHandler = new \Monolog\Handler\StreamHandler('/Users/allen/php/yz-cloud-boot-demo-app/my_app.log', \Monolog\Logger::INFO);
             $streamHandler->setFormatter($formatter);
             $streamHandler->pushProcessor($pidProcessor);
+            $streamHandler->pushProcessor($hostProcessor);
             $socketHandler = new \Monolog\Handler\SocketHandler('tcp://flume-qa.s.qima-inc.com:5140', \Monolog\Logger::INFO);
             $socketHandler->setFormatter($formatter);
+            $socketHandler->pushProcessor($pidProcessor);
+            $socketHandler->pushProcessor($hostProcessor);
             $logger->pushHandler($streamHandler);
             $logger->pushHandler($socketHandler);
             return $logger;
