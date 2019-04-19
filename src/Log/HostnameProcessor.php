@@ -2,7 +2,7 @@
 
 
 namespace YouzanCloudBoot\Log;
-
+use Monolog\Processor\ProcessorInterface;
 
 class HostnameProcessor implements ProcessorInterface
 {
