@@ -14,6 +14,7 @@ use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
 use YouzanCloudBoot\Log\HostnameProcessor;
+use YouzanCloudBoot\Log\YouzanSkynetProcessor;
 use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBoot\Util\EnvUtil;
@@ -30,24 +31,34 @@ class Bootstrap
             return new ErrorHandler();
         };
 
+        $container['envUtil'] = function (ContainerInterface $container) {
+            return new EnvUtil($container);
+        };
         $container['logger'] = function (ContainerInterface $container) {
-            $dateFormat = "Y-m-d H:i:s";
-            $output = "<158>%datetime% %extra.hostname%/%extra.ip% %level_name% [%extra.process_id%]: topic=log.skynet-log.buyaodongplease {'tag':%message%}\n";
-            $formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
+            $envUtil = $container->get('envUtil');
+            $applicationName = $envUtil->getAppName();
+            $logger = new \Monolog\Logger($applicationName);
 
-            $pidProcessor = new ProcessIdProcessor();
-            $hostProcessor = new HostnameProcessor();
-            $logger = new \Monolog\Logger('yz-cloud-boot-app');
-            $streamHandler = new \Monolog\Handler\StreamHandler('/Users/allen/php/yz-cloud-boot-demo-app/my_app.log', \Monolog\Logger::INFO);
-            $streamHandler->setFormatter($formatter);
-            $streamHandler->pushProcessor($pidProcessor);
-            $streamHandler->pushProcessor($hostProcessor);
-            $socketHandler = new \Monolog\Handler\SocketHandler('tcp://flume-qa.s.qima-inc.com:5140', \Monolog\Logger::INFO);
-            $socketHandler->setFormatter($formatter);
-            $socketHandler->pushProcessor($pidProcessor);
-            $socketHandler->pushProcessor($hostProcessor);
-            $logger->pushHandler($streamHandler);
-            $logger->pushHandler($socketHandler);
+            //控制台输出
+            $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Logger::INFO));
+
+            if ($applicationName != 'Youzan-Cloud-Boot-App') {
+                $dateFormat = "Y-m-d H:i:s";
+                $output = "<158>%datetime% %extra.hostname%/%extra.ip% %level_name% [%extra.process_id%]: topic=log.%extra.app_name%.%extra.index_name% {'tag':%message%}\n";
+                $formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
+
+                $pidProcessor = new ProcessIdProcessor();
+                $hostProcessor = new HostnameProcessor();
+                $youzanSkynetProcessor = new YouzanSkynetProcessor($container);
+
+                $socketHandler = new \Monolog\Handler\SocketHandler('tcp://' . $envUtil->get('logging.track.host') . ':5140', \Monolog\Logger::INFO);
+                $socketHandler->setFormatter($formatter);
+                $socketHandler->pushProcessor($pidProcessor);
+                $socketHandler->pushProcessor($hostProcessor);
+                $socketHandler->pushProcessor($youzanSkynetProcessor);
+                $logger->pushHandler($socketHandler);
+            }
+
             return $logger;
         };
         $container['beanRegistry'] = function (ContainerInterface $container) {
@@ -55,9 +66,6 @@ class Bootstrap
         };
         $container['objectBuilder'] = function (ContainerInterface $container) {
             return new ObjectBuilder($container);
-        };
-        $container['envUtil'] = function (ContainerInterface $container) {
-            return new EnvUtil($container);
         };
         $container['topicRegistry'] = function (ContainerInterface $container) {
             return new TopicRegistry($container);
