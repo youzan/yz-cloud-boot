@@ -82,7 +82,6 @@ class ErrorResponse implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        // TODO: Implement jsonSerialize() method.
         return get_object_vars($this);
     }
 }

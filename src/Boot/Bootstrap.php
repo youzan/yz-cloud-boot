@@ -12,6 +12,7 @@ use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
+use YouzanCloudBoot\Http\HttpClientFactory;
 use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBoot\Util\EnvUtil;
@@ -51,6 +52,9 @@ class Bootstrap
         };
         $container['redisFactory'] = function (ContainerInterface $container) {
             return new RedisFactory($container);
+        };
+        $container['httpClientFactory'] = function (ContainerInterface $container) {
+            return new HttpClientFactory($container);
         };
 
         return $container;

@@ -8,4 +8,5 @@ interface MessageHandler
 {
 
     public function handle(NotifyMessage $notifyMessage): void;
+
 }
