@@ -31,6 +31,10 @@ class Bootstrap
             return new ErrorHandler();
         };
 
+        $container['phpErrorHandler'] = function (ContainerInterface $container) {
+            return new ErrorHandler();
+        };
+
         $container['envUtil'] = function (ContainerInterface $container) {
             return new EnvUtil($container);
         };
