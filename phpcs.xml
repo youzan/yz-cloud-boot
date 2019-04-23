@@ -1,0 +1,10 @@
+<!--
+Change the rules of PHP_CodeSniffer at your convenience.
+More info at: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Advanced-Usage
+-->
+<ruleset>
+  <rule ref="PEAR">
+    <exclude name="PEAR.Commenting.FileComment" />
+    <exclude name="PEAR.Commenting.ClassComment" />
+  </rule>
+</ruleset>

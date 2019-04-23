@@ -1,0 +1,10 @@
+vendor
+.idea
+.phpstorm
+.vscode
+*.iml
+**.cache
+
+# https://getcomposer.org/doc/02-libraries.md#lock-file
+# For libraries it is not necessarily recommended to commit the lock file
+composer.lock
