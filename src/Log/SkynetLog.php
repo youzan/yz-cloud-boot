@@ -31,6 +31,28 @@ class SkynetLog implements \JsonSerializable
     private $platform;
 
     /**
+     *
+     * @var SkynetLogDetail
+     */
+    private $detail;
+
+    /**
+     * @return SkynetLogDetail
+     */
+    public function getDetail(): SkynetLogDetail
+    {
+        return $this->detail;
+    }
+
+    /**
+     * @param SkynetLogDetail $detail
+     */
+    public function setDetail(SkynetLogDetail $detail): void
+    {
+        $this->detail = $detail;
+    }
+
+    /**
      * @return string
      */
     public function getTag(): string
