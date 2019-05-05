@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Controller\Health;
+namespace YouzanCloudBoot\Controller;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -11,9 +11,7 @@ class HealthController extends BaseComponent
 
     public function handle(Request $request, Response $response, array $args)
     {
-        $health = new Health();
-        $health->setStatus("UP");
-        return $response->withJson($health);
+        return $response->withJson(['status' => 'UP']);
     }
 
 }

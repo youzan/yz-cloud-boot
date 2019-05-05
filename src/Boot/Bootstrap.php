@@ -2,15 +2,19 @@
 
 namespace YouzanCloudBoot\Boot;
 
+use Monolog\Formatter\LineFormatter;
+use Monolog\Handler\SocketHandler;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use Monolog\Processor\ProcessIdProcessor;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
-use YouzanCloudBoot\Controller\Error\ErrorHandler;
-use YouzanCloudBoot\Controller\Health\HealthController;
+use YouzanCloudBoot\Controller\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
+use YouzanCloudBoot\Exception\Handler\ErrorHandler;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
 use YouzanCloudBoot\Log\HostnameProcessor;
@@ -30,7 +34,6 @@ class Bootstrap
         $container['errorHandler'] = function (ContainerInterface $container) {
             return new ErrorHandler();
         };
-
         //系统异常
         $container['phpErrorHandler'] = function (ContainerInterface $container) {
             return new ErrorHandler();
@@ -42,21 +45,21 @@ class Bootstrap
         $container['logger'] = function (ContainerInterface $container) {
             $envUtil = $container->get('envUtil');
             $applicationName = $envUtil->getAppName();
-            $logger = new \Monolog\Logger($applicationName);
+            $logger = new Logger($applicationName);
 
             //控制台输出
-            $logger->pushHandler(new \Monolog\Handler\StreamHandler('php://stdout', \Monolog\Logger::INFO));
+            $logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
 
             if ($applicationName != 'Youzan-Cloud-Boot-App') {
                 $dateFormat = "Y-m-d H:i:s";
                 $output = "<158>%datetime% %extra.hostname%/%extra.ip% %level_name%[%extra.process_id%]: topic=log.%extra.app_name%.%extra.index_name% %extra.skynet_log%\n";
-                $formatter = new \Monolog\Formatter\LineFormatter($output, $dateFormat);
+                $formatter = new LineFormatter($output, $dateFormat);
 
                 $pidProcessor = new ProcessIdProcessor();
                 $hostProcessor = new HostnameProcessor();
                 $youzanSkynetProcessor = new YouzanSkynetProcessor($container);
 
-                $socketHandler = new \Monolog\Handler\SocketHandler('tcp://' . $envUtil->get('logging.track.host') . ':5140', \Monolog\Logger::INFO);
+                $socketHandler = new SocketHandler('tcp://' . $envUtil->get('logging.track.host') . ':5140', Logger::INFO);
                 $socketHandler->setFormatter($formatter);
                 $socketHandler->pushProcessor($pidProcessor);
                 $socketHandler->pushProcessor($hostProcessor);
