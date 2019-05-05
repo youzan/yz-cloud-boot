@@ -31,6 +31,11 @@ class Bootstrap
             return new ErrorHandler();
         };
 
+        //系统异常
+        $container['phpErrorHandler'] = function (ContainerInterface $container) {
+            return new ErrorHandler();
+        };
+
         $container['envUtil'] = function (ContainerInterface $container) {
             return new EnvUtil($container);
         };

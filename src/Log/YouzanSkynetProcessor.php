@@ -24,6 +24,14 @@ class YouzanSkynetProcessor implements ProcessorInterface
         $skynetLog->setLevel($record['level_name']);
         $skynetLog->setPlatform('Php');
         $skynetLog->setTag($record['message']);
+
+        $skynetEnvs = $_SERVER['SKYNET_ENVS'];
+        if (isset($skynetEnvs)) {
+            $skynetLogDetail = new SkynetLogDetail();
+            $skynetLogDetail->setEnvs($skynetEnvs);
+            $skynetLog->setDetail($skynetLogDetail);
+        }
+
         $record['extra']['skynet_log'] = json_encode($skynetLog);
         return $record;
     }
