@@ -23,4 +23,13 @@ class EnvUtil extends BaseComponent
         return null;
     }
 
+    public function getAppName(): ?string
+    {
+        $applicationName = $this->get('application.name');
+        if (empty($applicationName)) {
+            $applicationName = 'Youzan-Cloud-Boot-App';
+        }
+        return $applicationName;
+    }
+
 }
