@@ -11,10 +11,10 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
-use YouzanCloudBoot\Controller\Error\ErrorHandler;
-use YouzanCloudBoot\Controller\Health\HealthController;
+use YouzanCloudBoot\Controller\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
+use YouzanCloudBoot\Exception\Handler\ErrorHandler;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
 use YouzanCloudBoot\Http\HttpClientFactory;
@@ -35,7 +35,6 @@ class Bootstrap
         $container['errorHandler'] = function (ContainerInterface $container) {
             return new ErrorHandler();
         };
-
         //系统异常
         $container['phpErrorHandler'] = function (ContainerInterface $container) {
             return new ErrorHandler();
