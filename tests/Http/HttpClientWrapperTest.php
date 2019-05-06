@@ -76,7 +76,7 @@ class HttpClientWrapperTest extends BaseTestCase
         $factory = $this->getApp()->getContainer()->get('httpClientFactory');
 
         $client = $factory->buildHttpClient();
-        $r = $client->get('http://www.baidu.com');
+        $r = $client->get('https://www.baidu.com');
 
         $this->assertRegExp('/百度/', $r->getBody());
     }
