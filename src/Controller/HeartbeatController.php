@@ -11,8 +11,7 @@ class HeartbeatController extends BaseComponent
 
     public function handle(Request $request, Response $response, array $args)
     {
-        throw new \Exception('test');
-        return $response->withJson(['a'=> 'b']);
+        return $response;
     }
 
 }
