@@ -13,7 +13,7 @@ use YouzanCloudBoot\Exception\HttpClientException;
 trait UrlParser
 {
 
-    function parseUrl($url)
+    protected function parseUrl($url)
     {
         $urlFragments = parse_url($url);
         if (!$urlFragments) {
