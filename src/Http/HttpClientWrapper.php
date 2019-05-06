@@ -3,7 +3,7 @@
 namespace YouzanCloudBoot\Http;
 
 use Monolog\Logger;
-use Slim\Http\Response;
+use YouzanCloudBoot\Exception\HttpClientException;
 use YouzanCloudBoot\Traits\UrlParser;
 
 class HttpClientWrapper
@@ -43,7 +43,15 @@ class HttpClientWrapper
         }
     }
 
-    public function get(string $url, array $headers = null)
+    /**
+     * 发起一个 Get 请求并获得返回
+     *
+     * @param string $url
+     * @param array|null $headers
+     * @return WrappedResponse
+     * @throws HttpClientException
+     */
+    public function get(string $url, array $headers = null) : WrappedResponse
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
@@ -59,7 +67,16 @@ class HttpClientWrapper
         return $this->doRequest('GET', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
     }
 
-    public function post(string $url, array $headers = null, $body = null)
+    /**
+     * 发起一个 Post 请求并获得返回
+     *
+     * @param string $url
+     * @param array|null $headers
+     * @param null $body
+     * @return WrappedResponse
+     * @throws HttpClientException
+     */
+    public function post(string $url, array $headers = null, $body = null) : WrappedResponse
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
@@ -75,7 +92,16 @@ class HttpClientWrapper
         return $this->doRequest('POST', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
     }
 
-    public function put($url, array $headers = null, $body = null)
+    /**
+     * 发起一个 Put 请求并获得返回
+     *
+     * @param $url
+     * @param array|null $headers
+     * @param null $body
+     * @return WrappedResponse
+     * @throws HttpClientException
+     */
+    public function put($url, array $headers = null, $body = null) : WrappedResponse
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
@@ -91,7 +117,15 @@ class HttpClientWrapper
         return $this->doRequest('PUT', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
     }
 
-    public function delete($url, array $headers = null)
+    /**
+     * 发起一个 Delete 请求并获得返回
+     *
+     * @param $url
+     * @param array|null $headers
+     * @return WrappedResponse
+     * @throws HttpClientException
+     */
+    public function delete($url, array $headers = null) : WrappedResponse
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
@@ -107,7 +141,18 @@ class HttpClientWrapper
         return $this->doRequest('DELETE', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
     }
 
-    public function doRequest($method, $url, $withProxy, $scheme, array $headers = null, $body = null)
+    /**
+     * 对外请求的统一封装
+     *
+     * @param $method
+     * @param $url
+     * @param $withProxy
+     * @param $scheme
+     * @param array|null $headers
+     * @param null $body
+     * @return WrappedResponse
+     */
+    protected function doRequest($method, $url, $withProxy, $scheme, array $headers = null, $body = null)
     {
         curl_setopt($this->curlHandle, CURLOPT_CUSTOMREQUEST, $method);
 
@@ -131,8 +176,8 @@ class HttpClientWrapper
             curl_setopt($this->curlHandle, CURLOPT_POSTFIELDS, $body);
         }
 
-        //debug观察输出的话取消下行注释
-//        curl_setopt($this->curlHandle, CURLOPT_VERBOSE, true);
+        // Ddebug观察输出的话取消下行注释
+        // curl_setopt($this->curlHandle, CURLOPT_VERBOSE, true);
 
         $response = curl_exec($this->curlHandle);
 
@@ -185,59 +230,5 @@ class HttpClientWrapper
         $headers[] = 'Yzc-Token: ' . $this->token;
         return $headers;
     }
-
-//    public function clean()
-//    {
-//        $this->body = null;
-//        $this->method = 'POST';
-//        $this->responseBody = null;
-//        $this->responseInfo = null;
-//    }
-//
-//    protected function executeGet($ch)
-//    {
-//        $this->doExecute($ch);
-//    }
-//
-//    protected function doExecute($curlHandle)
-//    {
-//        $this->setCurlOpts($curlHandle);
-//        $this->responseBody = curl_exec($curlHandle);
-//        $this->responseInfo = curl_getinfo($curlHandle);
-//
-//        curl_close($curlHandle);
-//    }
-//
-//    protected function setCurlOpts($curlHandle)
-//    {
-//        curl_setopt($curlHandle, CURLOPT_TIMEOUT, 20);
-//        curl_setopt($curlHandle, CURLOPT_URL, $this->url);
-//        //不将结果直接输出
-//        curl_setopt($curlHandle, CURLOPT_RETURNTRANSFER, true);
-//        curl_setopt($curlHandle, CURLOPT_HTTPHEADER, $this->acceptType);
-//    }
-//
-//    protected function executePost($ch)
-//    {
-//        if (!is_string($this->body)) {
-//            $this->buildPostBody();
-//        }
-//
-//        curl_setopt($ch, CURLOPT_POSTFIELDS, $this->body);
-//        curl_setopt($ch, CURLOPT_POST, 1);
-//
-//        $this->doExecute($ch);
-//    }
-//
-//    public function buildPostBody($data = null)
-//    {
-//        $data = ($data !== null) ? $data : $this->body;
-//        if (!is_array($data)) {
-//        }
-//
-//        $data = http_build_query($data, '', '&');
-//
-//        $this->body = $data;
-//    }
 
 }
