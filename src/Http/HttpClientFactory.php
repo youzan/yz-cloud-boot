@@ -28,7 +28,7 @@ class HttpClientFactory extends BaseComponent
             $ignoreList = [];
         }
 
-        return new HttpClientWrapper($proxy, $token, $ignoreList);
+        return new HttpClientWrapper($proxy, $token, $ignoreList, $this->getLog());
     }
 
 }

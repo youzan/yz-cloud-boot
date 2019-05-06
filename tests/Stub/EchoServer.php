@@ -17,7 +17,20 @@ class EchoServer
             }
         }
 
-        echo json_encode($_SERVER);
+        if (isset($_SERVER['CONTENT_TYPE'])
+            and(
+                strpos($_SERVER['CONTENT_TYPE'], 'multipart/form-data') !== false
+                || strpos($_SERVER['CONTENT_TYPE'], 'application/x-www-form-urlencoded') !== false
+            )
+        ) {
+            $body = $_POST;
+        } else {
+            $body = file_get_contents('php://input');
+        }
+
+        $result = ['headers' => $headers, 'body' => $body, 'server' => $_SERVER];
+
+        echo json_encode($result);
     }
 
 }
