@@ -24,7 +24,7 @@ class HttpClientWrapperTest extends BaseTestCase
         }
 
         $port = rand(61000, 62000);
-        $server = 'http://localhost';
+        $server = 'localhost';
         $dataDir = sprintf('/tmp/php_temp_%s', $port);
         @mkdir($dataDir);
         $logFile = sprintf('%s/php_out.log', $dataDir);
@@ -93,10 +93,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:1024', $response['headers']['Host']);
         $this->assertSame('GET', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());;
     }
@@ -111,10 +110,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:1024', $response['headers']['Host']);
         $this->assertSame('DELETE', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());;
 
@@ -126,14 +124,13 @@ class HttpClientWrapperTest extends BaseTestCase
         $factory = $this->getApp()->getContainer()->get('httpClientFactory');
 
         $client = $factory->buildHttpClient();
-        $r = $client->post('http://www.test.com:1024/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
+        $r = $client->post('http://www.test.com:2048/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:2048', $response['headers']['Host']);
         $this->assertSame('POST', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());
 
@@ -148,14 +145,13 @@ class HttpClientWrapperTest extends BaseTestCase
         $factory = $this->getApp()->getContainer()->get('httpClientFactory');
 
         $client = $factory->buildHttpClient();
-        $r = $client->post('http://www.test.com:1024/testPath?testQuery', null, ['test' => 'multipart']);
+        $r = $client->post('http://www.test.com:4096/testPath?testQuery', null, ['test' => 'multipart']);
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:4096', $response['headers']['Host']);
         $this->assertSame('POST', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());
 
@@ -175,15 +171,14 @@ class HttpClientWrapperTest extends BaseTestCase
         file_put_contents($tempFilename, 'HelloWorld');
         $file = new CURLFile($tempFilename);
 
-        $r = $client->post('http://www.test.com:1024/testPath?testQuery', null, ['test' => 'multipart', 'testFile' => $file]);
+        $r = $client->post('http://www.test.com:10240/testPath?testQuery', null, ['test' => 'multipart', 'testFile' => $file]);
         unlink($tempFilename);
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:10240', $response['headers']['Host']);
         $this->assertSame('POST', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());
 
@@ -207,10 +202,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:1024', $response['headers']['Host']);
         $this->assertSame('POST', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());
 
@@ -230,10 +224,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
         $response = $r->getBodyAsJson();
 
-        $this->assertSame('1024', $response['headers']['Port']);
         $this->assertSame('http', $response['headers']['Scheme']);
         $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
-        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('www.test.com:1024', $response['headers']['Host']);
         $this->assertSame('PUT', $response['server']['REQUEST_METHOD']);
         $this->assertSame(200, $r->getCode());
 

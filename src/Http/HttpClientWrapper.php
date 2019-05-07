@@ -224,8 +224,7 @@ class HttpClientWrapper
                 $requestHost = $user . '@' . $host;
             }
         }
-        $headers[] = 'Host: ' . $requestHost;
-        $headers[] = 'Port: ' . $port;
+        $headers[] = 'Host: ' . $requestHost . ':' . $port;
         $headers[] = 'Scheme: ' . $scheme;
         $headers[] = 'Yzc-Token: ' . $this->token;
         return $headers;
