@@ -41,8 +41,8 @@ class RedisFactoryTest extends BaseTestCase
         exec($cli, $output);
         self::$pid = trim($output[0]);
 
-        $_SERVER['spring_redis_host'] = 'localhost';
-        $_SERVER['spring_redis_port'] = self::$port;
+        $_SERVER['redis_host'] = 'localhost';
+        $_SERVER['redis_port'] = self::$port;
     }
 
 

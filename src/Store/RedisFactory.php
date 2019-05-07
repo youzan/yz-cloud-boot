@@ -17,8 +17,8 @@ class RedisFactory extends BaseComponent
 
     public function buildBuiltinRedisInstance(): ?Redis
     {
-        $host = $this->getEnvUtil()->get('spring.redis.host');
-        $port = $this->getEnvUtil()->get('spring.redis.port');
+        $host = $this->getEnvUtil()->get('redis.host');
+        $port = $this->getEnvUtil()->get('redis.port');
 
         if (empty($host)) {
             return null;
