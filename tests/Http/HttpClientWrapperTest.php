@@ -39,7 +39,7 @@ class HttpClientWrapperTest extends BaseTestCase
         file_put_contents($pidFile, $pid);
 
         $_SERVER['youzan_proxy_enable'] = 'true';
-        $_SERVER['youzan_proxy_host'] = sprintf('%s:%s', $server, $port);
+        $_SERVER['youzan_proxy_host'] = sprintf('http://%s:%s', $server, $port);
         $_SERVER['youzan_proxy_token'] = 'hello,world';
         $_SERVER['youzan_proxy_nonProxyHosts'] = 'www.baidu.com';
 
