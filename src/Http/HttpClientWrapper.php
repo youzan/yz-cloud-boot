@@ -198,7 +198,7 @@ class HttpClientWrapper
      */
     private function parseRealRequestUrl($path, $query): string
     {
-        $realRequestUrl = 'http://' . $this->proxy . ($path ? $path . ($query ? '?' . $query : '') : '');
+        $realRequestUrl = $this->proxy . ($path ? $path . ($query ? '?' . $query : '') : '');
         return $realRequestUrl;
     }
 
