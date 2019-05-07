@@ -30,6 +30,17 @@ class EchoServer
 
         $result = ['headers' => $headers, 'body' => $body, 'server' => $_SERVER];
 
+        if ($_FILES) {
+            $files = [];
+            foreach ($_FILES as $key => $tempFile) {
+                $item = [];
+                $item['uploadFileName'] = $tempFile['name'];
+                $item['content'] = file_get_contents($tempFile['tmp_name']);
+                $files[$key] = $item;
+            }
+            $result['files'] = $files;
+        }
+
         echo json_encode($result);
     }
 

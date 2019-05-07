@@ -2,6 +2,7 @@
 
 namespace YouzanCloudBootTests\Http;
 
+use CURLFile;
 use YouzanCloudBoot\Http\HttpClientFactory;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
@@ -160,6 +161,39 @@ class HttpClientWrapperTest extends BaseTestCase
 
         $this->assertArrayHasKey('test', $r->getBodyAsJson()['body']);
         $this->assertSame('multipart', $r->getBodyAsJson()['body']['test']);
+
+    }
+
+    public function testPostUploadFileEchoServer()
+    {
+        /** @var HttpClientFactory $factory */
+        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+
+        $client = $factory->buildHttpClient();
+
+        $tempFilename = tempnam("/tmp", "temp_file_");
+        file_put_contents($tempFilename, 'HelloWorld');
+        $file = new CURLFile($tempFilename);
+
+        $r = $client->post('http://www.test.com:1024/testPath?testQuery', null, ['test' => 'multipart', 'testFile' => $file]);
+        unlink($tempFilename);
+
+        $response = $r->getBodyAsJson();
+
+        $this->assertSame('1024', $response['headers']['Port']);
+        $this->assertSame('http', $response['headers']['Scheme']);
+        $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
+        $this->assertSame('www.test.com', $response['headers']['Host']);
+        $this->assertSame('POST', $response['server']['REQUEST_METHOD']);
+        $this->assertSame(200, $r->getCode());
+
+        $this->assertArrayHasKey('test', $r->getBodyAsJson()['body']);
+        $this->assertSame('multipart', $r->getBodyAsJson()['body']['test']);
+
+        $this->assertArrayHasKey('files', $r->getBodyAsJson());
+        $this->assertArrayHasKey('testFile', $r->getBodyAsJson()['files']);
+        $this->assertSame(basename($tempFilename), $r->getBodyAsJson()['files']['testFile']['uploadFileName']);
+        $this->assertSame('HelloWorld', $r->getBodyAsJson()['files']['testFile']['content']);
 
     }
 
