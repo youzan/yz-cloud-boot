@@ -2,11 +2,12 @@
 
 namespace YouzanCloudBoot\Http;
 
-use Monolog\Logger;
+use Psr\Container\ContainerInterface;
+use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\HttpClientException;
 use YouzanCloudBoot\Traits\UrlParser;
 
-class HttpClientWrapper
+class HttpClientWrapper extends BaseComponent
 {
 
     use UrlParser;
@@ -17,26 +18,46 @@ class HttpClientWrapper
 
     private $curlHandle;
 
-    private $logger;
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+
+        $env = $this->getEnvUtil();
+
+        $enable = $env->get('youzan.proxy.enable');
+
+        if ($enable !== 'true') {
+            $proxy = '';
+        } else {
+            $proxy = $env->get('youzan.proxy.host');
+        }
+
+        $token = $env->get('youzan.proxy.token');
+
+        $nonProxyHosts = $env->get('youzan.proxy.nonProxyHosts');
+        if ($nonProxyHosts) {
+            $ignoreList = explode(',', $nonProxyHosts);
+        } else {
+            $ignoreList = [];
+        }
+
+        $this->init($proxy, $token, $ignoreList);
+    }
 
     /**
-     * HttpClientWrapper constructor.
-     * 不建议直接代码访问此构造函数 (即 new YouzanCloudBoot\Http\HttpClientWrapper(...))
-     * 应该使用 HttpClientFactory 进行实例化
-     * 即 $this->getContainer()->get('httpClientFactory')->buildHttpClient()
+     * 初始化 Client
+     *
      * @param string $proxy
      * @param string $token
      * @param array $ignoreList
-     * @param Logger|null $logger
      * @see HttpClientFactory
      *
      */
-    public function __construct(string $proxy = null, string $token = null, array $ignoreList = [], Logger $logger = null)
+    private function init(string $proxy = null, string $token = null, array $ignoreList = [])
     {
         $this->proxy = $proxy;
         $this->curlHandle = curl_init();
         $this->token = $token;
-        $this->logger = $logger;
 
         if (!empty($ignoreList)) {
             $this->ignoreList = $ignoreList;
@@ -48,97 +69,23 @@ class HttpClientWrapper
      *
      * @param string $url
      * @param array|null $headers
-     * @return WrappedResponse
+     * @return HttpClientResponse
      * @throws HttpClientException
      */
-    public function get(string $url, array $headers = null) : WrappedResponse
+    public function get(string $url, array $headers = null): HttpClientResponse
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
         if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
-            $this->logger->info(sprintf("Get directly, url: %s, headers: %s", $url, json_encode($headers)));
+            $this->getLog()->info(sprintf("Get directly, url: %s, headers: %s", $url, json_encode($headers)));
             return $this->doRequest('GET', $url, false, $scheme, $headers, null);
         }
 
         $realRequestUrl = $this->parseRealRequestUrl($path, $query);
         $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
-        $this->logger->info(sprintf("Get through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+        $this->getLog()->info(sprintf("Get through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
 
         return $this->doRequest('GET', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
-    }
-
-    /**
-     * 发起一个 Post 请求并获得返回
-     *
-     * @param string $url
-     * @param array|null $headers
-     * @param null $body
-     * @return WrappedResponse
-     * @throws HttpClientException
-     */
-    public function post(string $url, array $headers = null, $body = null) : WrappedResponse
-    {
-        list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
-
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
-            $this->logger->info(sprintf("Post directly, url: %s, headers: %s", $url, json_encode($headers)));
-            return $this->doRequest('POST', $url, false, $scheme, $headers, $body);
-        }
-
-        $realRequestUrl = $this->parseRealRequestUrl($path, $query);
-        $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
-        $this->logger->info(sprintf("Post through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
-
-        return $this->doRequest('POST', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
-    }
-
-    /**
-     * 发起一个 Put 请求并获得返回
-     *
-     * @param $url
-     * @param array|null $headers
-     * @param null $body
-     * @return WrappedResponse
-     * @throws HttpClientException
-     */
-    public function put($url, array $headers = null, $body = null) : WrappedResponse
-    {
-        list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
-
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
-            $this->logger->info(sprintf("Put directly, url: %s, headers: %s", $url, json_encode($headers)));
-            return $this->doRequest('PUT', $url, false, $scheme, $headers, $body);
-        }
-
-        $realRequestUrl = $this->parseRealRequestUrl($path, $query);
-        $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
-        $this->logger->info(sprintf("Put through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
-
-        return $this->doRequest('PUT', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
-    }
-
-    /**
-     * 发起一个 Delete 请求并获得返回
-     *
-     * @param $url
-     * @param array|null $headers
-     * @return WrappedResponse
-     * @throws HttpClientException
-     */
-    public function delete($url, array $headers = null) : WrappedResponse
-    {
-        list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
-
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
-            $this->logger->info(sprintf("Delete directly, url: %s, headers: %s", $url, json_encode($headers)));
-            return $this->doRequest('DELETE', $url, false, $scheme, $headers, null);
-        }
-
-        $realRequestUrl = $this->parseRealRequestUrl($path, $query);
-        $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
-        $this->logger->info(sprintf("Delete through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
-
-        return $this->doRequest('DELETE', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
     }
 
     /**
@@ -150,7 +97,7 @@ class HttpClientWrapper
      * @param $scheme
      * @param array|null $headers
      * @param null $body
-     * @return WrappedResponse
+     * @return HttpClientResponse
      */
     protected function doRequest($method, $url, $withProxy, $scheme, array $headers = null, $body = null)
     {
@@ -188,7 +135,7 @@ class HttpClientWrapper
 
         curl_reset($this->curlHandle);
 
-        return new WrappedResponse($responseCode, $responseHeaders, $responseBody);
+        return new HttpClientResponse($responseCode, $responseHeaders, $responseBody);
     }
 
     /**
@@ -228,6 +175,80 @@ class HttpClientWrapper
         $headers[] = 'Scheme: ' . $scheme;
         $headers[] = 'Yzc-Token: ' . $this->token;
         return $headers;
+    }
+
+    /**
+     * 发起一个 Post 请求并获得返回
+     *
+     * @param string $url
+     * @param array|null $headers
+     * @param null $body
+     * @return HttpClientResponse
+     * @throws HttpClientException
+     */
+    public function post(string $url, array $headers = null, $body = null): HttpClientResponse
+    {
+        list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
+
+        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+            $this->getLog()->info(sprintf("Post directly, url: %s, headers: %s", $url, json_encode($headers)));
+            return $this->doRequest('POST', $url, false, $scheme, $headers, $body);
+        }
+
+        $realRequestUrl = $this->parseRealRequestUrl($path, $query);
+        $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        $this->getLog()->info(sprintf("Post through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+
+        return $this->doRequest('POST', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
+    }
+
+    /**
+     * 发起一个 Put 请求并获得返回
+     *
+     * @param $url
+     * @param array|null $headers
+     * @param null $body
+     * @return HttpClientResponse
+     * @throws HttpClientException
+     */
+    public function put($url, array $headers = null, $body = null): HttpClientResponse
+    {
+        list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
+
+        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+            $this->getLog()->info(sprintf("Put directly, url: %s, headers: %s", $url, json_encode($headers)));
+            return $this->doRequest('PUT', $url, false, $scheme, $headers, $body);
+        }
+
+        $realRequestUrl = $this->parseRealRequestUrl($path, $query);
+        $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        $this->getLog()->info(sprintf("Put through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+
+        return $this->doRequest('PUT', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
+    }
+
+    /**
+     * 发起一个 Delete 请求并获得返回
+     *
+     * @param $url
+     * @param array|null $headers
+     * @return HttpClientResponse
+     * @throws HttpClientException
+     */
+    public function delete($url, array $headers = null): HttpClientResponse
+    {
+        list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
+
+        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+            $this->getLog()->info(sprintf("Delete directly, url: %s, headers: %s", $url, json_encode($headers)));
+            return $this->doRequest('DELETE', $url, false, $scheme, $headers, null);
+        }
+
+        $realRequestUrl = $this->parseRealRequestUrl($path, $query);
+        $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        $this->getLog()->info(sprintf("Delete through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+
+        return $this->doRequest('DELETE', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
     }
 
 }

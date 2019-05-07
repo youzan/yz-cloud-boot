@@ -17,7 +17,7 @@ use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\Exception\Handler\ErrorHandler;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
-use YouzanCloudBoot\Http\HttpClientFactory;
+use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBoot\Log\HostnameProcessor;
 use YouzanCloudBoot\Log\YouzanSkynetProcessor;
 use YouzanCloudBoot\Store\PDOFactory;
@@ -85,8 +85,8 @@ class Bootstrap
         $container['redisFactory'] = function (ContainerInterface $container) {
             return new RedisFactory($container);
         };
-        $container['httpClientFactory'] = function (ContainerInterface $container) {
-            return new HttpClientFactory($container);
+        $container['httpClient'] = function (ContainerInterface $container) {
+            return new HttpClientWrapper($container);
         };
 
         return $container;

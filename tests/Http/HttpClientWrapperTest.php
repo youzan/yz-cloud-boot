@@ -3,7 +3,7 @@
 namespace YouzanCloudBootTests\Http;
 
 use CURLFile;
-use YouzanCloudBoot\Http\HttpClientFactory;
+use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
 class HttpClientWrapperTest extends BaseTestCase
@@ -73,10 +73,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testWithoutProxy()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->get('https://www.baidu.com');
 
         $this->assertRegExp('/百度/', $r->getBody());
@@ -85,10 +84,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testGetEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->get('http://www.test.com:1024/testPath?testQuery');
 
         $response = $r->getBodyAsJson();
@@ -102,10 +100,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testDeleteEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->delete('http://www.test.com:1024/testPath?testQuery');
 
         $response = $r->getBodyAsJson();
@@ -120,10 +117,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testPostEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->post('http://www.test.com:2048/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
 
         $response = $r->getBodyAsJson();
@@ -141,10 +137,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testPostMultipartEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->post('http://www.test.com:4096/testPath?testQuery', null, ['test' => 'multipart']);
 
         $response = $r->getBodyAsJson();
@@ -162,10 +157,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testPostUploadFileEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
 
         $tempFilename = tempnam("/tmp", "temp_file_");
         file_put_contents($tempFilename, 'HelloWorld');
@@ -194,10 +188,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testPostFormUrlEncodedEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->post('http://www.test.com:1024/testPath?testQuery', null, http_build_query(['test' => 'urlencoded', 'test2' => 'param2']));
 
         $response = $r->getBodyAsJson();
@@ -216,10 +209,9 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testPutEchoServer()
     {
-        /** @var HttpClientFactory $factory */
-        $factory = $this->getApp()->getContainer()->get('httpClientFactory');
+        /** @var HttpClientWrapper $client */
+        $client = $this->getApp()->getContainer()->get('httpClient');
 
-        $client = $factory->buildHttpClient();
         $r = $client->put('http://www.test.com:1024/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
 
         $response = $r->getBodyAsJson();

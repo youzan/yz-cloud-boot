@@ -4,7 +4,7 @@
 namespace YouzanCloudBoot\Http;
 
 
-class WrappedResponse
+class HttpClientResponse
 {
 
     /**
