@@ -23,7 +23,7 @@ class HttpClientWrapperTest extends BaseTestCase
         }
 
         $port = rand(61000, 62000);
-        $server = 'localhost';
+        $server = 'http://localhost';
         $dataDir = sprintf('/tmp/php_temp_%s', $port);
         @mkdir($dataDir);
         $logFile = sprintf('%s/php_out.log', $dataDir);
