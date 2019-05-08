@@ -2,6 +2,7 @@
 
 namespace YouzanCloudBootTests\Store;
 
+use PDO;
 use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
@@ -42,7 +43,7 @@ class PDOFactoryTest extends BaseTestCase
         $installed = self::commandExist('mysql_config');
 
         if (!$installed) {
-            self::markTestSkipped('MySQL is not installed');
+            self::markTestSkipped('MySQL is not installed, skip test case: ' . __CLASS__);
         }
         $version = self::getMySQLVersion();
         self::assertNotEmpty($version);
@@ -115,6 +116,14 @@ class PDOFactoryTest extends BaseTestCase
         $this->assertNotNull($pdo);
 
         $stmt = $pdo->prepare('create database `test_creation`');
+        $r = $stmt->execute();
+        $this->assertTrue($r);
+
+        /** @var PDO $yzcMysql */
+        $yzcMysql = $this->getApp()->getContainer()->get('yzcMysql');
+        $this->assertNotNull($yzcMysql);
+
+        $stmt = $yzcMysql->prepare('drop database `test_creation`');
         $r = $stmt->execute();
         $this->assertTrue($r);
     }

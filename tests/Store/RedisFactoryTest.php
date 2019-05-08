@@ -2,6 +2,7 @@
 
 namespace YouzanCloudBootTests\Store;
 
+use Redis;
 use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
@@ -20,7 +21,7 @@ class RedisFactoryTest extends BaseTestCase
         $installed = self::commandExist('redis-server');
 
         if (!$installed) {
-            self::markTestSkipped('Redis is not installed');
+            self::markTestSkipped('Redis is not installed, skip test case: ' . __CLASS__);
         }
 
         self::$port = rand(61000, 62000);
@@ -89,6 +90,14 @@ class RedisFactoryTest extends BaseTestCase
         $redis->set('hello', 'world');
 
         $this->assertEquals('world', $redis->get('hello'));
+
+        /** @var Redis $yzcRedis */
+        $yzcRedis = $this->getApp()->getContainer()->get('yzcRedis');
+        $this->assertNotNull($yzcRedis);
+
+        $yzcRedis->set('aloha', 'world');
+
+        $this->assertEquals('world', $yzcRedis->get('aloha'));
     }
 
 
