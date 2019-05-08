@@ -88,6 +88,12 @@ class Bootstrap
         $container['httpClient'] = function (ContainerInterface $container) {
             return new HttpClientWrapper($container);
         };
+        $container['yzcMysql'] = function (ContainerInterface $container) {
+            return $container->get('pdoFactory')->buildBuiltinMySQLInstance();
+        };
+        $container['yzcRedis'] = function (ContainerInterface $container) {
+            return $container->get('redisFactory')->buildBuiltinRedisInstance();
+        };
 
         return $container;
     }
