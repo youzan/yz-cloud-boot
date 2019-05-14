@@ -15,7 +15,7 @@ class ErrorHandler
 
         return $response
             ->withStatus(500)
-            ->withHeader('Content-Type', 'text/html')
+            ->withHeader('Content-Type', 'application/json')
             ->withJson($data);
     }
 }
