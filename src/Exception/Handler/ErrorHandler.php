@@ -3,11 +3,9 @@
 
 namespace YouzanCloudBoot\Exception\Handler;
 
-use Exception;
-
 class ErrorHandler
 {
-    public function __invoke($request, $response, Exception $exception)
+    public function __invoke($request, $response, $exception)
     {
 
         $data = [];
