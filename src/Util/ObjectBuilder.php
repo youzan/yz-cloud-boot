@@ -111,14 +111,7 @@ class ObjectBuilder extends BaseComponent
                 $setterRefParams = $setter->getParameters();
                 // 约定 Setter 只有一个参数，这里对 DateTime 类型进行特殊处理
                 if ($setterRefParams[0]->getType()->getName() == 'DateTime') {
-                    if (is_numeric($propertyValue)) {
-                        $dateObj = new DateTime();
-                        $setter->invoke($instance, $dateObj->setTimestamp($propertyValue));
-                    } else if (is_string($propertyValue)) {
-                        $setter->invoke($instance, new DateTime($propertyValue));
-                    } else {
-                        throw new ExtensionPointHandleException('Cannot parse datetime value: ' . $propertyValue);
-                    }
+                    $setter->invoke($instance, $this->parseTimestampOrDateString($propertyValue));
                 } else {
                     $setter->invoke($instance, $propertyValue);
                 }
@@ -182,14 +175,7 @@ class ObjectBuilder extends BaseComponent
 
         if ($memberType == 'DateTime') {
             $instanceValues = array_map(function($item) {
-                if (is_numeric($item)) {
-                    $dateObj = new DateTime();
-                    return $dateObj->setTimestamp($item);
-                } else if (is_string($item)) {
-                    return new DateTime($item);
-                } else {
-                    throw new ExtensionPointHandleException('Cannot parse datetime value: ' . $item);
-                }
+                return $this->parseTimestampOrDateString($item);
             }, $propertyValue);
             return $instanceValues;
         }
@@ -200,6 +186,24 @@ class ObjectBuilder extends BaseComponent
         }, $propertyValue);
 
         return $instanceValues;
+    }
+
+    /**
+     * @param $item
+     * @return DateTime
+     * @throws ExtensionPointHandleException
+     * @throws Exception
+     */
+    private function parseTimestampOrDateString($item)
+    {
+        if (is_numeric($item)) {
+            $dateObj = new DateTime();
+            return $dateObj->setTimestamp($item);
+        } else if (is_string($item)) {
+            return new DateTime($item);
+        } else {
+            throw new ExtensionPointHandleException('Cannot parse datetime value: ' . $item);
+        }
     }
 
 }
