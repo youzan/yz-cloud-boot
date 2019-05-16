@@ -2,6 +2,8 @@
 
 namespace YouzanCloudBoot\Util;
 
+use DateTime;
+use Exception;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -106,7 +108,20 @@ class ObjectBuilder extends BaseComponent
                     $setter->invoke($instance, $this->diveIntoMatrix($propertyValue, $memberType, $listLevelsCount));
                 }
             } else {
-                $setter->invoke($instance, $propertyValue);
+                $setterRefParams = $setter->getParameters();
+                // 约定 Setter 只有一个参数，这里对 DateTime 类型进行特殊处理
+                if ($setterRefParams[0]->getType()->getName() == 'DateTime') {
+                    if (is_numeric($propertyValue)) {
+                        $dateObj = new DateTime();
+                        $setter->invoke($instance, $dateObj->setTimestamp($propertyValue));
+                    } else if (is_string($propertyValue)) {
+                        $setter->invoke($instance, new DateTime($propertyValue));
+                    } else {
+                        throw new ExtensionPointHandleException('Cannot parse datetime value: ' . $propertyValue);
+                    }
+                } else {
+                    $setter->invoke($instance, $propertyValue);
+                }
             }
         }
 
@@ -115,7 +130,7 @@ class ObjectBuilder extends BaseComponent
 
     private function fillUpNamespaceWithType($typeName, $refClassNamespace)
     {
-        if ($this->isPrimitiveType($typeName) || $typeName == 'stdClass') {
+        if ($this->isPrimitiveType($typeName) || $typeName == 'stdClass' || $typeName == 'DateTime') {
             return $typeName;
         } else {
             /**
@@ -163,6 +178,20 @@ class ObjectBuilder extends BaseComponent
                 $r[] = $this->diveIntoMatrix($item, $memberType, $levels - 1);
             }
             return $r;
+        }
+
+        if ($memberType == 'DateTime') {
+            $instanceValues = array_map(function($item) {
+                if (is_numeric($item)) {
+                    $dateObj = new DateTime();
+                    return $dateObj->setTimestamp($item);
+                } else if (is_string($item)) {
+                    return new DateTime($item);
+                } else {
+                    throw new ExtensionPointHandleException('Cannot parse datetime value: ' . $item);
+                }
+            }, $propertyValue);
+            return $instanceValues;
         }
 
         $ref = new ReflectionClass($memberType);
