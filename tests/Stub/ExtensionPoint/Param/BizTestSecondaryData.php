@@ -2,6 +2,8 @@
 
 namespace YouzanCloudBootTests\Stub\ExtensionPoint\Param;
 
+use DateTime;
+
 class BizTestSecondaryData
 {
 
@@ -39,6 +41,11 @@ class BizTestSecondaryData
      * @var \stdClass[]
      */
     private $listOfAnonymousObject;
+
+    /**
+     * @var DateTime
+     */
+    private $testDate;
 
     /**
      * @return string
@@ -150,6 +157,22 @@ class BizTestSecondaryData
     public function setBoolean(bool $boolean): void
     {
         $this->boolean = $boolean;
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function getTestDate(): DateTime
+    {
+        return $this->testDate;
+    }
+
+    /**
+     * @param DateTime $testDate
+     */
+    public function setTestDate(DateTime $testDate): void
+    {
+        $this->testDate = $testDate;
     }
 
 }

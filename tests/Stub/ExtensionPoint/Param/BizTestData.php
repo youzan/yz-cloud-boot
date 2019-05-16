@@ -2,6 +2,8 @@
 
 namespace YouzanCloudBootTests\Stub\ExtensionPoint\Param;
 
+use DateTime;
+
 class BizTestData
 {
 
@@ -33,6 +35,11 @@ class BizTestData
      * @var BizTestSecondaryData[][][]
      */
     private $multiLevelList;
+
+    /**
+     * @var DateTime[]
+     */
+    private $dateRange;
 
     /**
      * @return int
@@ -112,5 +119,21 @@ class BizTestData
     public function setMultiLevelList(array $multiLevelList): void
     {
         $this->multiLevelList = $multiLevelList;
+    }
+
+    /**
+     * @return DateTime[]
+     */
+    public function getDateRange(): array
+    {
+        return $this->dateRange;
+    }
+
+    /**
+     * @param DateTime[] $dateRange
+     */
+    public function setDateRange(array $dateRange): void
+    {
+        $this->dateRange = $dateRange;
     }
 }
