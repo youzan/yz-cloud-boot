@@ -170,7 +170,7 @@ class BizTestSecondaryData
     /**
      * @param DateTime $testDate
      */
-    public function setTestDate(?DateTime $testDate): void
+    public function setTestDate(DateTime $testDate): void
     {
         $this->testDate = $testDate;
     }
