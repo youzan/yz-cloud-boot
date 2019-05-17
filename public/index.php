@@ -35,6 +35,7 @@ $container = YouzanCloudBoot\Boot\Bootstrap::setupContainer();
 // 初始化应用
 $app = new \Slim\App($container);
 \YouzanCloudBoot\Boot\Bootstrap::setupApp($app);
+\YouzanCloudBoot\Facades\Facade::setFacadeApplication($app);
 
 if (defined('YZCLOUD_BOOT_APP_DIR')) {
     // 这里使用匿名函数保证上下文干净，避免污染当前文件的变量
