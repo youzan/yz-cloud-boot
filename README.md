@@ -30,6 +30,9 @@ SlimFramework 原生
 \YouzanCloudBoot\Facades\Di
 等效于 $app->getContainer();
 
+\YouzanCloudBoot\Facades\Route
+等效于 \Slim\App 的实例 $app 对象
+
 \YouzanCloudBoot\Facades\Request
 等效于 $app->getContainer()->get('request');
 
