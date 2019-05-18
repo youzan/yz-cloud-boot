@@ -5,8 +5,8 @@ namespace YouzanCloudBoot\Facades;
 
 
 /**
- * Class TopicRegistry
- * @package YouzanCloudBoot\Facades
+ * TopicRegistry 静态代理
+ * 默认实现 @see \YouzanCloudBoot\ExtensionPoint\TopicRegistry
  *
  * @method static registerTopic(string $topic, string $class): void
  * @method static getBean(string $topic): \YouzanCloudBoot\Component\BaseComponent
