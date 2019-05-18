@@ -15,7 +15,7 @@ Based on Slim Framework: http://www.slimframework.com/
 
 ## Facade
 
-实现了类似于 Laravel 的 Facade 特性
+实现了类似于 Laravel 的 Facade 特性，提供了可以迅速访问组件的绝大多数组件的静态代理
 
 具体的命名空间位于 `\YouzanCloudBoot\Facades` 中
 
