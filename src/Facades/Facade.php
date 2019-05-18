@@ -6,6 +6,9 @@ namespace YouzanCloudBoot\Facades;
 
 use Slim\App;
 
+/**
+ * 静态代理基类
+ */
 abstract class Facade
 {
 

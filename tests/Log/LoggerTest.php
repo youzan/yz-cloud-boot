@@ -1,15 +1,16 @@
 <?php
 
 
-namespace YouzanCloudBootTests\Facades;
+namespace YouzanCloudBootTests\Log;
 
 
 use YouzanCloudBoot\Facades\Logger;
+use YouzanCloudBootTests\Base\BaseTestCase;
 
-class LoggerTest extends FacadeBaseTestCase
+class LoggerTest extends BaseTestCase
 {
 
-    public function testLogger()
+    public function testFacade()
     {
         $this->assertTrue(Logger::info("hello, world"));
         $this->assertTrue(Logger::warn("hello, world"));

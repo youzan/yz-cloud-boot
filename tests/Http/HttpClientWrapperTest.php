@@ -3,6 +3,7 @@
 namespace YouzanCloudBootTests\Http;
 
 use CURLFile;
+use YouzanCloudBoot\Facades\Http;
 use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
@@ -225,7 +226,23 @@ class HttpClientWrapperTest extends BaseTestCase
         $echoBody = json_decode($r->getBodyAsJson()['body'], true);
         $this->assertArrayHasKey('test', $echoBody);
         $this->assertSame('json', $echoBody['test']);
+    }
 
+    public function testFacade()
+    {
+        $r = Http::post('http://www.test.com:2048/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
+
+        $response = $r->getBodyAsJson();
+
+        $this->assertSame('http', $response['headers']['Scheme']);
+        $this->assertSame('hello,world', $response['headers']['Yzc-Token']);
+        $this->assertSame('www.test.com:2048', $response['headers']['Host']);
+        $this->assertSame('POST', $response['server']['REQUEST_METHOD']);
+        $this->assertSame(200, $r->getCode());
+
+        $echoBody = json_decode($r->getBodyAsJson()['body'], true);
+        $this->assertArrayHasKey('test', $echoBody);
+        $this->assertSame('json', $echoBody['test']);
     }
 
 }
