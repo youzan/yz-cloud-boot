@@ -11,7 +11,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static void registerBean(string $beanName, string $class, ?string $beanTag = null)
  * @method static \YouzanCloudBoot\Component\BaseComponent getBean(string $beanName, ?string $beanTag = null)
  */
-class BeanRegistry extends Facade
+class BeanRegFacade extends Facade
 {
 
     /**

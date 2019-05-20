@@ -20,8 +20,8 @@ class EnvUtilTest extends BaseTestCase
 
     public function testFacade()
     {
-        $this->assertNotEmpty(\YouzanCloudBoot\Facades\EnvUtil::get('USER'));
-        $this->assertNull(\YouzanCloudBoot\Facades\EnvUtil::get('Key_Should_Not_Exists'));
+        $this->assertNotEmpty(\YouzanCloudBoot\Facades\EnvFacade::get('USER'));
+        $this->assertNull(\YouzanCloudBoot\Facades\EnvFacade::get('Key_Should_Not_Exists'));
     }
 
 

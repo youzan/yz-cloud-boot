@@ -11,7 +11,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static null|\Redis buildRedisInstance($host, $port)
  * @method static null|\Redis buildBuiltinRedisInstance()
  */
-class RedisFactory extends Facade
+class RedisFactoryFacade extends Facade
 {
 
     /**

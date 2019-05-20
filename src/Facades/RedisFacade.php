@@ -30,7 +30,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static setnx($key, $value) ;
  * @method static del($key1, ...$otherKeys) ;
  * @method static delete($key1, $key2 = null, $key3 = null) ;
- * @method static multi($mode = Redis::MULTI) ;
+ * @method static multi($mode = RedisFacade::MULTI) ;
  * @method static exec() ;
  * @method static discard() ;
  * @method static watch($key) ;
@@ -196,7 +196,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static xRevRange($str_stream, $str_end, $str_start, $i_count = null) ;
  * @method static xTrim($str_stream, $i_max_len, $boo_approximate) ;
  */
-class Redis extends Facade
+class RedisFacade extends Facade
 {
 
     /**

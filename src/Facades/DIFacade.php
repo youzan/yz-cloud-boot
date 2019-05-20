@@ -12,7 +12,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static mixed get(string $id)
  * @method static bool has(string $id)
  */
-class Di extends Facade
+class DIFacade extends Facade
 {
 
     /**

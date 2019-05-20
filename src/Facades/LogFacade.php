@@ -23,7 +23,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static void debug(string $message, array $context = array());
  * @method static void log($level, string $message, array $context = array());
  */
-class Logger extends Facade
+class LogFacade extends Facade
 {
 
     /**

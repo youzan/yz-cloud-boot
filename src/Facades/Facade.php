@@ -13,7 +13,7 @@ abstract class Facade
 {
 
     /**
-     * @var App
+     * @var AppFacade
      */
     protected static $app;
 

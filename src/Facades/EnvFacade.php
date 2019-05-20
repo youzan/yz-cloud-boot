@@ -11,7 +11,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static null|string get(string $varName)
  * @method static string getAppName()
  */
-class EnvUtil extends Facade
+class EnvFacade extends Facade
 {
 
     /**

@@ -4,7 +4,7 @@
 namespace YouzanCloudBootTests\Log;
 
 
-use YouzanCloudBoot\Facades\Logger;
+use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
 class LoggerTest extends BaseTestCase
@@ -12,10 +12,10 @@ class LoggerTest extends BaseTestCase
 
     public function testFacade()
     {
-        $this->assertTrue(Logger::info("hello, world"));
-        $this->assertTrue(Logger::warn("hello, world"));
-        $this->assertTrue(Logger::notice("hello, world"));
-        $this->assertTrue(Logger::error("hello, world"));
+        $this->assertTrue(LogFacade::info("hello, world"));
+        $this->assertTrue(LogFacade::warn("hello, world"));
+        $this->assertTrue(LogFacade::notice("hello, world"));
+        $this->assertTrue(LogFacade::error("hello, world"));
     }
 
 }

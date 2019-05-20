@@ -23,7 +23,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static \Slim\Http\Request withAttribute($name, $value);
  * @method static \Slim\Http\Request withoutAttribute($name);
  */
-class Request extends Facade
+class RequestFacade extends Facade
 {
 
     /**

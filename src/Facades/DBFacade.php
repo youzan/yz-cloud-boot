@@ -23,7 +23,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static mixed getAttribute($attribute);
  * @method static string quote($string, $parameter_type = \PDO::PARAM_STR);
  */
-class MySQL extends Facade
+class DBFacade extends Facade
 {
 
     /**

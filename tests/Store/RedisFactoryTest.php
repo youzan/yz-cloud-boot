@@ -5,7 +5,7 @@ namespace YouzanCloudBootTests\Store;
 use Redis;
 use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBootTests\Base\BaseTestCase;
-use YouzanCloudBoot\Facades\Redis as RedisFacade;
+use YouzanCloudBoot\Facades\RedisFacade as RedisFacade;
 
 class RedisFactoryTest extends BaseTestCase
 {

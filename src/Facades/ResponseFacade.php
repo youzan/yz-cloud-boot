@@ -13,7 +13,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static \Slim\Http\Response withStatus($code, $reasonPhrase = '');
  * @method static string getReasonPhrase()
  */
-class Response extends Facade
+class ResponseFacade extends Facade
 {
 
     /**

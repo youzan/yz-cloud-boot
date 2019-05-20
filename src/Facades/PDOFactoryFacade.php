@@ -11,7 +11,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static null|\PDO buildMySQLInstance($host, $port, $username, $password, $options)
  * @method static null|\PDO buildBuiltinMySQLInstance($charset = 'utf8mb4')
  */
-class PDOFactory extends Facade
+class PDOFactoryFacade extends Facade
 {
 
     /**

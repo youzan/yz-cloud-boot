@@ -24,48 +24,48 @@ Based on Slim Framework: http://www.slimframework.com/
 ```
 SlimFramework 原生
 
-\YouzanCloudBoot\Facades\App
+\YouzanCloudBoot\Facades\AppFacade
 等效于 \Slim\App 的实例 $app 对象
 
-\YouzanCloudBoot\Facades\Di
+\YouzanCloudBoot\Facades\DIFacade
 等效于 $app->getContainer();
 
-\YouzanCloudBoot\Facades\Route
+\YouzanCloudBoot\Facades\RouteFacade
 等效于 \Slim\App 的实例 $app 对象 （这是 App 的别名）
 
-\YouzanCloudBoot\Facades\Request
+\YouzanCloudBoot\Facades\RequestFacade
 等效于 $app->getContainer()->get('request');
 
-\YouzanCloudBoot\Facades\Response
+\YouzanCloudBoot\Facades\ResponseFacade
 等效于 $app->getContainer()->get('response');
 
-\YouzanCloudBoot\Facades\Logger
+\YouzanCloudBoot\Facades\LogFacade
 等效于 $app->getContainer()->get('logger');
 
 有赞云框架专属
 
-\YouzanCloudBoot\Facades\BeanRegistry
+\YouzanCloudBoot\Facades\BeanRegFacade
 等效于 $app->getContainer()->get('beanRegistry');
 
-\YouzanCloudBoot\Facades\TopicRegistry
+\YouzanCloudBoot\Facades\TopicRegFacade
 等效于 $app->getContainer()->get('topicRegistry');
 
-\YouzanCloudBoot\Facades\EnvUtil
+\YouzanCloudBoot\Facades\EnvFacade
 等效于 $app->getContainer()->get('envUtil');
 
-\YouzanCloudBoot\Facades\Http
+\YouzanCloudBoot\Facades\HttpFacade
 等效于 $app->getContainer()->get('httpClient');
 
-\YouzanCloudBoot\Facades\MySQL
+\YouzanCloudBoot\Facades\DBFacade
 等效于 $app->getContainer()->get('yzcMySQL');
 
-\YouzanCloudBoot\Facades\PDOFactory
+\YouzanCloudBoot\Facades\PDOFactoryFacade
 等效于 $app->getContainer()->get('pdoFactory');
 
-\YouzanCloudBoot\Facades\Redis
+\YouzanCloudBoot\Facades\RedisFacade
 等效于 $app->getContainer()->get('yzcRedis');
 
-\YouzanCloudBoot\Facades\RedisFactory
+\YouzanCloudBoot\Facades\RedisFactoryFacade
 等效于 $app->getContainer()->get('redisFactory');
 ```
 

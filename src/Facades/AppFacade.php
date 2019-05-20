@@ -22,7 +22,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static \Slim\Interfaces\RouteGroupInterface group(string $pattern, callable $callable)
  * @method static \Psr\Http\Message\ResponseInterface run(bool $silent)
  */
-class App extends Facade
+class AppFacade extends Facade
 {
 
     /**
@@ -42,4 +42,4 @@ class App extends Facade
     }
 }
 
-class_alias(App::class, 'YouzanCloudBoot\Facades\Route');
+class_alias(AppFacade::class, 'YouzanCloudBoot\Facades\RouteFacade');

@@ -3,7 +3,7 @@
 namespace YouzanCloudBootTests\Http;
 
 use CURLFile;
-use YouzanCloudBoot\Facades\Http;
+use YouzanCloudBoot\Facades\HttpFacade;
 use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBootTests\Base\BaseTestCase;
 
@@ -230,7 +230,7 @@ class HttpClientWrapperTest extends BaseTestCase
 
     public function testFacade()
     {
-        $r = Http::post('http://www.test.com:2048/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
+        $r = HttpFacade::post('http://www.test.com:2048/testPath?testQuery', ['Content-Type: application/json'], json_encode(['test' => 'json']));
 
         $response = $r->getBodyAsJson();
 

@@ -13,7 +13,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static \YouzanCloudBoot\Http\HttpClientResponse put(string $url, array $headers = null, $body = null)
  * @method static \YouzanCloudBoot\Http\HttpClientResponse delete(string $url, array $headers = null, $body = null)
  */
-class Http extends Facade
+class HttpFacade extends Facade
 {
 
     /**
