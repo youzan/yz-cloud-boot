@@ -21,53 +21,29 @@ Based on Slim Framework: http://www.slimframework.com/
 
 目前包括：
 
-```
 SlimFramework 原生
 
-\YouzanCloudBoot\Facades\AppFacade
-等效于 \Slim\App 的实例 $app 对象
-
-\YouzanCloudBoot\Facades\DIFacade
-等效于 $app->getContainer();
-
-\YouzanCloudBoot\Facades\RouteFacade
-等效于 \Slim\App 的实例 $app 对象 （这是 App 的别名）
-
-\YouzanCloudBoot\Facades\RequestFacade
-等效于 $app->getContainer()->get('request');
-
-\YouzanCloudBoot\Facades\ResponseFacade
-等效于 $app->getContainer()->get('response');
-
-\YouzanCloudBoot\Facades\LogFacade
-等效于 $app->getContainer()->get('logger');
+| 静态代理 | 被代理对象 |
+| --- | --- |
+| \YouzanCloudBoot\Facades\AppFacade | \Slim\App 的实例 $app 对象 |
+| \YouzanCloudBoot\Facades\DIFacade | $app->getContainer() |
+| \YouzanCloudBoot\Facades\RouteFacade | \Slim\App 的实例 $app 对象 （这是 App 的别名） |
+| \YouzanCloudBoot\Facades\RequestFacade | $app->getContainer()->get('request') |
+| \YouzanCloudBoot\Facades\ResponseFacade | $app->getContainer()->get('response') |
+| \YouzanCloudBoot\Facades\LogFacade | $app->getContainer()->get('logger') |
 
 有赞云框架专属
 
-\YouzanCloudBoot\Facades\BeanRegFacade
-等效于 $app->getContainer()->get('beanRegistry');
-
-\YouzanCloudBoot\Facades\TopicRegFacade
-等效于 $app->getContainer()->get('topicRegistry');
-
-\YouzanCloudBoot\Facades\EnvFacade
-等效于 $app->getContainer()->get('envUtil');
-
-\YouzanCloudBoot\Facades\HttpFacade
-等效于 $app->getContainer()->get('httpClient');
-
-\YouzanCloudBoot\Facades\DBFacade
-等效于 $app->getContainer()->get('yzcMySQL');
-
-\YouzanCloudBoot\Facades\PDOFactoryFacade
-等效于 $app->getContainer()->get('pdoFactory');
-
-\YouzanCloudBoot\Facades\RedisFacade
-等效于 $app->getContainer()->get('yzcRedis');
-
-\YouzanCloudBoot\Facades\RedisFactoryFacade
-等效于 $app->getContainer()->get('redisFactory');
-```
+| 静态代理 | 被代理对象 |
+| --- | --- |
+| \YouzanCloudBoot\Facades\BeanRegFacade | $app->getContainer()->get('beanRegistry') |
+| \YouzanCloudBoot\Facades\TopicRegFacade | $app->getContainer()->get('topicRegistry') |
+| \YouzanCloudBoot\Facades\EnvFacade | $app->getContainer()->get('envUtil') |
+| \YouzanCloudBoot\Facades\HttpFacade | $app->getContainer()->get('httpClient') |
+| \YouzanCloudBoot\Facades\DBFacade | $app->getContainer()->get('yzcMySQL') |
+| \YouzanCloudBoot\Facades\PDOFactoryFacade | $app->getContainer()->get('pdoFactory') |
+| \YouzanCloudBoot\Facades\RedisFacade | $app->getContainer()->get('yzcRedis') |
+| \YouzanCloudBoot\Facades\RedisFactoryFacade | $app->getContainer()->get('redisFactory') |
 
 具体的类参考，可以参见每个类头部的 PHP Doc，在 PHPStorm 等 IDE 内可以识别 @method 并提供语法提示
 
