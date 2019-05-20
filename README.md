@@ -29,6 +29,8 @@ Based on Slim Framework: http://www.slimframework.com/
 |   |-- Controller      # 控制器 （可自定义）
 |   |-- ...             # 其它用户工程的目录
 |
+|-- templates/          # 模版文件目录
+|
 |-- vendor/             # composer 三方组件目录
 |   |-- ...             # 其它组件的目录
 |   |-- youzanyun

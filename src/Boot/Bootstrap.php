@@ -10,10 +10,15 @@ use Monolog\Processor\ProcessIdProcessor;
 use Psr\Container\ContainerInterface;
 use Slim\App;
 use Slim\Container;
+use Slim\Http\Environment;
+use Slim\Http\Uri;
+use Slim\Views\Twig;
+use Slim\Views\TwigExtension;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
+use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\Handler\ErrorHandler;
 use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
 use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
@@ -93,6 +98,14 @@ class Bootstrap
         };
         $container['yzcRedis'] = function (ContainerInterface $container) {
             return $container->get('redisFactory')->buildBuiltinRedisInstance();
+        };
+        $container['view'] = function (ContainerInterface $container) {
+            if (!defined('YZCLOUD_BOOT_APP_DIR')) {
+                throw new CommonException('YZCLOUD_BOOT_APP_DIR undefined');
+            }
+            $view = new Twig(YZCLOUD_BOOT_APP_DIR . '/templates');
+            $view->addExtension(new TwigExtension($container->get('router'), Uri::createFromEnvironment(new Environment($_SERVER))));
+            return $view;
         };
 
         return $container;
