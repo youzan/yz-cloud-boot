@@ -9,7 +9,7 @@ namespace YouzanCloudBoot\Facades;
  * 所有方法请参考 @see \Slim\App
  *
  * @method static \Psr\Container\ContainerInterface getContainer()
- * @method static add(callable $callable)
+ * @method static void add(callable $callable)
  * @method static \Slim\Interfaces\RouteInterface get(string $pattern, callable $callable)
  * @method static \Slim\Interfaces\RouteInterface post(string $pattern, callable $callable)
  * @method static \Slim\Interfaces\RouteInterface put(string $pattern, callable $callable)
