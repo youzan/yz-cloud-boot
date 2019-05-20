@@ -5,6 +5,7 @@ namespace YouzanCloudBootTests\Store;
 use Redis;
 use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBootTests\Base\BaseTestCase;
+use YouzanCloudBoot\Facades\Redis as RedisFacade;
 
 class RedisFactoryTest extends BaseTestCase
 {
@@ -69,8 +70,6 @@ class RedisFactoryTest extends BaseTestCase
 
     public function test()
     {
-        $this->assertTrue(true);
-
         $microSeconds = 0;
         while ($microSeconds < 10 * 1000000) {
             $pid = @trim(file_get_contents(sprintf('%s/redis.pid', self::$dataDir)));
@@ -98,6 +97,22 @@ class RedisFactoryTest extends BaseTestCase
         $yzcRedis->set('aloha', 'world');
 
         $this->assertEquals('world', $yzcRedis->get('aloha'));
+    }
+
+    public function testFacade()
+    {
+        $microSeconds = 0;
+        while ($microSeconds < 10 * 1000000) {
+            $pid = @trim(file_get_contents(sprintf('%s/redis.pid', self::$dataDir)));
+            if (!empty($pid)) {
+                break;
+            }
+            $microSeconds += 500000;
+            usleep(500000);
+        }
+
+        RedisFacade::set('hello', 'world');
+        $this->assertEquals('world', RedisFacade::get('hello'));
     }
 
 
