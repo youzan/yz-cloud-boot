@@ -12,6 +12,33 @@ Based on Slim Framework: http://www.slimframework.com/
 
 ## 目录结构
 
+一个标准的基于 YZCloudBoot 的应用程序应该基本上是这样的结构
+
+```
+.
+|-- composer.json       # 用户工程的 composer.json
+|-- config/             # 配置文件目录
+|   |-- env.php         # 环境变量定义，主要定义 YZCLOUD_BOOT_APP_DIR 指定应用根目录 
+|   |-- routes.php      # 路由配置文件
+|   |-- beps.php        # 业务扩展点配置文件
+|   |-- meps.php        # 消息扩展点配置文件
+|
+|-- src/                # 用户工程的源码
+|   |-- Bep             # 业务扩展点实现 （可自定义）
+|   |-- Mep             # 消息扩展点实现 （可自定义）
+|   |-- Controller      # 控制器 （可自定义）
+|   |-- ...             # 其它用户工程的目录
+|
+|-- vendor/             # composer 三方组件目录
+|   |-- ...             # 其它组件的目录
+|   |-- youzanyun
+|       |-- yz-cloud-boot           # 本框架所在目录
+|           |-- public              # Web Root 目录，Web 服务器需要以里面的 index.php 为默认页面
+|           |   |-- index.php       # 应用程序入口
+|           |
+|           |-- src                 # 本框架的业务代码
+```
+
 
 ## Facade
 
