@@ -3,7 +3,7 @@
 SERVER_MANAGE_PORT=8001
 
 i=0
-max_retry=100
+max_retry=10
 while [ 1 ]
 do
     count=`curl -Ss "http://127.0.0.1:$SERVER_MANAGE_PORT/health" | awk -F, '{print $1}' | awk -F: '{print $2}' | grep UP | wc -l`
@@ -11,7 +11,7 @@ do
         echo "healthCheck ok"
         exit 0
     fi
-    sleep 7s
+    sleep 6s
     i=`expr $i + 1`
     if [ $i -eq $max_retry ];then
         echo "healthCheck failed,exit"

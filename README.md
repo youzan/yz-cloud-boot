@@ -36,8 +36,8 @@ SlimFramework 原生
 
 | 静态代理 | 被代理对象 |
 | --- | --- |
-| \YouzanCloudBoot\Facades\BeanRegFacade | $app->getContainer()->get('beanRegistry') |
-| \YouzanCloudBoot\Facades\TopicRegFacade | $app->getContainer()->get('topicRegistry') |
+| \YouzanCloudBoot\Facades\BepRegFacade | $app->getContainer()->get('beanRegistry') |
+| \YouzanCloudBoot\Facades\MepRegFacade | $app->getContainer()->get('topicRegistry') |
 | \YouzanCloudBoot\Facades\EnvFacade | $app->getContainer()->get('envUtil') |
 | \YouzanCloudBoot\Facades\HttpFacade | $app->getContainer()->get('httpClient') |
 | \YouzanCloudBoot\Facades\DBFacade | $app->getContainer()->get('yzcMySQL') |
@@ -65,10 +65,10 @@ $envUtil = YouzanCloudBoot\Facades\Di::get('envUtil');
 $logger = YouzanCloudBoot\Facades\Di::get('logger');
 
 // @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $beanRegistry 业务扩展点注册器
-$beanRegistry = YouzanCloudBoot\Facades\Di::get('beanRegistry');
+$bepRegistry = YouzanCloudBoot\Facades\Di::get('beanRegistry');
 
 // @var \YouzanCloudBoot\ExtensionPoint\TopicRegistry $topicRegistry 消息扩展点注册器
-$topicRegistry = YouzanCloudBoot\Facades\Di::get('topicRegistry');
+$mepRegistry = YouzanCloudBoot\Facades\Di::get('topicRegistry');
 
 // @var \YouzanCloudBoot\Util\ObjectBuilder $objectBuilder 反序列化辅助工具，将扩展点调用参数转换成匹配接口的对象
 $objectBuilder = YouzanCloudBoot\Facades\Di::get('objectBuilder');

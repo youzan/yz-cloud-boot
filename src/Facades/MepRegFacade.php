@@ -11,7 +11,7 @@ namespace YouzanCloudBoot\Facades;
  * @method static void registerTopic(string $topic, string $class): void
  * @method static \YouzanCloudBoot\Component\BaseComponent getBean(string $topic): \YouzanCloudBoot\Component\BaseComponent
  */
-class TopicRegFacade extends Facade
+class MepRegFacade extends Facade
 {
 
     /**
