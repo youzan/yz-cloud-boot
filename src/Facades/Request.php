@@ -9,19 +9,19 @@ namespace YouzanCloudBoot\Facades;
  * 默认实现 @see \Slim\Http\Request
  * 接口定义 @see \Psr\Http\Message\ServerRequestInterface
  *
- * @method static getServerParams();
- * @method static getCookieParams();
- * @method static withCookieParams(array $cookies);
- * @method static getQueryParams();
- * @method static withQueryParams(array $query);
- * @method static getUploadedFiles();
- * @method static withUploadedFiles(array $uploadedFiles);
- * @method static getParsedBody();
- * @method static withParsedBody($data);
- * @method static getAttributes();
- * @method static getAttribute($name, $default = null);
- * @method static withAttribute($name, $value);
- * @method static withoutAttribute($name);
+ * @method static array getServerParams();
+ * @method static array getCookieParams();
+ * @method static \Slim\Http\Request withCookieParams(array $cookies);
+ * @method static array getQueryParams();
+ * @method static \Slim\Http\Request withQueryParams(array $query);
+ * @method static array getUploadedFiles();
+ * @method static \Slim\Http\Request withUploadedFiles(array $uploadedFiles);
+ * @method static null|array|object getParsedBody();
+ * @method static \Slim\Http\Request withParsedBody($data);
+ * @method static array getAttributes();
+ * @method static string getAttribute($name, $default = null);
+ * @method static \Slim\Http\Request withAttribute($name, $value);
+ * @method static \Slim\Http\Request withoutAttribute($name);
  */
 class Request extends Facade
 {

@@ -9,8 +9,8 @@ namespace YouzanCloudBoot\Facades;
  * 默认实现参考 @see \Slim\Container
  * 接口定义请参考 PSR-11 @see \Psr\Container\ContainerInterface
  *
- * @method static get(string $id)
- * @method static has(string $id)
+ * @method static mixed get(string $id)
+ * @method static bool has(string $id)
  */
 class Di extends Facade
 {

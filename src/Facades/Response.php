@@ -9,9 +9,9 @@ namespace YouzanCloudBoot\Facades;
  * 默认实现 @see \Slim\Http\Response
  * 接口定义 @see \Psr\Http\Message\ResponseInterface
  *
- * @method static getStatusCode();
- * @method static withStatus($code, $reasonPhrase = '');
- * @method static getReasonPhrase()
+ * @method static int getStatusCode();
+ * @method static \Slim\Http\Response withStatus($code, $reasonPhrase = '');
+ * @method static string getReasonPhrase()
  */
 class Response extends Facade
 {

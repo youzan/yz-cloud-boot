@@ -8,8 +8,8 @@ namespace YouzanCloudBoot\Facades;
  * RedisFactory 静态代理
  * 默认实现 @see \YouzanCloudBoot\Store\RedisFactory
  *
- * @method static buildRedisInstance($host, $port): Redisc
- * @method static buildBuiltinRedisInstance(): ?Redisc
+ * @method static null|\Redis buildRedisInstance($host, $port)
+ * @method static null|\Redis buildBuiltinRedisInstance()
  */
 class RedisFactory extends Facade
 {

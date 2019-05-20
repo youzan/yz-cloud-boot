@@ -8,8 +8,8 @@ namespace YouzanCloudBoot\Facades;
  * PDOFactory 静态代理
  * 默认实现 @see \YouzanCloudBoot\Store\PDOFactory
  *
- * @method static buildMySQLInstance($host, $port, $username, $password, $options): PDO
- * @method static buildBuiltinMySQLInstance($charset = 'utf8mb4'): ?PDO
+ * @method static null|\PDO buildMySQLInstance($host, $port, $username, $password, $options)
+ * @method static null|\PDO buildBuiltinMySQLInstance($charset = 'utf8mb4')
  */
 class PDOFactory extends Facade
 {

@@ -9,19 +9,19 @@ namespace YouzanCloudBoot\Facades;
  * 默认实现 @see \Monolog\Logger
  * 接口定义 @see \Psr\Log\LoggerInterface
  *
- * @method static emergency(string $message, array $context = array());
- * @method static emerg(string $message, array $context = array());
- * @method static alert(string $message, array $context = array());
- * @method static critical(string $message, array $context = array());
- * @method static crit(string $message, array $context = array());
- * @method static error(string $message, array $context = array());
- * @method static err(string $message, array $context = array());
- * @method static warning(string $message, array $context = array());
- * @method static warn(string $message, array $context = array());
- * @method static notice(string $message, array $context = array());
- * @method static info(string $message, array $context = array());
- * @method static debug(string $message, array $context = array());
- * @method static log($level, string $message, array $context = array());
+ * @method static void emergency(string $message, array $context = array());
+ * @method static void emerg(string $message, array $context = array());
+ * @method static void alert(string $message, array $context = array());
+ * @method static void critical(string $message, array $context = array());
+ * @method static void crit(string $message, array $context = array());
+ * @method static void error(string $message, array $context = array());
+ * @method static void err(string $message, array $context = array());
+ * @method static void warning(string $message, array $context = array());
+ * @method static void warn(string $message, array $context = array());
+ * @method static void notice(string $message, array $context = array());
+ * @method static void info(string $message, array $context = array());
+ * @method static void debug(string $message, array $context = array());
+ * @method static void log($level, string $message, array $context = array());
  */
 class Logger extends Facade
 {

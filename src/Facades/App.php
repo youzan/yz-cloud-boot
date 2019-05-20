@@ -8,19 +8,19 @@ namespace YouzanCloudBoot\Facades;
  * App 静态代理
  * 所有方法请参考 @see \Slim\App
  *
- * @method static getContainer()
+ * @method static \Psr\Container\ContainerInterface getContainer()
  * @method static add(callable $callable)
- * @method static get(string $pattern, callable $callable)
- * @method static post(string $pattern, callable $callable)
- * @method static put(string $pattern, callable $callable)
- * @method static patch(string $pattern, callable $callable)
- * @method static delete(string $pattern, callable $callable)
- * @method static options(string $pattern, callable $callable)
- * @method static any(string $pattern, callable $callable)
- * @method static map(array $methods, string $pattern, callable $callable)
- * @method static redirect(string $from, string $to, int $statusCode)
- * @method static group(string $pattern, callable $callable)
- * @method static run(bool $silent)
+ * @method static \Slim\Interfaces\RouteInterface get(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface post(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface put(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface patch(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface delete(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface options(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface any(string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface map(array $methods, string $pattern, callable $callable)
+ * @method static \Slim\Interfaces\RouteInterface redirect(string $from, string $to, int $statusCode)
+ * @method static \Slim\Interfaces\RouteGroupInterface group(string $pattern, callable $callable)
+ * @method static \Psr\Http\Message\ResponseInterface run(bool $silent)
  */
 class App extends Facade
 {

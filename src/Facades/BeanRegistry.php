@@ -8,8 +8,8 @@ namespace YouzanCloudBoot\Facades;
  * BeanRegistry 静态代理
  * 所有方法请参考 @see \YouzanCloudBoot\ExtensionPoint\BeanRegistry
  *
- * @method static registerBean(string $beanName, string $class, ?string $beanTag = null)
- * @method static getBean(string $beanName, ?string $beanTag = null) : \YouzanCloudBoot\Component\BaseComponent
+ * @method static void registerBean(string $beanName, string $class, ?string $beanTag = null)
+ * @method static \YouzanCloudBoot\Component\BaseComponent getBean(string $beanName, ?string $beanTag = null)
  */
 class BeanRegistry extends Facade
 {

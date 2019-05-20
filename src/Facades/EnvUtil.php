@@ -8,8 +8,8 @@ namespace YouzanCloudBoot\Facades;
  * EnvUtil 静态代理
  * 默认实现参考 @see \YouzanCloudBoot\Util\EnvUtil
  *
- * @method static get(string $varName)
- * @method static getAppName()
+ * @method static null|string get(string $varName)
+ * @method static string getAppName()
  */
 class EnvUtil extends Facade
 {
