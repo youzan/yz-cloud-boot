@@ -27,7 +27,7 @@ SlimFramework 原生
 | --- | --- |
 | \YouzanCloudBoot\Facades\AppFacade | \Slim\App 的实例 $app 对象 |
 | \YouzanCloudBoot\Facades\DIFacade | $app->getContainer() |
-| \YouzanCloudBoot\Facades\RouteFacade | \Slim\App 的实例 $app 对象 （这是 App 的别名） |
+| \YouzanCloudBoot\Facades\RouteFacade | \Slim\App 的实例 $app 对象 （这是 \YouzanCloudBoot\Facades\AppFacade 的别名） |
 | \YouzanCloudBoot\Facades\RequestFacade | $app->getContainer()->get('request') |
 | \YouzanCloudBoot\Facades\ResponseFacade | $app->getContainer()->get('response') |
 | \YouzanCloudBoot\Facades\LogFacade | $app->getContainer()->get('logger') |
