@@ -29,6 +29,8 @@ Based on Slim Framework: http://www.slimframework.com/
 |   |-- Controller      # 控制器 （可自定义）
 |   |-- ...             # 其它用户工程的目录
 |
+|-- templates/          # 模版文件目录
+|
 |-- vendor/             # composer 三方组件目录
 |   |-- ...             # 其它组件的目录
 |   |-- youzanyun
@@ -71,6 +73,7 @@ SlimFramework 原生
 | \YouzanCloudBoot\Facades\PDOFactoryFacade | $app->getContainer()->get('pdoFactory') |
 | \YouzanCloudBoot\Facades\RedisFacade | $app->getContainer()->get('yzcRedis') |
 | \YouzanCloudBoot\Facades\RedisFactoryFacade | $app->getContainer()->get('redisFactory') |
+| \YouzanCloudBoot\Facades\ViewFacade | $app->getContainer()->get('view') |
 
 具体的类参考，可以参见每个类头部的 PHP Doc，在 PHPStorm 等 IDE 内可以识别 @method 并提供语法提示
 
