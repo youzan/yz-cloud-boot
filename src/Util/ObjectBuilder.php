@@ -197,6 +197,7 @@ class ObjectBuilder extends BaseComponent
     private function parseTimestampOrDateString($item)
     {
         if (is_numeric($item)) {
+            $item = $item/1000;
             $dateObj = new DateTime();
             return $dateObj->setTimestamp($item);
         } else if (is_string($item)) {
