@@ -14,7 +14,7 @@ class ErrorHandler
         $data['success'] = false;
 
         return $response
-            ->withStatus(500)
+            ->withStatus(200)
             ->withHeader('Content-Type', 'application/json')
             ->withJson($data);
     }
