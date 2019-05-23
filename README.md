@@ -34,11 +34,15 @@ Based on Slim Framework: http://www.slimframework.com/
 |-- vendor/             # composer 三方组件目录
 |   |-- ...             # 其它组件的目录
 |   |-- youzanyun
-|       |-- yz-cloud-boot           # 本框架所在目录
-|           |-- public              # Web Root 目录，Web 服务器需要以里面的 index.php 为默认页面
-|           |   |-- index.php       # 应用程序入口
+|       |-- yz-cloud-boot               # 本框架所在目录
+|           |-- bin                     # 启/停脚本
+|           |   |-- preload.sh          # 服务启动前置脚本
+|           |   |-- php_dev_server.sh   # 开发服务器启动脚本
 |           |
-|           |-- src                 # 本框架的业务代码
+|           |-- public                  # Web Root 目录，Web 服务器需要以里面的 index.php 为默认页面
+|           |   |-- index.php           # 应用程序入口
+|           |
+|           |-- src                     # 本框架的业务代码
 ```
 
 
