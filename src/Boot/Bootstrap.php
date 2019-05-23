@@ -121,7 +121,7 @@ class Bootstrap
 
         //消息扩展点
         $app->post(
-            "/message-extension-point/com.youzan.cloud.extension.api.message.MessageHandler/handle",
+            "/message-extension-point/com.youzan.cloud.base.service.api.MessageService/handleMessage",
             MessageExtensionPointController::class . ':handle'
         );
 
