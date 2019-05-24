@@ -24,13 +24,13 @@ class BusinessExtensionPointController extends BaseComponent
         $serviceName = $args['service'];
         $methodName = $args['method'];
 
-        /** @var \YouzanCloudBoot\ExtensionPoint\BeanRegistry $beanRegistry */
-        $beanRegistry = $this->getContainer()->get('beanRegistry');
+        /** @var \YouzanCloudBoot\ExtensionPoint\BepRegistry $bepRegistry */
+        $bepRegistry = $this->getContainer()->get('bepRegistry');
 
         $beanName = $request->getHeaderLine('Bean-Name');
         $beanTag = $request->getHeaderLine('Bean-Tag');
 
-        $beanInstance = $beanRegistry->getBean($beanName, $beanTag);
+        $beanInstance = $bepRegistry->getBean($beanName, $beanTag);
 
         $result = $this->callMethod($beanInstance, $serviceName, $methodName, $request->getParsedBody());
 

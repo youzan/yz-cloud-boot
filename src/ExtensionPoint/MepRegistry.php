@@ -5,7 +5,7 @@ namespace YouzanCloudBoot\ExtensionPoint;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
 
-class TopicRegistry extends BaseComponent
+class MepRegistry extends BaseComponent
 {
 
     private $topicPool = [];
