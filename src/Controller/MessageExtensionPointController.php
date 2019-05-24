@@ -30,8 +30,8 @@ class MessageExtensionPointController extends BaseComponent
             );
         }
 
-        $topicRegistry = $this->getContainer()->get('topicRegistry');
-        $topicInstance = $topicRegistry->getBean($topic);
+        $mepRegistry = $this->getContainer()->get('mepRegistry');
+        $topicInstance = $mepRegistry->getBean($topic);
 
         $result = $this->callMethod($topicInstance, $parameter);
 

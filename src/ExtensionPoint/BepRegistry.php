@@ -5,7 +5,7 @@ namespace YouzanCloudBoot\ExtensionPoint;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\BeanRegistryFailureException;
 
-class BeanRegistry extends BaseComponent
+class BepRegistry extends BaseComponent
 {
 
     private $beanPool = [];

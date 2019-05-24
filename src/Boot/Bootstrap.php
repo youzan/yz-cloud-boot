@@ -20,8 +20,8 @@ use YouzanCloudBoot\Controller\HeartbeatController;
 use YouzanCloudBoot\Controller\MessageExtensionPointController;
 use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\Handler\ErrorHandler;
-use YouzanCloudBoot\ExtensionPoint\BeanRegistry;
-use YouzanCloudBoot\ExtensionPoint\TopicRegistry;
+use YouzanCloudBoot\ExtensionPoint\BepRegistry;
+use YouzanCloudBoot\ExtensionPoint\MepRegistry;
 use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBoot\Log\HostnameProcessor;
 use YouzanCloudBoot\Log\YouzanSkynetProcessor;
@@ -75,14 +75,14 @@ class Bootstrap
 
             return $logger;
         };
-        $container['beanRegistry'] = function (ContainerInterface $container) {
-            return new BeanRegistry($container);
+        $container['bepRegistry'] = function (ContainerInterface $container) {
+            return new BepRegistry($container);
         };
         $container['objectBuilder'] = function (ContainerInterface $container) {
             return new ObjectBuilder($container);
         };
-        $container['topicRegistry'] = function (ContainerInterface $container) {
-            return new TopicRegistry($container);
+        $container['mepRegistry'] = function (ContainerInterface $container) {
+            return new MepRegistry($container);
         };
         $container['pdoFactory'] = function (ContainerInterface $container) {
             return new PDOFactory($container);
