@@ -197,9 +197,8 @@ class ObjectBuilder extends BaseComponent
     private function parseTimestampOrDateString($item)
     {
         if (is_numeric($item)) {
-            $item = $item/1000;
             $dateObj = new DateTime();
-            return $dateObj->setTimestamp($item);
+            return $dateObj->setTimestamp($item / 1000); // 处理的都是 Java 的毫秒级时间戳
         } else if (is_string($item)) {
             return new DateTime($item);
         } else {
