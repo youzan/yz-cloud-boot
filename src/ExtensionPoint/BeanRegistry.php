@@ -10,22 +10,22 @@ class BeanRegistry extends BaseComponent
 
     private $beanPool = [];
 
-    public function registerBean($beanName, $class, $beanTag = null): void
+    public function register($bepValue, $class, $bepTag = null): void
     {
-        if ($this->checkBeanDefinitionExists($beanName, $beanTag)) {
-            throw new BeanRegistryFailureException('The specific bean name has been registered');
+        if ($this->checkBeanDefinitionExists($bepValue, $bepTag)) {
+            throw new BeanRegistryFailureException('The specific bep value has been registered');
         }
 
         /**
          * 这里不对这个类是否存在做检查，提高性能
          */
 
-        $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)] = ['class' => $class, 'tag' => $beanTag];
+        $this->beanPool[$this->getBeanDefinitionKey($bepValue, $bepTag)] = ['class' => $class, 'tag' => $bepTag];
     }
 
-    public function getBean($beanName, $beanTag = null): BaseComponent
+    public function getBean($bepValue, $bepTag = null): BaseComponent
     {
-        $beanDef = $this->getBeanDefinition($beanName, $beanTag);
+        $beanDef = $this->getBeanDefinition($bepValue, $bepTag);
 
         $class = $beanDef['class'];
         $tag = $beanDef['tag'];
@@ -35,32 +35,32 @@ class BeanRegistry extends BaseComponent
         return $inst;
     }
 
-    private function getBeanDefinition($beanName, $beanTag): array
+    private function getBeanDefinition($bepValue, $bepTag): array
     {
-        if (!$this->checkBeanDefinitionExists($beanName, $beanTag)) {
-            throw new BeanRegistryFailureException('Bean not exists');
+        if (!$this->checkBeanDefinitionExists($bepValue, $bepTag)) {
+            throw new BeanRegistryFailureException('bep impl not exists');
         }
 
-        return $this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)];
+        return $this->beanPool[$this->getBeanDefinitionKey($bepValue, $bepTag)];
     }
 
-    private function checkBeanDefinitionExists($beanName, $beanTag): bool
+    private function checkBeanDefinitionExists($bepValue, $bepTag): bool
     {
-        return isset($this->beanPool[$this->getBeanDefinitionKey($beanName, $beanTag)]);
+        return isset($this->beanPool[$this->getBeanDefinitionKey($bepValue, $bepTag)]);
     }
 
-    private function getBeanDefinitionKey($beanName, $beanTag): string
+    private function getBeanDefinitionKey($bepValue, $bepTag): string
     {
-        if (!isset($beanName) or empty($beanName)) {
-            throw new BeanRegistryFailureException('Bean name cannot be empty');
+        if (!isset($bepValue) or empty($bepValue)) {
+            throw new BeanRegistryFailureException('Bep value cannot be empty');
         }
-        return $beanName . $this->getBeanTagSuffix($beanTag);
+        return $bepValue . $this->getBeanTagSuffix($bepTag);
     }
 
-    private function getBeanTagSuffix($beanTag): string
+    private function getBeanTagSuffix($bepTag): string
     {
-        if (!empty($beanTag)) {
-            return '_' . $beanTag;
+        if (!empty($bepTag)) {
+            return '_' . $bepTag;
         }
         return '';
     }

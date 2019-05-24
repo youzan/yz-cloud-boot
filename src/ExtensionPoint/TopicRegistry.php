@@ -10,7 +10,7 @@ class TopicRegistry extends BaseComponent
 
     private $topicPool = [];
 
-    public function registerTopic($topic, $class): void
+    public function register($topic, $class): void
     {
         if ($this->checkTopicDefinitionExists($topic)) {
             throw new TopicRegistryFailureException('The specific topic name has been registered');
