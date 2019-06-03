@@ -5,10 +5,10 @@ namespace YouzanCloudBoot\Facades;
 
 
 /**
- * TopicRegistry 静态代理
- * 默认实现 @see \YouzanCloudBoot\ExtensionPoint\TopicRegistry
+ * MepRegistry 静态代理
+ * 默认实现 @see \YouzanCloudBoot\ExtensionPoint\MepRegistry
  *
- * @method static void registerTopic(string $topic, string $class): void
+ * @method static void register(string $topic, string $class): void
  * @method static \YouzanCloudBoot\Component\BaseComponent getBean(string $topic): \YouzanCloudBoot\Component\BaseComponent
  */
 class MepRegFacade extends Facade
@@ -22,6 +22,6 @@ class MepRegFacade extends Facade
      */
     protected static function getFacadeAccessor(): string
     {
-        return 'topicRegistry';
+        return 'mepRegistry';
     }
 }

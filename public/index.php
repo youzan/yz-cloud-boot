@@ -52,13 +52,13 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
     };
     $requireMiddlewares();
 
-    $bepReg = $container->get("beanRegistry");
+    $bepReg = $container->get("bepRegistry");
     $requireBEPs = function () use ($bepReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
     };
     $requireBEPs();
 
-    $mepReg = $container->get("topicRegistry");
+    $mepReg = $container->get("mepRegistry");
     $requireMEPs = function () use ($mepReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/meps.php');
     };
@@ -66,8 +66,8 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
 }
 
 try {
-    if ((isset($bepReg) and !$bepReg instanceof \YouzanCloudBoot\ExtensionPoint\BeanRegistry)
-        or (isset($mepReg) and !$mepReg instanceof \YouzanCloudBoot\ExtensionPoint\TopicRegistry)
+    if ((isset($bepReg) and !$bepReg instanceof \YouzanCloudBoot\ExtensionPoint\BepRegistry)
+        or (isset($mepReg) and !$mepReg instanceof \YouzanCloudBoot\ExtensionPoint\MepRegistry)
         or (!$app instanceof \Slim\App)) {
         //在 app 端有可能被修改实例，抛异常
         throw new Exception();
