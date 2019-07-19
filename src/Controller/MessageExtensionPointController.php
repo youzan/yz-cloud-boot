@@ -33,8 +33,12 @@ class MessageExtensionPointController extends BaseComponent
         $mepRegistry = $this->getContainer()->get('mepRegistry');
         $topicInstance = $mepRegistry->getBean($topic);
 
-        $result = $this->callMethod($topicInstance, $parameter);
+        $this->callMethod($topicInstance, $parameter);
 
+        $result = [];
+        $result['code'] = 200;
+        $result['message'] = 'Message Extension Point: ' . $topic . ' call success';
+        $result['success'] = true;
         return $response->withJson($result);
     }
 
