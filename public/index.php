@@ -45,6 +45,13 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
     };
     $requireRoutes();
 
+    $requireMiddlewares = function () use ($app) {
+        if (file_exists(YZCLOUD_BOOT_APP_DIR . '/config/middlewares.php')) {
+            require(YZCLOUD_BOOT_APP_DIR . '/config/middlewares.php');
+        }
+    };
+    $requireMiddlewares();
+
     $bepReg = $container->get("bepRegistry");
     $requireBEPs = function () use ($bepReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
