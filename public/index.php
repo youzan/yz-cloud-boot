@@ -40,29 +40,25 @@ $app = new \Slim\App($container);
 if (defined('YZCLOUD_BOOT_APP_DIR')) {
     // 这里使用匿名函数保证上下文干净，避免污染当前文件的变量
 
-    $requireRoutes = function () use ($app) {
+    (function () use ($app) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/routes.php');
-    };
-    $requireRoutes();
+    })();
 
-    $requireMiddlewares = function () use ($app) {
+    (function () use ($app) {
         if (file_exists(YZCLOUD_BOOT_APP_DIR . '/config/middlewares.php')) {
             require(YZCLOUD_BOOT_APP_DIR . '/config/middlewares.php');
         }
-    };
-    $requireMiddlewares();
+    })();
 
     $bepReg = $container->get("bepRegistry");
-    $requireBEPs = function () use ($bepReg) {
+    ($requireBEPs = function () use ($bepReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
-    };
-    $requireBEPs();
+    })();
 
     $mepReg = $container->get("mepRegistry");
-    $requireMEPs = function () use ($mepReg) {
+    (function () use ($mepReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/meps.php');
-    };
-    $requireMEPs();
+    })();
 }
 
 try {
