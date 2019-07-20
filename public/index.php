@@ -51,7 +51,7 @@ if (defined('YZCLOUD_BOOT_APP_DIR')) {
     })();
 
     $bepReg = $container->get("bepRegistry");
-    ($requireBEPs = function () use ($bepReg) {
+    (function () use ($bepReg) {
         require(YZCLOUD_BOOT_APP_DIR . '/config/beps.php');
     })();
 
