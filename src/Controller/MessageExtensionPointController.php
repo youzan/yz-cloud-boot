@@ -20,6 +20,12 @@ class MessageExtensionPointController extends BaseComponent
 
         $body = $request->getParsedBody();
 
+        if (empty($body) || !isset($body['topic']) || !isset($body['data'])) {
+            throw new TopicRegistryFailureException(
+                'Body is empty'
+            );
+        }
+
         $objectBuilder = $this->getContainer()->get('objectBuilder');
         $parameter = $objectBuilder->convertArrayToObjectInstance($body, new ReflectionClass('YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata\NotifyMessage'));
 
