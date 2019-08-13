@@ -30,7 +30,7 @@ class MepRegistry extends BaseComponent
         return $inst;
     }
 
-    private function checkTopicDefinitionExists($topic): bool
+    public function checkTopicDefinitionExists($topic): bool
     {
         return isset($this->topicPool[$topic]);
     }

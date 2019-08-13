@@ -26,7 +26,10 @@ class MessageExtensionPointController extends BaseComponent
             );
         }
 
+        /** @var \YouzanCloudBoot\Util\ObjectBuilder $objectBuilder */
         $objectBuilder = $this->getContainer()->get('objectBuilder');
+
+        /** @var \YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata\NotifyMessage $parameter */
         $parameter = $objectBuilder->convertArrayToObjectInstance($body, new ReflectionClass('YouzanCloudBoot\ExtensionPoint\Api\Message\Metadata\NotifyMessage'));
 
         $topic = $parameter->getTopic();
@@ -36,7 +39,17 @@ class MessageExtensionPointController extends BaseComponent
             );
         }
 
+        /** @var \YouzanCloudBoot\ExtensionPoint\MepRegistry $mepRegistry */
         $mepRegistry = $this->getContainer()->get('mepRegistry');
+        if (!$mepRegistry->checkTopicDefinitionExists($topic)) {
+            // 针对: 订阅了消息扩展点 但是没有实现. 不抛异常 不重试
+            return $response->withJson([
+                'code' => 200,
+                'message' => 'Message Extension Point: Unrealized' . $topic,
+                'success' => false
+            ]);
+        }
+
         $topicInstance = $mepRegistry->getBean($topic);
 
         $this->callMethod($topicInstance, $parameter);
