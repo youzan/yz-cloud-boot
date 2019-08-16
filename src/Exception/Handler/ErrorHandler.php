@@ -7,6 +7,13 @@ use YouzanCloudBoot\Facades\LogFacade;
 
 class ErrorHandler
 {
+
+    /**
+     * @param $request \Slim\Http\Request
+     * @param $response \Slim\Http\Response
+     * @param $exception \Exception
+     * @return mixed
+     */
     public function __invoke($request, $response, $exception)
     {
 
