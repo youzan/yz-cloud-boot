@@ -48,7 +48,7 @@ class MessageExtensionPointController extends BaseComponent
             return $response->withJson([
                 'code' => 200,
                 'message' => 'Message Extension Point: Unrealized' . $topic,
-                'success' => false
+                'success' => true
             ]);
         }
 
