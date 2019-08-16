@@ -8,6 +8,7 @@ use Slim\Http\Response;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\TopicRegistryFailureException;
 use YouzanCloudBoot\ExtensionPoint\Api\Message\MessageHandler;
+use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Traits\ExtensionPointUtil;
 
 class MessageExtensionPointController extends BaseComponent
@@ -42,6 +43,7 @@ class MessageExtensionPointController extends BaseComponent
         /** @var \YouzanCloudBoot\ExtensionPoint\MepRegistry $mepRegistry */
         $mepRegistry = $this->getContainer()->get('mepRegistry');
         if (!$mepRegistry->checkTopicDefinitionExists($topic)) {
+            LogFacade::warn('Message Extension Point: Unrealized' . $topic);
             // 针对: 订阅了消息扩展点 但是没有实现. 不抛异常 不重试
             return $response->withJson([
                 'code' => 200,
