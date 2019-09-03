@@ -58,7 +58,7 @@ class Bootstrap
 
             if ($applicationName != 'Youzan-Cloud-Boot-App') {
                 $dateFormat = "Y-m-d H:i:s";
-                $output = "<158>%datetime% %extra.hostname%/%extra.ip% %level_name%[%extra.process_id%]: topic=log.%extra.app_name%.%extra.index_name% %extra.skynet_log%\n";
+                $output = "<158>%datetime% %extra.hostname%/%extra.ip% %extra.level_name%[%extra.process_id%]: topic=log.%extra.app_name%.%extra.index_name% %extra.skynet_log%\n";
                 $formatter = new LineFormatter($output, $dateFormat);
 
                 $pidProcessor = new ProcessIdProcessor();

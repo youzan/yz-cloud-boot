@@ -43,11 +43,11 @@ class MessageExtensionPointController extends BaseComponent
         /** @var \YouzanCloudBoot\ExtensionPoint\MepRegistry $mepRegistry */
         $mepRegistry = $this->getContainer()->get('mepRegistry');
         if (!$mepRegistry->checkTopicDefinitionExists($topic)) {
-            LogFacade::warn('Message Extension Point: Unrealized' . $topic);
+            LogFacade::warn('Not Implemented Message Extension Point: ' . $topic);
             // 针对: 订阅了消息扩展点 但是没有实现. 不抛异常 不重试
             return $response->withJson([
                 'code' => 200,
-                'message' => 'Message Extension Point: Unrealized' . $topic,
+                'message' => 'Not Implemented Message Extension Point: ' . $topic,
                 'success' => true
             ]);
         }
