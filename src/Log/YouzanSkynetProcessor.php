@@ -18,10 +18,11 @@ class YouzanSkynetProcessor implements ProcessorInterface
         $envUtil = $this->_container->get('envUtil');
         $record['extra']['app_name'] = $envUtil->getAppName();
         $record['extra']['index_name'] = $envUtil->get('logging.track.topic');
+        $record['extra']['level_name'] = strtolower($record['level_name']);
 
         $skynetLog = new SkynetLog();
         $skynetLog->setApp($envUtil->getAppName());
-        $skynetLog->setLevel($record['level_name']);
+        $skynetLog->setLevel(strtolower($record['level_name']));
         $skynetLog->setPlatform('Php');
         $skynetLog->setTag($record['message']);
 
