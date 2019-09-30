@@ -2,7 +2,9 @@
 
 namespace YouzanCloudBoot\Util;
 
+use Symfony\Component\Yaml\Yaml;
 use YouzanCloudBoot\Component\BaseComponent;
+use YouzanCloudBoot\Constant\Env;
 
 class EnvUtil extends BaseComponent
 {
@@ -21,6 +23,13 @@ class EnvUtil extends BaseComponent
         }
 
         return null;
+    }
+
+    public function getFromApollo(string $varName): ?string
+    {
+        $config = Yaml::parseFile(Env::APOLLO_FILE);
+
+        return $config[$varName] ?? null;
     }
 
     public function getAppName(): ?string
