@@ -9,6 +9,9 @@ use YouzanCloudBoot\Constant\Env;
 class EnvUtil extends BaseComponent
 {
 
+    private $apolloConfig = [];
+
+
     /**
      * 返回环境变量的值
      *
@@ -27,9 +30,11 @@ class EnvUtil extends BaseComponent
 
     public function getFromApollo(string $varName): ?string
     {
-        $config = Yaml::parseFile(Env::APOLLO_FILE);
+        if (empty($this->apolloConfig)) {
+            $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
+        }
 
-        return $config[$varName] ?? null;
+        return $this->apolloConfig[$varName] ?? null;
     }
 
     public function getAppName(): ?string
