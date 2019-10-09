@@ -34,7 +34,7 @@ class EnvUtil extends BaseComponent
 
     public function getAppName(): ?string
     {
-        $applicationName = $this->get('application.name');
+        $applicationName = $this->getFromApollo('application.name');
         if (empty($applicationName)) {
             $applicationName = 'Youzan-Cloud-Boot-App';
         }

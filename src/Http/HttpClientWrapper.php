@@ -34,7 +34,7 @@ class HttpClientWrapper extends BaseComponent
             $proxy = $env->get('youzan.proxy.host');
         }
 
-        $token = $env->get('youzan.proxy.token');
+        $token = $env->getFromApollo('youzan.proxy.token');
 
         $nonProxyHosts = $env->get('youzan.proxy.nonProxyHosts');
         if ($nonProxyHosts) {

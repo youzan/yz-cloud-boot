@@ -37,13 +37,13 @@ class PDOFactory extends BaseComponent
     {
         $env = $this->getEnvUtil();
 
-        $host = $env->get('mysql.host');
+        $host = $env->getFromApollo('mysql.host');
         if (empty($host)) {
             return null;
         }
-        $port = $env->get('mysql.port');
-        $username = $env->get('mysql.username');
-        $password = $env->get('mysql.password');
+        $port = $env->getFromApollo('mysql.port');
+        $username = $env->getFromApollo('mysql.username');
+        $password = $env->getFromApollo('mysql.password');
         $options = [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'set names ' . $charset
         ];
