@@ -14,6 +14,7 @@ use Slim\Http\Environment;
 use Slim\Http\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
+use YouzanCloudBoot\Controller\ApolloController;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
@@ -27,6 +28,7 @@ use YouzanCloudBoot\Log\HostnameProcessor;
 use YouzanCloudBoot\Log\YouzanSkynetProcessor;
 use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBoot\Store\RedisFactory;
+use YouzanCloudBoot\Util\ApolloUtil;
 use YouzanCloudBoot\Util\EnvUtil;
 use YouzanCloudBoot\Util\ObjectBuilder;
 
@@ -93,6 +95,9 @@ class Bootstrap
         $container['httpClient'] = function (ContainerInterface $container) {
             return new HttpClientWrapper($container);
         };
+        $container['apolloUtil'] = function (ContainerInterface $container) {
+            return new ApolloUtil($container);
+        };
         $container['yzcMysql'] = function (ContainerInterface $container) {
             return $container->get('pdoFactory')->buildBuiltinMySQLInstance();
         };
@@ -135,6 +140,12 @@ class Bootstrap
         $app->get(
             "/health",
             HealthController::class . ':handle'
+        );
+
+        //拉取统一资源配置(Apollo)
+        $app->get(
+            "/apollo",
+            ApolloController::class . ':handle'
         );
     }
 
