@@ -2,10 +2,15 @@
 
 namespace YouzanCloudBoot\Util;
 
+use Symfony\Component\Yaml\Yaml;
 use YouzanCloudBoot\Component\BaseComponent;
+use YouzanCloudBoot\Constant\Env;
 
 class EnvUtil extends BaseComponent
 {
+
+    private $apolloConfig = [];
+
 
     /**
      * 返回环境变量的值
@@ -21,6 +26,15 @@ class EnvUtil extends BaseComponent
         }
 
         return null;
+    }
+
+    public function getFromApollo(string $varName): ?string
+    {
+        if (empty($this->apolloConfig)) {
+            $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
+        }
+
+        return $this->apolloConfig[$varName] ?? null;
     }
 
     public function getAppName(): ?string

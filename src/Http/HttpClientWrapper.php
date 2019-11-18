@@ -18,6 +18,8 @@ class HttpClientWrapper extends BaseComponent
 
     private $curlHandle;
 
+    private $innerServiceHost = '.s.youzanyun.net';
+
     public function __construct(ContainerInterface $container)
     {
         parent::__construct($container);
@@ -76,7 +78,7 @@ class HttpClientWrapper extends BaseComponent
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+        if (empty($this->proxy) or $this->isInnerService($host)) {
             $this->getLog()->info(sprintf("Get directly, url: %s, headers: %s", $url, json_encode($headers)));
             return $this->doRequest('GET', $url, false, $scheme, $headers, null);
         }
@@ -190,7 +192,7 @@ class HttpClientWrapper extends BaseComponent
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+        if (empty($this->proxy) or $this->isInnerService($host)) {
             $this->getLog()->info(sprintf("Post directly, url: %s, headers: %s", $url, json_encode($headers)));
             return $this->doRequest('POST', $url, false, $scheme, $headers, $body);
         }
@@ -215,7 +217,7 @@ class HttpClientWrapper extends BaseComponent
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+        if (empty($this->proxy) or $this->isInnerService($host)) {
             $this->getLog()->info(sprintf("Put directly, url: %s, headers: %s", $url, json_encode($headers)));
             return $this->doRequest('PUT', $url, false, $scheme, $headers, $body);
         }
@@ -239,7 +241,7 @@ class HttpClientWrapper extends BaseComponent
     {
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
-        if (in_array($host, $this->ignoreList) or empty($this->proxy)) {
+        if (empty($this->proxy) or $this->isInnerService($host)) {
             $this->getLog()->info(sprintf("Delete directly, url: %s, headers: %s", $url, json_encode($headers)));
             return $this->doRequest('DELETE', $url, false, $scheme, $headers, null);
         }
@@ -249,6 +251,11 @@ class HttpClientWrapper extends BaseComponent
         $this->getLog()->info(sprintf("Delete through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
 
         return $this->doRequest('DELETE', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
+    }
+
+    private function isInnerService($host)
+    {
+        return in_array($host, $this->ignoreList) or (substr($host, -strlen($this->innerServiceHost)) === $this->innerServiceHost);
     }
 
 }
