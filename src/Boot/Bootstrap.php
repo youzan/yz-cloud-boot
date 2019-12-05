@@ -75,6 +75,11 @@ class Bootstrap
                 $logger->pushHandler($socketHandler);
             }
 
+            // 异常捕获
+            $logger->setExceptionHandler(function (\Exception $e, array $record) {
+
+            });
+
             return $logger;
         };
         $container['bepRegistry'] = function (ContainerInterface $container) {
