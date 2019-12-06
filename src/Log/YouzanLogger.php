@@ -24,7 +24,7 @@ class YouzanLogger extends Logger
             }
         }
 
-        parent::addRecord($level, $message, $context);
+        return parent::addRecord($level, $message, $context);
     }
 
 }
