@@ -25,6 +25,7 @@ use YouzanCloudBoot\ExtensionPoint\BepRegistry;
 use YouzanCloudBoot\ExtensionPoint\MepRegistry;
 use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBoot\Log\HostnameProcessor;
+use YouzanCloudBoot\Log\YouzanLogger;
 use YouzanCloudBoot\Log\YouzanSkynetProcessor;
 use YouzanCloudBoot\Store\PDOFactory;
 use YouzanCloudBoot\Store\RedisFactory;
@@ -53,7 +54,7 @@ class Bootstrap
             /** @var EnvUtil $envUtil */
             $envUtil = $container->get('envUtil');
             $applicationName = $envUtil->getAppName();
-            $logger = new Logger($applicationName);
+            $logger = new YouzanLogger($applicationName);
 
             //控制台输出
             $logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
