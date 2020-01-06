@@ -79,11 +79,17 @@ class HttpClientWrapper extends BaseComponent
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
         if (empty($this->proxy) or $this->isInnerService($host)) {
+            if ($this->isDebug()) {
+                $this->getLog()->info(sprintf("Get directly, url: %s, headers: %s", $url, json_encode($headers)));
+            }
             return $this->doRequest('GET', $url, false, $scheme, $headers, null);
         }
 
         $realRequestUrl = $this->parseRealRequestUrl($path, $query);
         $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        if ($this->isDebug()) {
+            $this->getLog()->info(sprintf("Get through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+        }
 
         return $this->doRequest('GET', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
     }
@@ -191,11 +197,17 @@ class HttpClientWrapper extends BaseComponent
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
         if (empty($this->proxy) or $this->isInnerService($host)) {
+            if ($this->isDebug()) {
+                $this->getLog()->info(sprintf("Post directly, url: %s, headers: %s", $url, json_encode($headers)));
+            }
             return $this->doRequest('POST', $url, false, $scheme, $headers, $body);
         }
 
         $realRequestUrl = $this->parseRealRequestUrl($path, $query);
         $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        if ($this->isDebug()) {
+            $this->getLog()->info(sprintf("Post through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+        }
 
         return $this->doRequest('POST', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
     }
@@ -214,11 +226,17 @@ class HttpClientWrapper extends BaseComponent
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
         if (empty($this->proxy) or $this->isInnerService($host)) {
+            if ($this->isDebug()) {
+                $this->getLog()->info(sprintf("Put directly, url: %s, headers: %s", $url, json_encode($headers)));
+            }
             return $this->doRequest('PUT', $url, false, $scheme, $headers, $body);
         }
 
         $realRequestUrl = $this->parseRealRequestUrl($path, $query);
         $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        if ($this->isDebug()) {
+            $this->getLog()->info(sprintf("Put through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+        }
 
         return $this->doRequest('PUT', $realRequestUrl, true, $scheme, $realRequestHeaders, $body);
     }
@@ -236,11 +254,17 @@ class HttpClientWrapper extends BaseComponent
         list($scheme, $user, $pass, $host, $port, $path, $query) = $this->parseUrl($url);
 
         if (empty($this->proxy) or $this->isInnerService($host)) {
+            if ($this->isDebug()) {
+                $this->getLog()->info(sprintf("Delete directly, url: %s, headers: %s", $url, json_encode($headers)));
+            }
             return $this->doRequest('DELETE', $url, false, $scheme, $headers, null);
         }
 
         $realRequestUrl = $this->parseRealRequestUrl($path, $query);
         $realRequestHeaders = $this->parseHeaders($headers, $host, $user, $pass, $port, $scheme);
+        if ($this->isDebug()) {
+            $this->getLog()->info(sprintf("Delete through proxy, url: %s, headers: %s", $realRequestUrl, json_encode($realRequestHeaders)));
+        }
 
         return $this->doRequest('DELETE', $realRequestUrl, true, $scheme, $realRequestHeaders, null);
     }

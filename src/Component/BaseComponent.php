@@ -14,9 +14,21 @@ abstract class BaseComponent
      */
     protected $_container;
 
+    /**
+     * 是否是Debug模式
+     * @var bool
+     */
+    protected $_debug;
+
     public function __construct(ContainerInterface $container)
     {
         $this->_container = $container;
+
+        if (defined('YZCLOUD_BOOT_DEBUG')) {
+            $this->_debug = boolval(YZCLOUD_BOOT_DEBUG);
+        } else {
+            $this->_debug = false;
+        }
     }
 
     /**
@@ -44,6 +56,15 @@ abstract class BaseComponent
     protected function getEnvUtil(): EnvUtil
     {
         return $this->_container->get('envUtil');
+    }
+
+    /**
+     * 是否是debug模式
+     * @return bool
+     */
+    protected function isDebug(): bool
+    {
+        return $this->_debug;
     }
 
 
