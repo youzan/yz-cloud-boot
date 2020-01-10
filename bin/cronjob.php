@@ -4,29 +4,16 @@ use Psr\Container\ContainerInterface;
 use Slim\App;
 use Workerman\Worker;
 use YouzanCloudBoot\Boot\Bootstrap;
-use YouzanCloudBoot\Daemon\Registry\TimingRegistry;
-use YouzanCloudBoot\Daemon\Worker\TimingWorker;
+use YouzanCloudBoot\CronJob\Registry\TimingRegistry;
+use YouzanCloudBoot\CronJob\Worker\TimingWorker;
 use YouzanCloudBoot\Facades\Facade;
 
-// init
-$container = init();
-
-// timing task workers
-$timingWorker = new Worker();
-$timingWorker->count = 1;
-
-$timingWorker->onWorkerStart = function ($timingWorker) use ($container) {
-    (new TimingWorker($container))->onWorkerStart($timingWorker);
-};
-
-// start
-Worker::runAll();
+require_once __DIR__ . '/../base/app.php';
 
 // init
-function init(): ContainerInterface
-{
-    // 推定的工程目录
-    $assumedAppDir = realpath(__DIR__ . '/../../../..');
+$container = (function (): ContainerInterface {
+
+    $assumedAppDir = assumedAppDir();
 
     // 检查是在项目运行还是独立运行(例如测试)，判断依据是 composer.json 和 env.php
     if (file_exists($assumedAppDir . '/composer.json')) {
@@ -59,4 +46,31 @@ function init(): ContainerInterface
     }
 
     return $container;
-}
+})();
+
+// timing task workers
+$timingWorker = new Worker();
+$timingWorker->count = (function (): int {
+
+    if (!defined('YZCLOUD_BOOT_TIMING_WORKER_COUNT')) {
+        return 1;
+    }
+
+    $count = intval(YZCLOUD_BOOT_TIMING_WORKER_COUNT);
+
+    if ($count < 1) {
+        return 1;
+    }
+    if ($count > 10) {
+        return 10;
+    }
+
+    return $count;
+})();
+
+$timingWorker->onWorkerStart = function ($timingWorker) use ($container) {
+    (new TimingWorker($container))->onWorkerStart($timingWorker);
+};
+
+// start
+Worker::runAll();

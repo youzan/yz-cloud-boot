@@ -1,6 +1,6 @@
 <?php
 
-namespace YouzanCloudBoot\Daemon\Registry;
+namespace YouzanCloudBoot\CronJob\Registry;
 
 use YouzanCloudBoot\Component\BaseComponent;
 

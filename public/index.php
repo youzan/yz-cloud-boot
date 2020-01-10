@@ -1,7 +1,9 @@
 <?php
 
+require_once __DIR__ . '/../base/app.php';
+
 // 推定的工程目录
-$assumedAppDir = realpath(__DIR__ . '/../../../..');
+$assumedAppDir = assumedAppDir();
 
 // 检查是在项目运行还是独立运行(例如测试)，判断依据是 composer.json 和 env.php
 if (file_exists($assumedAppDir . '/composer.json') and file_exists($assumedAppDir . '/config/env.php')) {
