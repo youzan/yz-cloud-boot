@@ -1,10 +1,10 @@
 <?php
 
-namespace YouzanCloudBoot\CronJob\Registry;
+namespace YouzanCloudBoot\Daemon\Registry;
 
 use YouzanCloudBoot\Component\BaseComponent;
 
-class TimingRegistry extends BaseComponent
+class IntervalTimerRegistry extends BaseComponent
 {
 
     private $beanPool = [];
