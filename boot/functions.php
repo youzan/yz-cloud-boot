@@ -18,7 +18,7 @@ function init()
     }
 }
 
-function developServer()
+function fixDevelopServer()
 {
     // 这是对 PHP 内建服务器的一个不会修复的 bug 的 Workaround
     // Bug内容为: PHP 内建服务器在碰到带"."的请求时，会认为是静态文件

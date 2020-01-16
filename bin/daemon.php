@@ -1,9 +1,8 @@
 <?php
 
-(function () {
-    require_once(__DIR__ . '/../boot/functions.php');
-    init();
-})();
+require_once(__DIR__ . '/../boot/functions.php');
+
+init();
 
 // init
 $container = (function (): \Psr\Container\ContainerInterface {

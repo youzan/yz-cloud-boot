@@ -1,10 +1,10 @@
 <?php
 
-(function () {
-    require_once(__DIR__ . '/../boot/functions.php');
-    init();
-    developServer();
-})();
+require_once(__DIR__ . '/../boot/functions.php');
+
+init();
+fixDevelopServer();
+
 
 // 初始化容器
 /** @var \Psr\Container\ContainerInterface $container */
