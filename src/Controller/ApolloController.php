@@ -7,7 +7,6 @@ use Slim\Http\Response;
 use Symfony\Component\Yaml\Yaml;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\Env;
-use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Util\ApolloUtil;
 
 class ApolloController extends BaseComponent
@@ -30,12 +29,10 @@ class ApolloController extends BaseComponent
     private function writeToFile($configAll, $reties = 3): string
     {
         if (empty($configAll)) {
-            LogFacade::err("Apollo writeToFile. the config is empty");
             return 'Fail, Apollo writeToFile. the config is empty';
         }
 
         if ($reties < 0) {
-            LogFacade::err("Apollo writeToFile. exceeds the maximum retries");
             return 'Fail, Apollo writeToFile. exceeds the maximum retries';
         }
 
