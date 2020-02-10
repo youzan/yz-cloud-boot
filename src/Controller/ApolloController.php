@@ -21,8 +21,16 @@ class ApolloController extends BaseComponent
         $configApplication = $apollo->get('application');
         $configAll = array_merge($configApplication, $configSystem);
 
+        // write to file
         file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
-        return $response->withJson(['status' => 'OK']);
+
+        // read for check
+        $yaml = Yaml::parseFile(Env::APOLLO_FILE);
+        if (is_array($yaml) && in_array('application.name', $yaml)) {
+            return $response->withJson(['status' => 'OK']);
+        } else {
+            return $response->withJson(['status' => 'Fail, Please Retry']);
+        }
     }
 
 
