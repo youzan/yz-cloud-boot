@@ -28,13 +28,23 @@ class EnvUtil extends BaseComponent
         return null;
     }
 
-    public function getFromApollo(string $varName): ?string
+    private function getFromApollo(string $varName): ?string
     {
         if (empty($this->apolloConfig)) {
             $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
         }
 
         return $this->apolloConfig[$varName] ?? null;
+    }
+
+    private function getFromEnv(string $varName): ?string
+    {
+        $key = str_replace('.', '_', $varName);
+        if (isset($_SERVER[$key])) {
+            return $_SERVER[$key];
+        }
+
+        return null;
     }
 
     public function getAppName(): ?string
