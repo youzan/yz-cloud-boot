@@ -20,21 +20,41 @@ class EnvUtil extends BaseComponent
      */
     public function get(string $varName): ?string
     {
+        // 1. 优先从Apollo读取
+        $val = $this->getFromApollo($varName);
+        if (!empty($val)) {
+            return $val;
+        }
+
+        // 2. Apollo取不到则从Env取
+        return $this->getFromEnv($varName);
+    }
+
+    private function getFromApollo(string $varName): ?string
+    {
+        if (empty($this->apolloConfig) && file_exists(Env::APOLLO_FILE)) {
+            try {
+                $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
+            } catch (\Exception $e) {
+
+            }
+        }
+
+        if (is_array($this->apolloConfig) && isset($this->apolloConfig[$varName])) {
+            return $this->apolloConfig[$varName];
+        }
+
+        return null;
+    }
+
+    private function getFromEnv(string $varName): ?string
+    {
         $key = str_replace('.', '_', $varName);
         if (isset($_SERVER[$key])) {
             return $_SERVER[$key];
         }
 
         return null;
-    }
-
-    public function getFromApollo(string $varName): ?string
-    {
-        if (empty($this->apolloConfig)) {
-            $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
-        }
-
-        return $this->apolloConfig[$varName] ?? null;
     }
 
     public function getAppName(): ?string
