@@ -7,6 +7,7 @@ use Slim\Http\Response;
 use Symfony\Component\Yaml\Yaml;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\Env;
+use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Util\ApolloUtil;
 
 class ApolloController extends BaseComponent
@@ -21,16 +22,31 @@ class ApolloController extends BaseComponent
         $configApplication = $apollo->get('application');
         $configAll = array_merge($configApplication, $configSystem);
 
-        // write to file
-        file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
+        $res = $this->writeToFile($configAll);
+        return $response->withJson(['status' => $res]);
+    }
 
-        // read for check
-        $yaml = Yaml::parseFile(Env::APOLLO_FILE);
-        if (is_array($yaml) && in_array('application.name', $yaml)) {
-            return $response->withJson(['status' => 'OK']);
-        } else {
-            return $response->withJson(['status' => 'Fail, Please Retry']);
+
+    private function writeToFile($configAll, $reties = 3): string
+    {
+        if (empty($configAll)) {
+            LogFacade::err("Apollo writeToFile. the config is empty");
+            return 'Fail, Apollo writeToFile. the config is empty';
         }
+
+        if ($reties < 0) {
+            LogFacade::err("Apollo writeToFile. exceeds the maximum retries");
+            return 'Fail, Apollo writeToFile. exceeds the maximum retries';
+        }
+
+        // write to file
+        $res = file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
+
+        if (false === $res) {
+            return $this->writeToFile($configAll, --$reties);
+        }
+
+        return 'OK';
     }
 
 
