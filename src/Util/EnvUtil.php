@@ -32,8 +32,12 @@ class EnvUtil extends BaseComponent
 
     private function getFromApollo(string $varName): ?string
     {
-        if (empty($this->apolloConfig)) {
-            $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
+        if (empty($this->apolloConfig) && file_exists(Env::APOLLO_FILE)) {
+            try {
+                $this->apolloConfig = Yaml::parseFile(Env::APOLLO_FILE);
+            } catch (\Exception $e) {
+
+            }
         }
 
         if (is_array($this->apolloConfig) && isset($this->apolloConfig[$varName])) {
