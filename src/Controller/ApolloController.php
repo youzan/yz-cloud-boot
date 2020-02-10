@@ -17,30 +17,26 @@ class ApolloController extends BaseComponent
         /** @var ApolloUtil $apollo */
         $apollo = $this->getContainer()->get('apolloUtil');
 
-        $configSystem = $apollo->get('system');
-        $configApplication = $apollo->get('application');
-        $configAll = array_merge($configApplication, $configSystem);
-
-        $res = $this->writeToFile($configAll);
+        $res = $this->writeToFile($apollo);
         return $response->withJson(['status' => $res]);
     }
 
 
-    private function writeToFile($configAll, $reties = 3): string
+    private function writeToFile(ApolloUtil $apollo, $reties = 3): string
     {
-        if (empty($configAll)) {
-            return 'Fail, Apollo writeToFile. the config is empty';
-        }
-
         if ($reties < 0) {
             return 'Fail, Apollo writeToFile. exceeds the maximum retries';
         }
 
+        $configAll = array_merge($apollo->get('system'), $apollo->get('application'));
+        if (empty($configAll)) {
+            return $this->writeToFile($apollo, --$reties);
+        }
+
         // write to file
         $res = file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
-
         if (false === $res) {
-            return $this->writeToFile($configAll, --$reties);
+            return $this->writeToFile($apollo, --$reties);
         }
 
         return 'OK';
