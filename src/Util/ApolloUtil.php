@@ -5,6 +5,7 @@ namespace YouzanCloudBoot\Util;
 
 
 use Exception;
+use Symfony\Component\Yaml\Yaml;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\Env;
 use YouzanCloudBoot\Facades\LogFacade;
@@ -98,6 +99,28 @@ class ApolloUtil extends BaseComponent
         return [
             sprintf("auth: %s;%s", $env->get(Env::APOLLO_APP_ID), $env->get(Env::APOLLO_APP_SECRET))
         ];
+    }
+
+
+    public function writeToFile($reties = 3)
+    {
+        if ($reties < 0) {
+            LogFacade::warn("Apollo writeToFile. exceeds the maximum retries");
+            return;
+        }
+
+        $configAll = array_merge($this->get('system'), $this->get('application'));
+        if (empty($configAll)) {
+            LogFacade::warn("Apollo writeToFile. the configAll empty");
+            return $this->writeToFile(--$reties);
+        }
+
+        // write to file
+        $res = file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
+        if (false === $res) {
+            LogFacade::warn("Apollo writeToFile. write return false");
+            return $this->writeToFile(--$reties);
+        }
     }
 
 
