@@ -42,7 +42,9 @@ class DaemonTokenTask extends BaseComponent
         // 2. 遍历 从Redis取值
         foreach ($authorityIdArr as $authorityId) {
             try {
-                $this->refreshToken(RedisFacade::get("yz_cloud_boot_token_" . $authorityId));
+                $key = "yz_cloud_boot_token_" . trim($authorityId);
+                LogFacade::info("DaemonTokenTask process. the key: " . $key);
+                $this->refreshToken(RedisFacade::get($key));
             } catch (Exception $e) {
                 LogFacade::err("DaemonTokenTask process refreshToken ex. authorityId:{$authorityId}, " . $e->getTraceAsString());
             }
