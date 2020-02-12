@@ -1,26 +1,43 @@
 <?php
 
-
 namespace YouzanCloudBoot\Util;
-
 
 use Exception;
 use Symfony\Component\Yaml\Yaml;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\Env;
 use YouzanCloudBoot\Facades\LogFacade;
-use YouzanCloudBoot\Helper\Arr;
 
 class ApolloUtil extends BaseComponent
 {
 
-    // 用于缓存配置
-    private static $config = null;
-
     // 合法的资源配置名称
     const VALID_APOLLO_RESOURCES = [
-        'system', 'application'
+        'system',
+        'application'
     ];
+
+
+    public function writeToFile($reties = 3)
+    {
+        if ($reties < 0) {
+            LogFacade::warn("Apollo writeToFile. exceeds the maximum retries");
+            return;
+        }
+
+        $configAll = array_merge($this->get('system'), $this->get('application'));
+        if (empty($configAll)) {
+            LogFacade::warn("Apollo writeToFile. the configAll empty");
+            return $this->writeToFile(--$reties);
+        }
+
+        // write to file
+        $res = file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
+        if (false === $res) {
+            LogFacade::warn("Apollo writeToFile. write return false");
+            return $this->writeToFile(--$reties);
+        }
+    }
 
 
     /**
@@ -29,7 +46,7 @@ class ApolloUtil extends BaseComponent
      * @param string $resource system\application
      * @return array
      */
-    public function get(string $resource): array
+    private function get(string $resource): array
     {
         if (!in_array($resource, self::VALID_APOLLO_RESOURCES)) {
             return [];
@@ -47,27 +64,20 @@ class ApolloUtil extends BaseComponent
      */
     private function pull(string $resource): array
     {
-        // 若为空数组 表示统一资源配置即为空 也就是尚未添加资源组件
-        // 若为null 表示尚未拉取统一资源配置 需要拉取配置
-        $cacheValue = Arr::dot_get(self::$config, $resource);
-        if (is_array($cacheValue)) {
-            return $cacheValue;
-        }
-
         try {
             /** @var \YouzanCloudBoot\Http\HttpClientResponse $resp */
             $resp = $this->getContainer()->get('httpClient')->get($this->buildHttpUrl($resource), $this->buildHttpHeaders());
-            LogFacade::info('ApolloUtil http resp: ' . $resp->getBody());
+            LogFacade::info('ApolloUtil pull, http resp: ' . $resp->getBody());
             if (empty($resp->getBodyAsJson()) || !isset($resp->getBodyAsJson()['configurations'])) {
-                return self::$config[$resource] = [];
+                return [];
             }
 
-            return self::$config[$resource] = $resp->getBodyAsJson()['configurations'];
+            return $resp->getBodyAsJson()['configurations'];
         } catch (Exception $e) {
-
+            LogFacade::err('ApolloUtil pull, exception: ' . $e->getTraceAsString());
         }
 
-        return self::$config[$resource] = [];
+        return [];
     }
 
 
@@ -99,28 +109,6 @@ class ApolloUtil extends BaseComponent
         return [
             sprintf("auth: %s;%s", $env->get(Env::APOLLO_APP_ID), $env->get(Env::APOLLO_APP_SECRET))
         ];
-    }
-
-
-    public function writeToFile($reties = 3)
-    {
-        if ($reties < 0) {
-            LogFacade::warn("Apollo writeToFile. exceeds the maximum retries");
-            return;
-        }
-
-        $configAll = array_merge($this->get('system'), $this->get('application'));
-        if (empty($configAll)) {
-            LogFacade::warn("Apollo writeToFile. the configAll empty");
-            return $this->writeToFile(--$reties);
-        }
-
-        // write to file
-        $res = file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
-        if (false === $res) {
-            LogFacade::warn("Apollo writeToFile. write return false");
-            return $this->writeToFile(--$reties);
-        }
     }
 
 
