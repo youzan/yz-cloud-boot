@@ -44,6 +44,12 @@ class IntervalTimerRegistry extends BaseComponent
             [new \YouzanCloudBoot\Daemon\Task\DaemonApolloTask($this->getContainer()), 'handle'],
             60
         );
+
+        $this->register(
+            'yz_cloud_boot_token',
+            [new \YouzanCloudBoot\Daemon\Task\DaemonTokenTask($this->getContainer()), 'handle'],
+            60
+        );
     }
 
 }
