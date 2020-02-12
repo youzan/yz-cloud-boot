@@ -3,6 +3,7 @@
 namespace YouzanCloudBoot\Daemon\Task;
 
 use Exception;
+use Youzan\Open\Token;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Facades\EnvFacade;
 use YouzanCloudBoot\Facades\LogFacade;
@@ -54,24 +55,26 @@ class DaemonTokenTask extends BaseComponent
 
     private function refreshToken($oldTokenStr)
     {
+        LogFacade::info("DaemonTokenTask refreshToken. the oldTokenStr is: " . $oldTokenStr);
+
         if (empty($oldTokenStr) || !is_string($oldTokenStr)) {
             LogFacade::info("DaemonTokenTask refreshToken. the oldTokenStr valid. " . $oldTokenStr);
             return;
         }
 
         $oldTokenArr = json_decode($oldTokenStr, true);
-        if (!is_array($oldTokenArr) || !in_array('refresh_token', $oldTokenArr)) {
+        if (!is_array($oldTokenArr) || !array_key_exists('refresh_token', $oldTokenArr)) {
             LogFacade::info("DaemonTokenTask refreshToken. the oldTokenStr decode fail. " . $oldTokenStr);
             return;
         }
 
-        $newTokenArr = (new \Youzan\Open\Token(
+        $newTokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
         ))->getToken('refresh_token', $oldTokenArr);
 
-        if (is_array($newTokenArr) && in_array('access_token', $newTokenArr)) {
+        if (is_array($newTokenArr) && array_key_exists('access_token', $newTokenArr)) {
             $setResp = RedisFacade::set('yz_cloud_boot_token_' . $newTokenArr['authority_id'], json_encode($newTokenArr));
-            LogFacade::info("DaemonTokenTask refreshToken. set redis. {$setResp}, " . $newTokenArr);
+            LogFacade::info("DaemonTokenTask refreshToken. redis set: {$setResp}", $newTokenArr);
         }
     }
 
