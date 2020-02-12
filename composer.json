@@ -19,7 +19,8 @@
         "monolog/monolog": "^1.24",
         "slim/twig-view": "^2.5",
         "symfony/yaml": "^4.3",
-        "workerman/workerman": "^3.5"
+        "workerman/workerman": "^3.5",
+        "youzanyun/open-sdk": ">=2.0.8"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.0",
