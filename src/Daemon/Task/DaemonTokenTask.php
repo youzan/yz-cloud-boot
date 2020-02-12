@@ -33,7 +33,7 @@ class DaemonTokenTask extends BaseComponent
             return;
         }
 
-        $authorityIdArr = json_decode($authorityIds);
+        $authorityIdArr = json_decode($authorityIds, true);
         if (!is_array($authorityIdArr)) {
             LogFacade::info("DaemonTokenTask process. the authorityIds decode fail. " . $authorityIds);
             return;
@@ -59,7 +59,7 @@ class DaemonTokenTask extends BaseComponent
             return;
         }
 
-        $oldTokenArr = json_decode($oldTokenStr);
+        $oldTokenArr = json_decode($oldTokenStr, true);
         if (!is_array($oldTokenArr) || !in_array('refresh_token', $oldTokenArr)) {
             LogFacade::info("DaemonTokenTask refreshToken. the oldTokenStr decode fail. " . $oldTokenStr);
             return;
@@ -70,7 +70,7 @@ class DaemonTokenTask extends BaseComponent
         ))->getToken('refresh_token', $oldTokenArr);
 
         if (is_array($newTokenArr) && in_array('access_token', $newTokenArr)) {
-            $setResp = RedisFacade::set('yz_cloud_boot_token_' . $newTokenArr['authority_id'], $newTokenArr);
+            $setResp = RedisFacade::set('yz_cloud_boot_token_' . $newTokenArr['authority_id'], json_encode($newTokenArr));
             LogFacade::info("DaemonTokenTask refreshToken. set redis. {$setResp}, " . $newTokenArr);
         }
     }
