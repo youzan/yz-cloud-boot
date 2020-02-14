@@ -16,7 +16,7 @@ class ApolloController extends BaseComponent
         $apollo = $this->getContainer()->get('apolloUtil');
         $apollo->writeToFile();
 
-        return $response->withJson(['status' => 'OK']);
+        return $response->withJson(['message' => 'success']);
     }
 
 
