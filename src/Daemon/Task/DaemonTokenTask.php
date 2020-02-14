@@ -5,6 +5,7 @@ namespace YouzanCloudBoot\Daemon\Task;
 use Exception;
 use Youzan\Open\Token;
 use YouzanCloudBoot\Component\BaseComponent;
+use YouzanCloudBoot\Constant\CacheKey;
 use YouzanCloudBoot\Facades\EnvFacade;
 use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Facades\RedisFacade;
@@ -43,7 +44,7 @@ class DaemonTokenTask extends BaseComponent
         // 2. 遍历 从Redis取值
         foreach ($authorityIdArr as $authorityId) {
             try {
-                $key = "yz_cloud_boot_token_" . trim($authorityId);
+                $key = sprintf(CacheKey::TOKEN, trim($authorityId));
                 LogFacade::info("DaemonTokenTask process. the key: " . $key);
                 $this->refreshToken(RedisFacade::get($key));
             } catch (Exception $e) {
@@ -73,7 +74,8 @@ class DaemonTokenTask extends BaseComponent
         ))->getToken('refresh_token', $oldTokenArr);
 
         if (is_array($newTokenArr) && array_key_exists('access_token', $newTokenArr)) {
-            $setResp = RedisFacade::set('yz_cloud_boot_token_' . $newTokenArr['authority_id'], json_encode($newTokenArr));
+            $key = sprintf(CacheKey::TOKEN, trim($newTokenArr['authority_id']));
+            $setResp = RedisFacade::set($key, json_encode($newTokenArr));
             LogFacade::info("DaemonTokenTask refreshToken. redis set: {$setResp}", $newTokenArr);
         }
     }

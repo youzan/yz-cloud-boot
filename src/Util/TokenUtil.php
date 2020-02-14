@@ -2,10 +2,11 @@
 
 namespace YouzanCloudBoot\Util;
 
-use Exception;
 use Throwable;
 use Youzan\Open\Token;
 use YouzanCloudBoot\Component\BaseComponent;
+use YouzanCloudBoot\Constant\CacheKey;
+use YouzanCloudBoot\Exception\TokenException;
 use YouzanCloudBoot\Facades\EnvFacade;
 use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Facades\RedisFacade;
@@ -13,37 +14,76 @@ use YouzanCloudBoot\Facades\RedisFacade;
 class TokenUtil extends BaseComponent
 {
 
+    /**
+     * 获取授权主体accessToken
+     * (仅支持已启用code接管 且历史授权主体已全部重新获取code的 工具型应用使用)
+     *
+     * @param $authorityId
+     * @return string
+     * @throws TokenException
+     */
+    public function getAccessToken($authorityId): string
+    {
+        $key = sprintf(CacheKey::TOKEN, trim($authorityId));
+        $cacheValue = RedisFacade::get($key);
+
+        if (empty($cacheValue) || !is_string($cacheValue)) {
+            throw new TokenException('token not exists in redis');
+        }
+
+        $tokenArr = json_decode($cacheValue, true);
+        if (is_array($tokenArr) && array_key_exists('access_token', $tokenArr) && is_string($tokenArr['access_token'])) {
+            return $tokenArr['access_token'];
+        }
+
+        throw new TokenException('token valid');
+    }
+
+
+    /**
+     * 工具型 code换取token
+     * @param string $code
+     * @param int $reties
+     * @return array
+     * @throws TokenException
+     */
     public function code2Token(string $code, $reties = 3): array
     {
         if ($reties < 0) {
-            LogFacade::warn("TokenUtil code2Token. exceeds the maximum retries");
-            return null;
+            throw new TokenException('TokenUtil code2Token. exceeds the maximum retries');
         }
 
         try {
             return $this->code2TokenProcess($code);
+        } catch (TokenException $ce) {
+            throw $ce;
         } catch (Throwable $e) {
             if ($reties > 0) {
                 return $this->code2Token($code, --$reties);
             }
-            LogFacade::err("TokenUtil code2Token. exception, code:{$code}, " . $e->getTraceAsString());
+            throw new TokenException("TokenUtil code2Token. exception {$e->getMessage()}");
         }
-
-        return null;
     }
 
 
+    /**
+     * 工具型 code换取token 业务逻辑
+     * @param string $code
+     * @return array
+     * @throws TokenException
+     */
     private function code2TokenProcess(string $code): array
     {
         $tokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
         ))->getToken('authorization_code', ['code' => $code]);
 
-        if (!is_array($tokenArr) || array_key_exists('access_token', $tokenArr)) {
-            throw new Exception('newTokenArr valid');
+        if (!is_array($tokenArr) || !$tokenArr['success']) {
+            throw new TokenException($tokenArr['message'] ?? 'code2Token fail');
         }
 
-        $setResp = RedisFacade::set('yz_cloud_boot_token_' . $tokenArr['authority_id'], json_encode($tokenArr));
+        $key = sprintf(CacheKey::TOKEN, trim($tokenArr['authority_id']));
+        $setResp = RedisFacade::set($key, json_encode($tokenArr));
         LogFacade::info("TokenUtil code2TokenProcess. redis set: {$setResp}", $tokenArr);
 
         return $tokenArr;
