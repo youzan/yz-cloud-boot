@@ -15,6 +15,7 @@ use Slim\Http\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use YouzanCloudBoot\Controller\ApolloController;
+use YouzanCloudBoot\Controller\AuthCodeController;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
@@ -32,6 +33,7 @@ use YouzanCloudBoot\Store\RedisFactory;
 use YouzanCloudBoot\Util\ApolloUtil;
 use YouzanCloudBoot\Util\EnvUtil;
 use YouzanCloudBoot\Util\ObjectBuilder;
+use YouzanCloudBoot\Util\TokenUtil;
 
 class Bootstrap
 {
@@ -104,6 +106,9 @@ class Bootstrap
         $container['apolloUtil'] = function (ContainerInterface $container) {
             return new ApolloUtil($container);
         };
+        $container['tokenUtil'] = function (ContainerInterface $container) {
+            return new TokenUtil($container);
+        };
         $container['yzcMysql'] = function (ContainerInterface $container) {
             return $container->get('pdoFactory')->buildBuiltinMySQLInstance();
         };
@@ -152,6 +157,12 @@ class Bootstrap
         $app->get(
             "/apollo",
             ApolloController::class . ':handle'
+        );
+
+        //拉取统一资源配置(Apollo)
+        $app->get(
+            "/callback/auth/code",
+            AuthCodeController::class . ':handle'
         );
     }
 
