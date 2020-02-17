@@ -30,17 +30,27 @@ class IntervalTimerRegistry extends BaseComponent
      * @param string $name
      * @param callable $callback
      * @param float $timeInterval
+     * @param array $args
+     * @param bool $persistent
      */
-    private function register(string $name, callable $callback, float $timeInterval): void
+    private function register(string $name, callable $callback, float $timeInterval, array $args = [], bool $persistent = true): void
     {
-        $this->beanPool[$name] = ['timeInterval' => $timeInterval, 'callback' => $callback];
+        $this->beanPool[$name] = ['callback' => $callback, 'timeInterval' => $timeInterval, 'args' => $args, 'persistent' => $persistent];
     }
 
 
     private function initTask()
     {
         $this->register(
-            'yz_cloud_boot_apollo',
+            'yz_cloud_boot_apollo_once',
+            [new \YouzanCloudBoot\Daemon\Task\DaemonApolloTask($this->getContainer()), 'handle'],
+            0.1,
+            [],
+            false
+        );
+
+        $this->register(
+            'yz_cloud_boot_apollo_loop',
             [new \YouzanCloudBoot\Daemon\Task\DaemonApolloTask($this->getContainer()), 'handle'],
             60
         );
@@ -48,7 +58,7 @@ class IntervalTimerRegistry extends BaseComponent
         $this->register(
             'yz_cloud_boot_token',
             [new \YouzanCloudBoot\Daemon\Task\DaemonTokenTask($this->getContainer()), 'handle'],
-            60
+            3600
         );
     }
 
