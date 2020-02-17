@@ -21,10 +21,12 @@ class IntervalTimerWorker extends BaseComponent
 
             if (is_array($item) && isset($item['timeInterval']) && isset($item['callback'])) {
 
-                $timeInterval = intval($item['timeInterval']);
+                $timeInterval = floatval($item['timeInterval']);
                 $callback = $item['callback'];
+                $args = $item['args'];
+                $persistent = boolval($item['persistent']);
 
-                if ($timeInterval < 60) {
+                if ($persistent && $timeInterval < 60) {
                     LogFacade::warn('IntervalTimerWorker.onWorkerStart.' . $name . ' the param `timeInterval` must be greater than 60');
                     continue;
                 }
@@ -40,7 +42,7 @@ class IntervalTimerWorker extends BaseComponent
                 }
 
                 LogFacade::info('IntervalTimerWorker.onWorkerStart.' . $name);
-                Timer::add($timeInterval, $callback);
+                Timer::add($timeInterval, $callback, $args, $persistent);
             }
 
         }
