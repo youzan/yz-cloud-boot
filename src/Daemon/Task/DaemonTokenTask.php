@@ -73,6 +73,8 @@ class DaemonTokenTask extends BaseComponent
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
         ))->getToken('refresh_token', $oldTokenArr);
 
+        LogFacade::info("DaemonTokenTask refreshToken. newTokenArr", $newTokenArr);
+
         if (is_array($newTokenArr) && array_key_exists('access_token', $newTokenArr)) {
             $key = sprintf(CacheKey::TOKEN, trim($newTokenArr['authority_id']));
             $setResp = RedisFacade::set($key, json_encode($newTokenArr));
