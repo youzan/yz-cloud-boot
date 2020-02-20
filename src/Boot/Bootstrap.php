@@ -59,7 +59,7 @@ class Bootstrap
             $logger = new YouzanLogger($applicationName);
 
             //控制台输出
-            $logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
+            $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
 
             if ($applicationName != 'Youzan-Cloud-Boot-App') {
                 $dateFormat = "Y-m-d H:i:s";
