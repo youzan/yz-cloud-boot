@@ -74,11 +74,15 @@ class TokenUtil extends BaseComponent
      */
     private function code2TokenProcess(string $code): array
     {
+        LogFacade::info("[code2TokenProcess] code:{$code}");
+
         $tokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
         ))->getToken('authorization_code', ['code' => $code]);
 
-        if (!is_array($tokenArr) || !$tokenArr['success']) {
+        LogFacade::info("[code2TokenProcess] tokenArr", $tokenArr);
+
+        if (!is_array($tokenArr) || !isset($tokenArr['access_token'])) {
             throw new TokenException($tokenArr['message'] ?? 'code2Token fail');
         }
 
