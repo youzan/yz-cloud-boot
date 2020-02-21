@@ -69,9 +69,17 @@ class DaemonTokenTask extends BaseComponent
             return;
         }
 
+        //todo debug code
+        $config = [];
+        $envs = EnvFacade::get('SKYNET_ENVS');
+        if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {
+            $config['baseUrl'] = 'http://bifrost-oauth.qa.s.qima-inc.com';
+        }
+        //todo debug code
+
         $newTokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
-        ))->refreshToken($oldTokenArr['refresh_token']);
+        ))->refreshToken($oldTokenArr['refresh_token'], $config);
 
         LogFacade::info("DaemonTokenTask refreshToken. newTokenArr", $newTokenArr);
 

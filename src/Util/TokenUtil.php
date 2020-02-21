@@ -76,9 +76,17 @@ class TokenUtil extends BaseComponent
     {
         LogFacade::info("[code2TokenProcess] code:{$code}");
 
+        //todo debug code
+        $config = [];
+        $envs = EnvFacade::get('SKYNET_ENVS');
+        if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {
+            $config['baseUrl'] = 'http://bifrost-oauth.qa.s.qima-inc.com';
+        }
+        //todo debug code
+
         $tokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
-        ))->getToolAppToken($code);
+        ))->getToolAppToken($code, $config);
 
         LogFacade::info("[code2TokenProcess] tokenArr", $tokenArr);
 
