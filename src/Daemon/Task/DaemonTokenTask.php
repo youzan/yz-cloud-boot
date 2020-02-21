@@ -71,7 +71,9 @@ class DaemonTokenTask extends BaseComponent
 
         $newTokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
-        ))->getToken('refresh_token', $oldTokenArr);
+        ))->refreshToken($oldTokenArr['refresh_token']);
+
+        LogFacade::info("DaemonTokenTask refreshToken. newTokenArr", $newTokenArr);
 
         if (is_array($newTokenArr) && array_key_exists('access_token', $newTokenArr)) {
             $key = sprintf(CacheKey::TOKEN, trim($newTokenArr['authority_id']));

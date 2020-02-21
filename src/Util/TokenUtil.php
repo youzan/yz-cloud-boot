@@ -78,7 +78,7 @@ class TokenUtil extends BaseComponent
 
         $tokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
-        ))->getToken('authorization_code', ['code' => $code]);
+        ))->getToolAppToken($code);
 
         LogFacade::info("[code2TokenProcess] tokenArr", $tokenArr);
 
