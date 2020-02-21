@@ -70,6 +70,7 @@ class DaemonTokenTask extends BaseComponent
         }
 
         //todo debug code
+        putenv('youzan_proxy_enable:false');
         $config = [];
         $envs = EnvFacade::get('SKYNET_ENVS');
         if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {

@@ -77,6 +77,7 @@ class TokenUtil extends BaseComponent
         LogFacade::info("[code2TokenProcess] code:{$code}");
 
         //todo debug code
+        putenv('youzan_proxy_enable:false');
         $config = [];
         $envs = EnvFacade::get('SKYNET_ENVS');
         if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {
