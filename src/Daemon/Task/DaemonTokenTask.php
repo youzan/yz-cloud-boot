@@ -3,6 +3,7 @@
 namespace YouzanCloudBoot\Daemon\Task;
 
 use Exception;
+use Youzan\Open\Config\EcommerceConfig;
 use Youzan\Open\Token;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\CacheKey;
@@ -70,7 +71,7 @@ class DaemonTokenTask extends BaseComponent
         }
 
         //todo debug code
-        putenv('youzan_proxy_enable:false');
+        $_SERVER[EcommerceConfig::ENV_PROXY_ENABLE] = false;
         $config = [];
         $envs = EnvFacade::get('SKYNET_ENVS');
         if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {
