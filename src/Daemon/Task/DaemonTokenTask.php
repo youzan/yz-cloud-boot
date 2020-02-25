@@ -29,7 +29,7 @@ class DaemonTokenTask extends BaseComponent
     private function process()
     {
         // 1. 从Apollo拉取KdtId List
-        $authorityIds = EnvFacade::get('grantIds');
+        $authorityIds = EnvFacade::get('cloud.auth.kdtid');
         if (empty($authorityIds)) {
             LogFacade::info("DaemonTokenTask process. the authorityIds empty");
             return;
