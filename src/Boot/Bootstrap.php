@@ -134,7 +134,7 @@ class Bootstrap
         $app->add(
             function ($request, $response, $next) {
                 /** @var \Psr\Http\Message\ServerRequestInterface $request */
-                $request->withHeader(Trace::key(), Trace::gen($request));
+                $request->withHeader(Trace::key(), Trace::gen());
                 $response = $next($request, $response);
                 return $response;
             }
