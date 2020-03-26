@@ -4,6 +4,7 @@
 namespace YouzanCloudBoot\Log;
 use Monolog\Processor\ProcessorInterface;
 use Psr\Container\ContainerInterface;
+use YouzanCloudBoot\Helper\Trace;
 
 class YouzanSkynetProcessor implements ProcessorInterface
 {
@@ -19,6 +20,7 @@ class YouzanSkynetProcessor implements ProcessorInterface
         $record['extra']['app_name'] = $envUtil->getAppName();
         $record['extra']['index_name'] = $envUtil->get('logging.track.topic');
         $record['extra']['level_name'] = strtolower($record['level_name']);
+        $record['extra']['x-cat-trace'] = Trace::gen();
 
         $skynetLog = new SkynetLog();
         $skynetLog->setApp($envUtil->getAppName());
