@@ -23,6 +23,7 @@ use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\Handler\ErrorHandler;
 use YouzanCloudBoot\ExtensionPoint\BepRegistry;
 use YouzanCloudBoot\ExtensionPoint\MepRegistry;
+use YouzanCloudBoot\Helper\Trace;
 use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBoot\Log\HostnameProcessor;
 use YouzanCloudBoot\Log\YouzanLogger;
@@ -124,6 +125,16 @@ class Bootstrap
 
     public static function setupApp(App $app): void
     {
+        // 调用链支持
+        $app->add(
+            function ($request, $response, $next) {
+                /** @var \Psr\Http\Message\ServerRequestInterface $request */
+                $request->withHeader(Trace::key(), Trace::gen($request));
+                $response = $next($request, $response);
+                return $response;
+            }
+        );
+
         //业务扩展点
         $app->post(
             "/business-extension-point/{service}/{method}",
