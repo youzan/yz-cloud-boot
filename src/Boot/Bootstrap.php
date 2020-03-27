@@ -159,7 +159,7 @@ class Bootstrap
             ApolloController::class . ':handle'
         );
 
-        //拉取统一资源配置(Apollo)
+        //接管code
         $app->get(
             "/callback/auth/code",
             AuthCodeController::class . ':handle'
