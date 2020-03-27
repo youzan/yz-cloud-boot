@@ -24,7 +24,6 @@ use YouzanCloudBoot\Exception\CommonException;
 use YouzanCloudBoot\Exception\Handler\ErrorHandler;
 use YouzanCloudBoot\ExtensionPoint\BepRegistry;
 use YouzanCloudBoot\ExtensionPoint\MepRegistry;
-use YouzanCloudBoot\Helper\Trace;
 use YouzanCloudBoot\Http\HttpClientWrapper;
 use YouzanCloudBoot\Log\HostnameProcessor;
 use YouzanCloudBoot\Log\YouzanLogger;
@@ -60,7 +59,7 @@ class Bootstrap
             $logger = new YouzanLogger($applicationName);
 
             //控制台输出
-            $logger->pushHandler(new StreamHandler('php://stdout', Logger::DEBUG));
+            $logger->pushHandler(new StreamHandler('php://stdout', Logger::INFO));
 
             if ($applicationName != 'Youzan-Cloud-Boot-App') {
                 $dateFormat = "Y-m-d H:i:s";
@@ -130,16 +129,6 @@ class Bootstrap
 
     public static function setupApp(App $app): void
     {
-        // 调用链支持
-        $app->add(
-            function ($request, $response, $next) {
-                /** @var \Psr\Http\Message\ServerRequestInterface $request */
-                $request->withHeader(Trace::key(), Trace::gen());
-                $response = $next($request, $response);
-                return $response;
-            }
-        );
-
         //业务扩展点
         $app->post(
             "/business-extension-point/{service}/{method}",
@@ -170,7 +159,7 @@ class Bootstrap
             ApolloController::class . ':handle'
         );
 
-        //拉取统一资源配置(Apollo)
+        //接管code
         $app->get(
             "/callback/auth/code",
             AuthCodeController::class . ':handle'
