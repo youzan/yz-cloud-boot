@@ -38,6 +38,7 @@ Based on Slim Framework: http://www.slimframework.com/
 |           |-- bin                     # 启/停脚本
 |           |   |-- preload.sh          # 服务启动前置脚本
 |           |   |-- php_dev_server.sh   # 开发服务器启动脚本
+|           |   |-- daemon.php          # 后台任务
 |           |
 |           |-- public                  # Web Root 目录，Web 服务器需要以里面的 index.php 为默认页面
 |           |   |-- index.php           # 应用程序入口
@@ -77,6 +78,7 @@ SlimFramework 原生
 | \YouzanCloudBoot\Facades\PDOFactoryFacade | $app->getContainer()->get('pdoFactory') |
 | \YouzanCloudBoot\Facades\RedisFacade | $app->getContainer()->get('yzcRedis') |
 | \YouzanCloudBoot\Facades\RedisFactoryFacade | $app->getContainer()->get('redisFactory') |
+| \YouzanCloudBoot\Facades\TokenFacade | $app->getContainer()->get('tokenUtil') |
 | \YouzanCloudBoot\Facades\ViewFacade | $app->getContainer()->get('view') |
 
 具体的类参考，可以参见每个类头部的 PHP Doc，在 PHPStorm 等 IDE 内可以识别 @method 并提供语法提示
@@ -92,8 +94,11 @@ SlimFramework 原生
 
 ```php
 <?php
-// @var \YouzanCloudBoot\Util\EnvUtil $envUtil 环境访问实用工具 
+// @var \YouzanCloudBoot\Util\EnvUtil $envUtil 环境访问实用工具
 $envUtil = YouzanCloudBoot\Facades\DIFacade::get('envUtil');
+
+// @var \YouzanCloudBoot\Util\TokenUtil $tokenUtil Token工具
+$tokenUtil = YouzanCloudBoot\Facades\DIFacade::get('tokenUtil');
 
 // @var \Monolog\Logger $logger 日志
 $logger = YouzanCloudBoot\Facades\DIFacade::get('logger');
