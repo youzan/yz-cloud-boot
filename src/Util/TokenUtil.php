@@ -74,21 +74,16 @@ class TokenUtil extends BaseComponent
      */
     private function code2TokenProcess(string $code): array
     {
-        LogFacade::info("[code2TokenProcess] code:{$code}");
-
         $tokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
         ))->getToolAppToken($code);
-
-        LogFacade::info("[code2TokenProcess] tokenArr", $tokenArr);
 
         if (!is_array($tokenArr) || !isset($tokenArr['access_token'])) {
             throw new TokenException($tokenArr['message'] ?? 'code2Token fail');
         }
 
         $key = sprintf(CacheKey::TOKEN, trim($tokenArr['authority_id']));
-        $setResp = RedisFacade::set($key, json_encode($tokenArr));
-        LogFacade::info("TokenUtil code2TokenProcess. redis set: {$setResp}", $tokenArr);
+        RedisFacade::set($key, json_encode($tokenArr));
 
         return $tokenArr;
     }

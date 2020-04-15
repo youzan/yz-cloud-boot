@@ -12,8 +12,6 @@ class IntervalTimerWorker extends BaseComponent
 
     public function onWorkerStart($worker)
     {
-        LogFacade::info('IntervalTimerWorker.onWorkerStart...');
-
         /** @var IntervalTimerRegistry $intervalTimerRegistry */
         $intervalTimerRegistry = $this->getContainer()->get('intervalTimerRegistry');
 
@@ -41,7 +39,6 @@ class IntervalTimerWorker extends BaseComponent
                     continue;
                 }
 
-                LogFacade::info('IntervalTimerWorker.onWorkerStart.' . $name);
                 Timer::add($timeInterval, $callback, $args, $persistent);
             }
 
