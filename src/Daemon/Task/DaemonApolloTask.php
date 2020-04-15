@@ -3,7 +3,6 @@
 namespace YouzanCloudBoot\Daemon\Task;
 
 use YouzanCloudBoot\Component\BaseComponent;
-use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Util\ApolloUtil;
 
 class DaemonApolloTask extends BaseComponent
