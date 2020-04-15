@@ -67,7 +67,6 @@ class ApolloUtil extends BaseComponent
         try {
             /** @var \YouzanCloudBoot\Http\HttpClientResponse $resp */
             $resp = $this->getContainer()->get('httpClient')->get($this->buildHttpUrl($resource), $this->buildHttpHeaders());
-            LogFacade::info('ApolloUtil pull, http resp: ' . $resp->getBody());
             if (empty($resp->getBodyAsJson()) || !isset($resp->getBodyAsJson()['configurations'])) {
                 return [];
             }
