@@ -9,7 +9,6 @@ use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\CacheKey;
 use YouzanCloudBoot\Exception\TokenException;
 use YouzanCloudBoot\Facades\EnvFacade;
-use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Facades\RedisFacade;
 
 class TokenUtil extends BaseComponent

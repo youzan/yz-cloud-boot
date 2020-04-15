@@ -7,6 +7,7 @@ namespace YouzanCloudBoot\Facades;
  * 默认实现参考 @see \YouzanCloudBoot\Util\TokenUtil
  *
  * @method static string getAccessToken($authorityId)
+ * @method static string code2Token(string $code, $reties = 3)
  */
 class TokenFacade extends Facade
 {
