@@ -15,7 +15,6 @@ use Slim\Http\Uri;
 use Slim\Views\Twig;
 use Slim\Views\TwigExtension;
 use YouzanCloudBoot\Controller\ApolloController;
-use YouzanCloudBoot\Controller\AuthCodeController;
 use YouzanCloudBoot\Controller\BusinessExtensionPointController;
 use YouzanCloudBoot\Controller\HealthController;
 use YouzanCloudBoot\Controller\HeartbeatController;
@@ -157,12 +156,6 @@ class Bootstrap
         $app->get(
             "/apollo",
             ApolloController::class . ':handle'
-        );
-
-        //接管code
-        $app->get(
-            "/callback/auth/code",
-            AuthCodeController::class . ':handle'
         );
     }
 
