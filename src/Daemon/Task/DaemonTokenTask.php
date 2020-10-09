@@ -3,7 +3,6 @@
 namespace YouzanCloudBoot\Daemon\Task;
 
 use Exception;
-use Youzan\Open\Config\EcommerceConfig;
 use Youzan\Open\Token;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\CacheKey;
@@ -59,18 +58,9 @@ class DaemonTokenTask extends BaseComponent
             return;
         }
 
-        //todo debug code
-        $_SERVER[EcommerceConfig::ENV_PROXY_ENABLE] = false;
-        $config = [];
-        $envs = EnvFacade::get('SKYNET_ENVS');
-        if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {
-            $config['baseUrl'] = 'http://bifrost-oauth.qa.s.qima-inc.com';
-        }
-        //todo debug code
-
         $newTokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
-        ))->refreshToken($oldTokenArr['refresh_token'], $config);
+        ))->refreshToken($oldTokenArr['refresh_token']);
 
         if (is_array($newTokenArr) && array_key_exists('access_token', $newTokenArr)) {
             $key = sprintf(CacheKey::TOKEN, trim($newTokenArr['authority_id']));

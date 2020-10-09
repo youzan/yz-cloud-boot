@@ -3,7 +3,6 @@
 namespace YouzanCloudBoot\Util;
 
 use Throwable;
-use Youzan\Open\Config\EcommerceConfig;
 use Youzan\Open\Token;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Constant\CacheKey;
@@ -74,20 +73,9 @@ class TokenUtil extends BaseComponent
      */
     private function code2TokenProcess(string $code): array
     {
-        LogFacade::info("[code2TokenProcess] code:{$code}");
-
-        //todo debug code
-        $_SERVER[EcommerceConfig::ENV_PROXY_ENABLE] = false;
-        $config = [];
-        $envs = EnvFacade::get('SKYNET_ENVS');
-        if (!empty($envs) && (strpos($envs, 'qabb') !== false)) {
-            $config['baseUrl'] = 'http://bifrost-oauth.qa.s.qima-inc.com';
-        }
-        //todo debug code
-
         $tokenArr = (new Token(
             EnvFacade::get('opensdk.clientId'), EnvFacade::get('opensdk.clientSecret')
-        ))->getToolAppToken($code, $config);
+        ))->getToolAppToken($code);
 
         if (!is_array($tokenArr) || !isset($tokenArr['access_token'])) {
             throw new TokenException($tokenArr['message'] ?? 'code2Token fail');
