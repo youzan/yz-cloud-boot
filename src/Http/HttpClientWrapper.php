@@ -109,7 +109,7 @@ class HttpClientWrapper extends BaseComponent
     {
         curl_setopt($this->curlHandle, CURLOPT_CUSTOMREQUEST, $method);
 
-        if (!$withProxy and $scheme === 'https') {
+        if ($scheme === 'https') {
             // FIXME 跳过了服务器校验，降低了安全性（可以被中间人攻击）
             curl_setopt($this->curlHandle, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($this->curlHandle, CURLOPT_SSL_VERIFYHOST, false);
