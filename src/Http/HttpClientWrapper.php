@@ -5,6 +5,7 @@ namespace YouzanCloudBoot\Http;
 use Psr\Container\ContainerInterface;
 use YouzanCloudBoot\Component\BaseComponent;
 use YouzanCloudBoot\Exception\HttpClientException;
+use YouzanCloudBoot\Facades\LogFacade;
 use YouzanCloudBoot\Traits\UrlParser;
 
 class HttpClientWrapper extends BaseComponent
@@ -133,6 +134,10 @@ class HttpClientWrapper extends BaseComponent
         // curl_setopt($this->curlHandle, CURLOPT_VERBOSE, true);
 
         $response = curl_exec($this->curlHandle);
+
+        if (curl_errno($this->curlHandle)) {
+            LogFacade::err("doRequest " . curl_errno($this->curlHandle) . curl_error($this->curlHandle));
+        }
 
         $responseHeaderSize = curl_getinfo($this->curlHandle, CURLINFO_HEADER_SIZE);
         $responseCode = curl_getinfo($this->curlHandle, CURLINFO_HTTP_CODE);
