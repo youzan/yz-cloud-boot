@@ -177,7 +177,7 @@ class HttpClientWrapper extends BaseComponent
                 $requestHost = $user . '@' . $host;
             }
         }
-        $headers[] = 'Host: ' . $requestHost . ':' . $port;
+        $headers[] = 'Host: ' . $requestHost . (in_array($port, ["80", "443"]) ? '' : ':' . $port);
         $headers[] = 'Scheme: ' . $scheme;
         $headers[] = 'Yzc-Token: ' . $this->token;
         return $headers;
