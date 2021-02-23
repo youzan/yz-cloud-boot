@@ -83,7 +83,11 @@ class ObjectBuilder extends BaseComponent
 
         // 匿名类直接转换
         if ($refParameterClass->getName() == 'stdClass') {
-            return json_decode(json_encode($input));
+            if (empty($input)) {
+                return (object) $input;
+            } else {
+                return json_decode(json_encode($input));
+            }
         }
 
         $instance = $refParameterClass->newInstanceWithoutConstructor();
