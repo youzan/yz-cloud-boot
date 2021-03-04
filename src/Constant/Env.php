@@ -19,7 +19,7 @@ class Env
 
     public static function getApolloFile(): string
     {
-        if (isset($_ENV['YOUZAN_ENV']) && !empty($_ENV['YOUZAN_ENV'])) {
+        if (isset($_SERVER['YOUZAN_ENV']) && !empty($_SERVER['YOUZAN_ENV'])) {
             return self::APOLLO_FILE_CLOUD;
         }
 
