@@ -32,7 +32,7 @@ class ApolloUtil extends BaseComponent
         }
 
         // write to file
-        $res = file_put_contents(Env::APOLLO_FILE, Yaml::dump($configAll));
+        $res = file_put_contents(Env::getApolloFile(), Yaml::dump($configAll));
         if (false === $res) {
             LogFacade::warn("Apollo writeToFile. write return false");
             return $this->writeToFile(--$reties);
