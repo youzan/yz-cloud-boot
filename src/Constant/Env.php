@@ -12,6 +12,21 @@ class Env
 
     const APOLLO_META_SERVER = 'APOLLO_METASERVER';
 
-    const APOLLO_FILE = '/tmp/apollo_all.yaml';
+    const APOLLO_FILE_CLOUD = '/tmp/apollo_all.yaml';
 
+    const APOLLO_FILE_LOCAL = '/env.local.yaml';
+
+
+    public static function getApolloFile(): string
+    {
+        if ($_ENV['YOUZAN_ENV']) {
+            return self::APOLLO_FILE_CLOUD;
+        }
+
+        if (defined('YZCLOUD_BOOT_APP_DIR') && file_exists(YZCLOUD_BOOT_APP_DIR . self::APOLLO_FILE_LOCAL)) {
+            return YZCLOUD_BOOT_APP_DIR . self::APOLLO_FILE_LOCAL;
+        }
+
+        return self::APOLLO_FILE_CLOUD;
+    }
 }
