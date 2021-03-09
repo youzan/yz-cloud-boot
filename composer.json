@@ -16,6 +16,7 @@
         "ext-curl": "*",
         "ext-redis": "*",
         "slim/slim": "^3.0",
+        "psr/container": "1.0.0",
         "monolog/monolog": "^1.24",
         "slim/twig-view": "^2.5",
         "symfony/yaml": "^4.3",
