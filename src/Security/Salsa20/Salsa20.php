@@ -1,5 +1,5 @@
 <?php
-namespace Youzan\Open\Security\Salsa20;
+namespace YouzanCloudBoot\Security\Salsa20;
 
 use Youzan\Open\Security\Salsa20\FieldElement;
 

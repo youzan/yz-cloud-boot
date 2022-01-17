@@ -1,5 +1,5 @@
 <?php
-namespace Youzan\Open\Security\Salsa20;
+namespace YouzanCloudBoot\Security\Salsa20;
 
 use SplFixedArray;
 

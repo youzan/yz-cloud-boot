@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Youzan\Open\Security;
+namespace YouzanCloudBoot\Security;
 
 include "SecretType.php";
 include "Aes.php";

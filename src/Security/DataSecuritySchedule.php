@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Youzan\Open\Security;
+namespace YouzanCloudBoot\Security;
 use \Youzan\Open\Security\SecurityDataTimer;
 
 class DataSecuritySchedule

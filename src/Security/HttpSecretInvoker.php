@@ -3,7 +3,7 @@
 
 
 
-namespace Youzan\Open\Security;
+namespace YouzanCloudBoot\Security;
 
 include "HttpsClient.php";
 include "DataSecurityJsonMapper.php";
