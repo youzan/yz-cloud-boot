@@ -1,10 +1,11 @@
 <?php
 
 
-namespace YouzanCloudBoot\Security;
-use YouzanCloudBoot\Facades\HttpFacade;
+namespace Youzan\Open\Security;
+
 class HttpsClient
 {
+
 
 
     public static function containPostJson($requestURL,$param) {

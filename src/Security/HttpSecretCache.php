@@ -1,5 +1,5 @@
 <?php
-namespace YouzanCloudBoot\Security;
+namespace Youzan\Open\Security;
 include "HttpSecretInvoker.php";
 include "SecretKeyQueryRequest.php";
 include "ClientEncryptConfig.php";

@@ -3,7 +3,7 @@
 
 
 
-namespace YouzanCloudBoot\Security;
+namespace Youzan\Open\Security;
 
 include "HttpsClient.php";
 include "DataSecurityJsonMapper.php";
@@ -27,7 +27,7 @@ class HttpSecretInvoker
     public function invoke($param) {
        $response = HttpsClient::containPostJson($this->initUrl,$param);
        $mapper = new DataSecurityJsonMapper();
-       return $mapper->map($response,new PlainResult());
+       return $mapper->map(json_decode($response),new PlainResult());
     }
 
 }

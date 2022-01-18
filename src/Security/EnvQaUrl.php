@@ -1,7 +1,7 @@
 <?php
 
 
-namespace YouzanCloudBoot\Security;
+namespace Youzan\Open\Security;
 
 
 class EnvQaUrl extends EnvUrl

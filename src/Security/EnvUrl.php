@@ -1,7 +1,7 @@
 <?php
 
 
-namespace YouzanCloudBoot\Security;
+namespace Youzan\Open\Security;
 
 
 abstract class EnvUrl

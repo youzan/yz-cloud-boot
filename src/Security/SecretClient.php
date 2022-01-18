@@ -1,7 +1,7 @@
 <?php
 
 
-namespace YouzanCloudBoot\Security;
+namespace Youzan\Open\Security;
 
 include "EnvUrl.php";
 include "EnvQaUrl.php";
