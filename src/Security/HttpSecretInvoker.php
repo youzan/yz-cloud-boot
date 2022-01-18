@@ -25,9 +25,9 @@ class HttpSecretInvoker
 
 
     public function invoke($param) {
-       $response = HttpsClient::postJson($this->initUrl,$param);
+       $response = HttpsClient::containPostJson($this->initUrl,$param);
        $mapper = new DataSecurityJsonMapper();
-       return $mapper->map(json_decode($response),new PlainResult());
+       return $mapper->map($response,new PlainResult());
     }
 
 }

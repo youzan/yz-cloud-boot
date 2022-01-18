@@ -2,11 +2,16 @@
 
 
 namespace YouzanCloudBoot\Security;
-
+use YouzanCloudBoot\Facades\HttpFacade;
 class HttpsClient
 {
 
 
+    public static function containPostJson($requestURL,$param) {
+        $r = HttpFacade::post($requestURL, ['Content-Type: application/json'], json_encode($param));
+        $response = $r->getBodyAsJson();
+        return $response;
+    }
 
     public static function postJson($requestURL, $param) {
 
